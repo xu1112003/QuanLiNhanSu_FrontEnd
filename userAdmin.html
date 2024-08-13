@@ -1,0 +1,457 @@
+<script>
+  $(document).ready(() => {
+    $(".btnQuayLai").click(function (event) {
+      event.preventDefault();
+      var link = $(this).attr("href");
+      $("#main").load(link);
+    });
+  })
+
+  var count = 1;
+    var itemId = "";
+    function getItemID(id) {
+        itemId = id;
+        var item = NvNhomQuyen.find(obj => obj.id === id);
+        document.getElementById('maNV1').value = item.id; 
+        document.getElementById('hoTenNV1').value = item.tenNV; 
+        document.getElementById('emailNV1').value = item.email;
+        document.getElementById('sdtNV1').value = item.soDienThoai;
+    }
+    function renderNguoiDung() {
+        var listNguoiDung = document.querySelector('#list-nguoiDung');
+        var htmls = NvNhomQuyen.map(function (nguoiDung) {
+            count++;
+            return `
+                <tr class="item-${nguoiDung.id}">
+                    <th scope="row">${nguoiDung.id}</th>
+                    <td>${nguoiDung.tenNV}</td>
+                    <td>${nguoiDung.email}</td>
+                    <td>${nguoiDung.soDienThoai}</td>
+
+                    <td><span onclick="getItemID('${nguoiDung.id}')" class="btn btn-outline-success btn1" data-bs-toggle="modal"
+                            data-bs-target="#suaNguoiDung"> 
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                class="bi bi-pencil-square"
+                                viewBox="0 0 16 16"
+                              >
+                                <path
+                                  d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+                                />
+                                <path
+                                  fill-rule="evenodd"
+                                  d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
+                                />
+                              </svg>
+                          </span> 
+                        <span onclick="getItemID('${nguoiDung.id}')" class="btn btn-outline-danger btn1" data-bs-toggle="modal"
+                            data-bs-target="#xoaNguoiDung">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                class="bi bi-trash3-fill"
+                                viewBox="0 0 16 16"
+                              >
+                                <path
+                                  d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"
+                                />
+                              </svg>
+                        </span>
+                    </td>
+                </tr>
+            `;
+        });
+        console.log(htmls);
+        listNguoiDung.innerHTML = htmls.join('');
+    }
+    // hienThi();
+    renderNguoiDung();
+    function addNguoiDung() {
+        var ds = document.querySelector('#list-nguoiDung');
+        var item = {
+            id: document.getElementById('maNV').value,
+            tenNV: document.getElementById('hoTenNV').value,
+            email: document.getElementById('emailNV').value,
+            soDienThoai: document.getElementById('sdtNV').value
+        };
+        console.log(item);
+        NvNhomQuyen.push(item);
+        //chèn vào sau thì thay beforeend bằng afterbegin
+        ds.insertAdjacentHTML('beforeend', `
+        <tr class="item-${item.id}">
+            <th scope="row">${item.id}</th>
+            <td>${item.tenNV}</td>
+            <td>${item.email}</td>
+            <td>${item.soDienThoai}</td>
+            <td>
+                <span onclick="getItemID('${item.id}')" class="btn btn-outline-success btn1" data-bs-toggle="modal"
+                            data-bs-target="#suaNguoiDung">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                class="bi bi-pencil-square"
+                                viewBox="0 0 16 16"
+                              >
+                                <path
+                                  d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+                                />
+                                <path
+                                  fill-rule="evenodd"
+                                  d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
+                                />
+                              </svg>
+                            </span>
+                <span onclick="getItemID('${item.id}')" class="btn btn-outline-danger btn1" data-bs-toggle="modal"
+                            data-bs-target="#xoaNguoiDung">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                class="bi bi-trash3-fill"
+                                viewBox="0 0 16 16"
+                              >
+                                <path
+                                  d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"
+                                />
+                              </svg>
+                            </span>
+            </td>
+        </tr>
+        `);
+        count++;
+    }
+    function deleteNguoiDung(id) {
+      NvNhomQuyen = NvNhomQuyen.filter(function (nguoiDung) {
+            return nguoiDung.id !== id;
+        });
+        var NguoiDungItem = document.querySelector('.item-' + id);
+        if (NguoiDungItem) {
+          NguoiDungItem.remove();
+        }
+    }
+    function editNguoiDung(id) {
+        var item = NvNhomQuyen.find(obj => obj.id === id);
+        item.id = document.getElementById('maNV1').value;
+        item.tenNV = document.getElementById('hoTenNV1').value;
+        item.email = document.getElementById('emailNV1').value;
+        item.soDienThoai = document.getElementById('sdtNV1').value;
+        console.log(item.id);
+        console.log(item.tenNV);
+        console.log(item.email);
+        console.log(item.soDienThoai);
+        var newRowHTML = `
+            <tr class="item-${item.id}">
+                <th scope="row">${item.id}</th>
+                <td>${item.tenNV}</td>
+                <td>${item.email}</td>
+                <td>${item.soDienThoai}</td>
+                <td>
+                    <span onclick="getItemID('${item.id}')" class="btn btn-outline-success btn1" data-bs-toggle="modal"
+                        data-bs-target="#suaNguoiDung">
+                        <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                class="bi bi-pencil-square"
+                                viewBox="0 0 16 16"
+                              >
+                                <path
+                                  d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+                                />
+                                <path
+                                  fill-rule="evenodd"
+                                  d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
+                                />
+                              </svg>
+                        </span> 
+                    <span onclick="getItemID('${item.id}')" class="btn btn-outline-danger btn1" data-bs-toggle="modal"
+                        data-bs-target="#xoaNguoiDung">
+                        <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                class="bi bi-trash3-fill"
+                                viewBox="0 0 16 16"
+                              >
+                                <path
+                                  d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"
+                                />
+                              </svg>
+                        </span>
+                </td>
+            </tr>
+        `;
+
+        // Thay thế nội dung của thẻ tr cũ bằng chuỗi HTML mới
+        $('.item-' + id).replaceWith(newRowHTML);
+    }
+</script>
+    <link href="assets/img/favicon.png" rel="icon" />
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+      rel="stylesheet"
+    />
+
+    <!-- Vendor CSS Files -->
+    <link
+      href="assets/vendor/bootstrap/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="assets/vendor/bootstrap-icons/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet" />
+
+    <!-- Template Main CSS File -->
+    <link href="assets/css/style.css" rel="stylesheet" />
+
+  <body>
+    <main id="main" class="main container-fluid">
+      <!-- Start Page Title -->
+      <div class="pagetitle mt-3">
+        <h1>Admin</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="main.html" class="text-decoration-none">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a id="btnQuayLai" href="QLToChuc.html">Quản lý tổ chức</a></li>
+            <li class="breadcrumb-item active">Admin</li>
+          </ol>
+        </nav>
+      </div>
+      <!-- End Page Title -->
+
+      <section class="section dashboard">
+        <div class="row">
+          <div class="row">
+            <!-- Recent Sales -->
+            <div class="col-12">
+              <div class="card recent-sales overflow-auto">
+                <div class="card-body">
+                  <button
+                    type="button"
+                    class="btn btn-outline-primary mb-1 mt-3"
+                    data-bs-toggle="modal"
+                    data-bs-target="#themNguoiDung"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-cloud-plus-fill"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2m.5 4v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 1 0"
+                      />
+                    </svg>
+                    Thêm nguời dùng mới
+                  </button>
+                  <table class="table table-borderless datatable">
+                    <thead>
+                      <tr>
+                        <th scope="col">Mã nhân viên</th>
+                        <th scope="col">Tên nhân viên</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Điện thoại</th>
+                        <th scope="col">Hoạt động</th>
+                      </tr>
+                    </thead>
+                    <tbody id="list-nguoiDung">
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <!-- End Recent Sales -->
+
+            <!-- </div> -->
+          </div>
+          <!-- End Left side columns -->
+        </div>
+        <!-- The Modal thêm người dùng -->
+        <div class="modal fade" id="themNguoiDung" style="height: 800px;">
+          <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+              <!-- Modal Header -->
+              <div class="modal-header">
+                <h4 class="modal-title">Thêm người dùng</h4>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                ></button>
+              </div>
+
+              <!-- Modal body -->
+              <div class="modal-body">
+                <form class="form-inline">
+                  <div class="form-group mx-sm-3 mb-2">
+                    <label for="maNV" class="sr-only">Mã nhân viên</label>
+                    <input type="text" class="form-control" id="maNV">
+                  </div>
+                  <div class="form-group mx-sm-3 mb-2">
+                    <label for="hoTenNV" class="sr-only">Họ tên</label>
+                    <input type="text" class="form-control" id="hoTenNV">
+                  </div>
+                  <div class="form-group mx-sm-3 mb-2">
+                    <label for="emailNV" class="sr-only">Email</label>
+                    <input type="text" class="form-control" id="emailNV">
+                  </div>
+                  <div class="form-group mx-sm-3 mb-2">
+                    <label for="sdtNV" class="sr-only">Số điện thoại</label>
+                    <input type="text" class="form-control" id="sdtNV">
+                  </div>
+                </form>
+              </div>
+
+              <!-- Modal footer -->
+              <div class="modal-footer">
+                <button
+                  onclick="addNguoiDung()"
+                  type="button"
+                  class="btn btn-success"
+                  data-bs-dismiss="modal"
+                >
+                  Thêm
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  data-bs-dismiss="modal"
+                >
+                  Đóng
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End modal thêm người dùng -->
+        
+        <!-- The Modal sửa người dùng -->
+        <div class="modal fade" id="suaNguoiDung" style="height: 800px;">
+            <div class="modal-dialog modal-xl">
+              <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                  <h4 class="modal-title">Chỉnh sửa</h4>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                  ></button>
+                </div>
+  
+                <!-- Modal body -->
+                <div class="modal-body">
+                  <form class="form-inline">
+                    <div class="form-group mx-sm-3 mb-2">
+                      <label for="maNV1" class="sr-only">Mã nhân viên</label>
+                      <input type="text" class="form-control" id="maNV1">
+                    </div>
+                    <div class="form-group mx-sm-3 mb-2">
+                      <label for="hoTenNV1" class="sr-only">Họ tên</label>
+                      <input type="text" class="form-control" id="hoTenNV1">
+                    </div>
+                    <div class="form-group mx-sm-3 mb-2">
+                      <label for="emailNV1" class="sr-only">Email</label>
+                      <input type="text" class="form-control" id="emailNV1">
+                    </div>
+                    <div class="form-group mx-sm-3 mb-2">
+                      <label for="sdtNV1" class="sr-only">Số điện thoại</label>
+                      <input type="text" class="form-control" id="sdtNV1">
+                    </div>
+                  </form>
+                </div>
+  
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-success"
+                    data-bs-dismiss="modal"
+                    onclick="editNguoiDung(itemId)"
+                  >
+                    Lưu
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    data-bs-dismiss="modal"
+                  >
+                    Hủy
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End modal sửa người dùng -->
+
+        <!-- The Modal xóa người dùng -->
+        <div class="modal" id="xoaNguoiDung" style="height: 800px;">
+            <div class="modal-dialog">
+              <div class="modal-content">
+  
+                <!-- Modal Header -->
+                <div class="modal-header">
+                  <h4 class="modal-title">Xóa</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+  
+                <!-- Modal body -->
+                <div class="modal-body">
+                  Xác nhận xóa người dùng này?
+                </div>
+  
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-success"
+                    data-bs-dismiss="modal"
+                    onclick="deleteNguoiDung(itemId)"
+                  >
+                    Xóa
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    data-bs-dismiss="modal"
+                  >
+                    Hủy
+                  </button>
+                </div>
+  
+              </div>
+            </div>
+          </div>
+          <!-- End modal xóa người dùng -->
+      </section>
+    </main>
+    <!-- End #main -->
+    <!-- ======= Footer ======= -->
+    <!-- <footer id="footer" class="footer">
+      <div class="credits">Designed by <a href="#">Tam Đa</a></div>
+    </footer> -->
+    <!-- End Footer -->
+    <!-- Vendor JS Files -->
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
+    <script src="assets/vendor/tinymce/tinymce.min.js"></script>
+    <!-- Template Main JS File -->
+  </body>

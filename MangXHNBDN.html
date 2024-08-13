@@ -1,0 +1,388 @@
+<script>
+    //Hàm nhân viên tuyển dụng
+  var count = 1;
+    var itemId = "";
+    function getItem(id) {
+        itemId = id;
+        var item = MangXHNBDN.find(obj => obj.STT === id);
+        document.getElementById('loai1').value = item.loai;
+        document.getElementById('tieuDe1').value = item.tieuDe;
+        document.getElementById('noiDung1').value = item.noiDung;
+    }
+    function renderQuyDinh() {
+        var listQuyDinhBlock = document.querySelector('#list-quyDinh');
+        var htmls = MangXHNBDN.map(function (quyDinh) {
+            count++;
+            return `
+                <tr class="item-${quyDinh.STT}">
+                    <th scope="row">${quyDinh.STT}</th>
+                    <td>${quyDinh.loai}</td>
+                    <td>${quyDinh.tieuDe}</td>
+
+                    <td><span onclick="getItem(${quyDinh.STT})" class="btn btn-outline-success btn1" data-bs-toggle="modal"
+                            data-bs-target="#suaQuyDinh">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                class="bi bi-pencil-square"
+                                viewBox="0 0 16 16"
+                              >
+                                <path
+                                  d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+                                />
+                                <path
+                                  fill-rule="evenodd"
+                                  d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
+                                />
+                              </svg>
+                            </span> 
+                        <span onclick="getItem(${quyDinh.STT})" class="btn btn-outline-danger btn1" data-bs-toggle="modal"
+                            data-bs-target="#xoaQuyDinh">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                class="bi bi-trash3-fill"
+                                viewBox="0 0 16 16"
+                              >
+                                <path
+                                  d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"
+                                />
+                              </svg>
+                            </span>
+                    </td>
+                </tr>
+            `;
+        });
+        console.log(htmls);
+        listQuyDinhBlock.innerHTML = htmls.join('');
+    }
+    // hienThi();
+    renderQuyDinh();
+    function addQuyDinh() {
+        var ds = document.querySelector('#list-quyDinh');
+        var item = {
+            STT: count,
+            loai: document.getElementById('loai').value,
+            tieuDe: document.getElementById('tieuDe').value,
+            noiDung: document.getElementById('noiDung').value
+        };
+        console.log(item);
+        MangXHNBDN.push(item);
+        //chèn vào sau thì thay beforeend bằng afterbegin
+        ds.insertAdjacentHTML('beforeend', `
+        <tr class="item-${item.STT}">
+            <th scope="row">${item.STT}</th>
+            <td>${item.loai}</td>
+            <td>${item.tieuDe}</td>
+            <td>
+                <span onclick="getItem(${item.STT})" class="btn btn-outline-success btn1" data-bs-toggle="modal"
+                            data-bs-target="#suaQuyDinh">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                class="bi bi-pencil-square"
+                                viewBox="0 0 16 16"
+                              >
+                                <path
+                                  d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+                                />
+                                <path
+                                  fill-rule="evenodd"
+                                  d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
+                                />
+                              </svg>
+                            </span>
+                <span onclick="getItem(${item.STT})" class="btn btn-outline-danger btn1" data-bs-toggle="modal"
+                            data-bs-target="#xoaQuyDinh">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                class="bi bi-trash3-fill"
+                                viewBox="0 0 16 16"
+                              >
+                                <path
+                                  d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"
+                                />
+                              </svg>
+                            </span>
+            </td>
+        </tr>
+        `);
+        count++;
+    }
+    function deleteQuyDinh(id) {
+      MangXHNBDN = MangXHNBDN.filter(function (quyDinh) {
+            return quyDinh.STT !== id;
+        });
+        var QuyDinhItem = document.querySelector('.item-' + id);
+        if (QuyDinhItem) {
+            QuyDinhItem.remove();
+        }
+    }
+    function editQuyDinh(id) {
+        var item = MangXHNBDN.find(obj => obj.STT === id);
+        item.loai = document.getElementById('loai1').value;
+        item.tieuDe = document.getElementById('tieuDe1').value;
+        item.noiDung = document.getElementById('noiDung1').value;
+        console.log(item.loai);
+        console.log(item.tieuDe);
+        console.log(item.noiDung);
+        var newRowHTML = `
+            <tr class="item-${item.STT}">
+                <th scope="row"><a href="#">${item.STT}</a></th>
+                <td>${item.loai}</td>
+                <td>${item.tieuDe}</td>
+                <td>
+                    <span onclick="getItem(${item.STT})" class="btn btn-outline-success btn1" data-bs-toggle="modal"
+                        data-bs-target="#suaQuyDinh">
+                        <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                class="bi bi-pencil-square"
+                                viewBox="0 0 16 16"
+                              >
+                                <path
+                                  d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+                                />
+                                <path
+                                  fill-rule="evenodd"
+                                  d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
+                                />
+                              </svg>
+                        </span> 
+                    <span onclick="getItem(${item.STT})" class="btn btn-outline-danger btn1" data-bs-toggle="modal"
+                        data-bs-target="#xoaQuyDinh">
+                        <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                class="bi bi-trash3-fill"
+                                viewBox="0 0 16 16"
+                              >
+                                <path
+                                  d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"
+                                />
+                              </svg>
+                        </span>
+                </td>
+            </tr>
+        `;
+
+        // Thay thế nội dung của thẻ tr cũ bằng chuỗi HTML mới
+        $('.item-' + id).replaceWith(newRowHTML);
+    }
+</script>
+<body>
+        
+    <!-- Start Page Title -->
+    <div class="pagetitle m-3">
+        <h1>Mạng xã hội nội bộ doanh nghiệp</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="main.html">Trang chủ</a></li>
+                <li class="breadcrumb-item active">Mạng xã hội nội bộ doanh nghiệp</li>
+            </ol>
+        </nav>
+    </div>
+    <main id="mainLTT" class="main m-3">
+
+    </main>
+    <div class="m-3">
+        <div class="">
+            <!-- Bordered Tabs -->
+            <ul class="nav nav-tabs nav-tabs-bordered" id="borderedTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="contact-tab" data-bs-toggle="tab" data-bs-target="#bordered-contact"
+                        type="button" role="tab" aria-controls="contact" aria-selected="true">Các quy định đã thi hành</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#bordered-profile"
+                        type="button" role="tab" aria-controls="profile" aria-selected="false">Thêm mới các quy định
+                    </button>
+                </li>
+            </ul>
+            <div class="tab-content pt-4" id="borderedTabContent">
+                <!-- TAB1 -->
+                <div class="tab-pane fade show active" id="bordered-contact" role="tabpanel" aria-labelledby="contact-tab">
+                    <section class="section faq">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card recent-sales overflow-auto">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Các nguyên tắc</h5>
+                                        <!-- <button type="button" class="btn btn-outline-primary mb-1">Tạo mới</button> -->
+                                        <table class="table table-borderless datatable">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">STT</th>
+                                                    <th scope="col">LOẠI NGUYÊN TẮC, QUY ĐỊNH</th>
+                                                    <th scope="col">TIÊU ĐỀ QUY ĐỊNH</th>
+                                                    <th scope="col">HOẠT ĐỘNG</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="list-quyDinh">
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!-- TAB3 -->
+                <div class="tab-pane fade" id="bordered-profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="row">
+                        <div class="col-12 d-flex flex-wrap">
+                            <div style="margin-left: -5px;" class="col-lg-12 col-sm-12 pe-1">
+                                <div class="card recent-sales overflow-auto">
+                                    <section class="section dashboard">
+                                        <div class="card-body">
+                                        <div class="container mt-3">
+                                            <form class="row g-3">
+                                                <div class="col-md-6">
+                                                <label for="typeRule" class="form-label">Loại nguyên tắc, quy định:</label>
+                                                <input type="text" class="form-control" id="loai">
+                                                </div>
+                                                <div class="col-md-6">
+                                                <label for="titleRule" class="form-label">Tiêu đề quy định:</label>
+                                                <input type="text" class="form-control" id="tieuDe">
+                                                </div>
+                                                <div class="col-12">
+                                                <label for="documentRule" class="form-label">Nội dung quy định</label>
+                                                <textarea class="form-control" rows="12" id="noiDung"></textarea>
+                                                </div>
+                                                
+                                                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                                                <button onclick="addQuyDinh()" class="btn btn-outline-primary me-5">Tạo</button>
+                                                <button class="btn btn-outline-danger ms-5">Hủy</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                
+            </div><!-- End Bordered Tabs -->
+
+
+            <!-- The Modal sửa quy định -->
+            <div class="modal" id="suaQuyDinh" data-backdrop="false" 
+            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                    <h4 class="modal-title">Chỉnh sửa quy định</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                    <form class="form-inline">
+                        <div class="form-group mx-sm-3 mb-2">
+                        <label for="loai1" class="sr-only">Loại nguyên tắc</label>
+                        <input type="text" class="form-control" id="loai1">
+                        </div>
+                        <div class="form-group mx-sm-3 mb-2">
+                        <label for="tieuDe1" class="sr-only">Tiêu đề quy định</label>
+                        <input type="text" class="form-control" id="tieuDe1">
+                        </div>
+                        <div class="form-group mx-sm-3 mb-2">
+                        <label for="noiDung1" class="sr-only">Nội dung</label>
+                        <input type="text" class="form-control" id="noiDung1">
+                        </div>
+                    </form>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                    <button
+                        onclick="editQuyDinh(itemId)"
+                        type="button"
+                        class="btn btn-success"
+                        data-bs-dismiss="modal"
+                    >
+                        Cập nhật
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-danger"
+                        data-bs-dismiss="modal"
+                    >
+                        Hủy
+                    </button>
+                    </div>
+                </div>
+                </div>
+            </div>
+        <!-- End modal sửa quy định -->
+
+
+        <!-- The Modal xóa quy định -->
+        <div class="modal" id="xoaQuyDinh" data-backdrop="false" 
+        style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                <h4 class="modal-title">Xóa</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                Bạn có chắc chắn muốn xóa dữ liệu này?
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                <button
+                    type="button"
+                    class="btn btn-success"
+                    data-bs-dismiss="modal"
+                    onclick="deleteQuyDinh(itemId)"
+                >
+                    Xóa
+                </button>
+                <button
+                    type="button"
+                    class="btn btn-danger"
+                    data-bs-dismiss="modal"
+                >
+                    Hủy
+                </button>
+                </div>
+
+            </div>
+            </div>
+        </div>
+        <!-- End modal delete group manager -->
+
+        </div>
+    </div>
+    <footer id="footer" class="footer">
+        <div class="credits">
+            Designed by <strong>TamDa</strong>
+        </div>
+    </footer><!-- End Footer -->
+
+</body>

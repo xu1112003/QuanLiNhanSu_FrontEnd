@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Starter Page - QuickStart Bootstrap Template</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <link href="assets/img/logo/fpt-logo.png" rel="icon">
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet" />
+  <!-- Main CSS File -->
+  <link href="assets/css/style.css" rel="stylesheet">
+  <link href="assets/css/main.css" rel="stylesheet">
+  <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+  <script src="assets/vendor/jquery/jquery-3.7.1.js"></script>
+  <style>
+    .datatable thead th {
+      background-color: #2151e2;
+      /* Màu nền cho tiêu đề */
+      color: white;
+      /* Màu chữ cho tiêu đề */
+    }
+  </style>
+
+  <script>
+    $(document).ready(() => {
+      option1 = taoBieuDoTron(75);
+      option2 = taoBieuDoTron(85);
+      option3 = taoBieuDoTron(55);
+      option4 = taoBieuDoTron(25);
+      chart = new ApexCharts(document.querySelector("#reportsChart"), option1);
+      chart.render();
+      chart1 = new ApexCharts(document.querySelector("#reportsChart1"), option2);
+      chart1.render();
+      chart2 = new ApexCharts(document.querySelector("#reportsChart2"), option3);
+      chart2.render();
+      chart3 = new ApexCharts(document.querySelector("#reportsChart3"), option4);
+      chart3.render();
+     
+    })
+  </script>
+</head>
+
+<body class="starter-page-page">
+
+  <header id="header" class="header d-flex align-items-center fixed-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center">
+
+      <a href=".html" class="logo d-flex align-items-center me-auto">
+        <img src="assets/img/logo/fpt-logo.png" alt="">
+        <h1 class="sitename">FPT Reatail</h1>
+      </a>
+
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="MainUser.html#hero" class="">Trang chủ</a></li>
+          <li><a href="MainUser.html#about">Giới thiệu</a></li>
+          <li><a href="MainUser.html#features">Quy định</a></li>
+          <li><a href="MainUser.html#services">Phúc lợi</a></li>
+          <li><a href="MainUser.html#pricing">Thành tựu</a></li>
+          <li><a href="MainUser.html#contact">Liên hệ</a></li>
+          <li class="dropdown"><a href="#"><span>Công việc</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="DiemDanh.html">Chấm công</a></li>
+              <li><a href="XemTienDoHSCV.html">Tiến độ - Hiệu suất công việc</a></li>
+              <li><a href="XemLuong.html">Lương</a></li>
+              <li><a href="XemLichLamViec.html">Lịch làm việc</a></li>
+            </ul>
+          </li>
+
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+
+      <!-- <button class="btn btn-getstarted dropdown" >Get Started</button> -->
+      <div class="dropdown btn-getstarted">
+        <!-- <button type="button" class="btn btn-getstarted" data-bs-toggle="dropdown"> -->
+        <img style="height: 55px; width: 55px;" src="assets/img/features-2.jpg" class="rounded-circle"
+          data-bs-toggle="dropdown">
+        <!-- </button> -->
+        <ul class="dropdown-menu border-0"
+          style="box-shadow: 0px 0px 30px color-mix(in srgb, var(--default-color), transparent 85%);">
+          <li class="bg-light py-2 px-4"><a class="dropdown-header" href="#" style="font-size: 20px;">Nguyễn Đức
+              Chung</a></li>
+          <li class="p-2">
+            <a class="dropdown-item" href="#">
+              <i class="bi bi-person p-1 me-2"></i>Thông tin cá nhân</a>
+          </li>
+          <li class="p-2"><a class="dropdown-item" href="#">
+              <i class="bi bi-question-circle p-1 me-2"></i>Trợ giúp</a></li>
+          <li class="p-2"><a class="dropdown-item" href="Login.html">
+              <i class="bi bi-box-arrow-in-right p-1 me-2"></i>Đăng xuất</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+
+   
+
+    <!-- Starter Section Section -->
+    <section id="starter-section" class="starter-section section mt-5">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Tiến độ - Hiệu suất công việc</h2>
+      </div><!-- End Section Title -->
+
+      <div class="" data-aos="fade-up">
+        <div class="card p-5">
+          <div class="card-body">
+            <h3 class="m-2 my-4 text-center">Các công việc đang diễn ra</h3>
+            <div class="row g-6">
+              <div class="col-xl-3 col-md-6 p-4">
+                <div class="card">
+                  <div class="filter py-2 d-flex">
+                    <p class="blockquote col-11 ps-2">Tiến độ</p>
+                    <a style="float: right;" class="icon col-1" href="#" data-bs-toggle="dropdown"><i
+                        class="bi bi-three-dots"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                      <li><a class="dropdown-item" href="#">Xem chi tiết</a></li>
+                    </ul>
+                  </div>
+                  <div class="card-body">
+                    <div style="height: 90px;" id="reportsChart"></div>
+                    <hr>
+                    <div class="col-12 d-flex p-2">
+                      <i class="bi bi-diagram-3" style="font-size: 1.8rem;"></i>
+                      <div class="pagetitle ms-4">
+                        <h2 class="text-success ">Phát triển ứng dụng di động</h2>
+                      </div>
+                    </div>
+                    <div class="col-12 d-flex p-2">
+                      <i class="bi bi-list-task" style="font-size: 1.8rem;"></i>
+                      <div class="pagetitle ms-4">
+                        <h2 class="text-success ">Thiết kế giao diện ứng dụng</h2>
+                      </div>
+                    </div>
+                    <div class="col-12 d-flex p-2">
+                      <i class="bi bi-cash-coin" style="font-size: 1.8rem;"></i>
+                      <div class="pagetitle ms-4">
+                        <h2 class="text-success ">Số modul: 12/16 đã hoàn thành</h2>
+                      </div>
+                    </div>
+                    <div class="col-12 d-flex p-2">
+                      <i class="bi bi-star" style="font-size: 1.8rem;"></i>
+                      <div class="pagetitle ms-4">
+                        <h2 class="text-success mt-2">Mức độ ưu tiên: Cao</h2>
+                      </div>
+                    </div>
+                    <div class="col-12 mt-4">
+
+                      <h2 class="blockquote-footer text-center">Cập nhật lần cuối: 49p trước</h2>
+
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-3 col-md-6 p-4">
+                <div class="card">
+                  <div class="filter py-2 d-flex">
+                    <p class="blockquote col-11 ps-2">Tiến độ</p>
+                    <a style="float: right;" class="icon col-1" href="#" data-bs-toggle="dropdown"><i
+                        class="bi bi-three-dots"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                      <li><a class="dropdown-item" href="#">Xem chi tiết</a></li>
+                    </ul>
+                  </div>
+                  <div class="card-body">
+                    <div style="height: 90px;" id="reportsChart1"></div>
+                    <hr>
+                    <div class="col-12 d-flex p-2">
+                      <i class="bi bi-diagram-3" style="font-size: 1.8rem;"></i>
+                      <div class="pagetitle ms-4">
+                        <h2 class="text-success ">Phát triển ứng dụng di động</h2>
+                      </div>
+                    </div>
+                    <div class="col-12 d-flex p-2">
+                      <i class="bi bi-list-task" style="font-size: 1.8rem;"></i>
+                      <div class="pagetitle ms-4">
+                        <h2 class="text-success ">Thiết kế giao diện ứng dụng</h2>
+                      </div>
+                    </div>
+                    <div class="col-12 d-flex p-2">
+                      <i class="bi bi-cash-coin" style="font-size: 1.8rem;"></i>
+                      <div class="pagetitle ms-4">
+                        <h2 class="text-success ">Số modul: 12/16 đã hoàn thành</h2>
+                      </div>
+                    </div>
+                    <div class="col-12 d-flex p-2">
+                      <i class="bi bi-star" style="font-size: 1.8rem;"></i>
+                      <div class="pagetitle ms-4">
+                        <h2 class="text-success mt-2">Mức độ ưu tiên: Cao</h2>
+                      </div>
+                    </div>
+                    <div class="col-12 mt-4">
+
+                      <h2 class="blockquote-footer text-center">Cập nhật lần cuối: 49p trước</h2>
+
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-3 col-md-6 p-4">
+                <div class="card">
+                  <div class="filter py-2 d-flex">
+                    <p class="blockquote col-11 ps-2">Tiến độ</p>
+                    <a style="float: right;" class="icon col-1" href="#" data-bs-toggle="dropdown"><i
+                        class="bi bi-three-dots"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                      <li><a class="dropdown-item" href="#">Xem chi tiết</a></li>
+                    </ul>
+                  </div>
+                  <div class="card-body">
+                    <div style="height: 90px;" id="reportsChart2"></div>
+                    <hr>
+                    <div class="col-12 d-flex p-2">
+                      <i class="bi bi-diagram-3" style="font-size: 1.8rem;"></i>
+                      <div class="pagetitle ms-4">
+                        <h2 class="text-success ">Phát triển ứng dụng di động</h2>
+                      </div>
+                    </div>
+                    <div class="col-12 d-flex p-2">
+                      <i class="bi bi-list-task" style="font-size: 1.8rem;"></i>
+                      <div class="pagetitle ms-4">
+                        <h2 class="text-success ">Thiết kế giao diện ứng dụng</h2>
+                      </div>
+                    </div>
+                    <div class="col-12 d-flex p-2">
+                      <i class="bi bi-cash-coin" style="font-size: 1.8rem;"></i>
+                      <div class="pagetitle ms-4">
+                        <h2 class="text-success ">Số modul: 12/16 đã hoàn thành</h2>
+                      </div>
+                    </div>
+                    <div class="col-12 d-flex p-2">
+                      <i class="bi bi-star" style="font-size: 1.8rem;"></i>
+                      <div class="pagetitle ms-4">
+                        <h2 class="text-success mt-2">Mức độ ưu tiên: Cao</h2>
+                      </div>
+                    </div>
+                    <div class="col-12 mt-4">
+
+                      <h2 class="blockquote-footer text-center">Cập nhật lần cuối: 49p trước</h2>
+
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-3 col-md-6 p-4">
+                <div class="card">
+                  <div class="filter py-2 d-flex">
+                    <p class="blockquote col-11 ps-2">Tiến độ</p>
+                    <a style="float: right;" class="icon col-1" href="#" data-bs-toggle="dropdown"><i
+                        class="bi bi-three-dots"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                      <li><a class="dropdown-item" href="#">Xem chi tiết</a></li>
+                    </ul>
+                  </div>
+                  <div class="card-body">
+                    <div style="height: 90px;" id="reportsChart3"></div>
+                    <hr>
+                    <div class="col-12 d-flex p-2">
+                      <i class="bi bi-diagram-3" style="font-size: 1.8rem;"></i>
+                      <div class="pagetitle ms-4">
+                        <h2 class="text-success ">Phát triển ứng dụng di động</h2>
+                      </div>
+                    </div>
+                    <div class="col-12 d-flex p-2">
+                      <i class="bi bi-list-task" style="font-size: 1.8rem;"></i>
+                      <div class="pagetitle ms-4">
+                        <h2 class="text-success ">Thiết kế giao diện ứng dụng</h2>
+                      </div>
+                    </div>
+                    <div class="col-12 d-flex p-2">
+                      <i class="bi bi-cash-coin" style="font-size: 1.8rem;"></i>
+                      <div class="pagetitle ms-4">
+                        <h2 class="text-success ">Số modul: 12/16 đã hoàn thành</h2>
+                      </div>
+                    </div>
+                    <div class="col-12 d-flex p-2">
+                      <i class="bi bi-star" style="font-size: 1.8rem;"></i>
+                      <div class="pagetitle ms-4">
+                        <h2 class="text-success mt-2">Mức độ ưu tiên: Cao</h2>
+                      </div>
+                    </div>
+                    <div class="col-12 mt-4">
+
+                      <h2 class="blockquote-footer text-center">Cập nhật lần cuối: 49p trước</h2>
+
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <h3 class="mt-5 text-center">Danh sách công việc đã hoàn thành</h3>
+            <table class="table table-borderless datatable p-4">
+              <thead>
+                <tr>
+                  <th scope="col">Mã công việc</th>
+                  <th scope="col">Tên công việc</th>
+                  <th scope="col">Thời gian hoàn thành</th>
+                  <th scope="col">Thành viên</th>
+                  <th scope="col">Nhiệm vụ</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row"><a id="adminManager" href="adminManager.html">CV001</a></th>
+                  <td>Tối ưu hóa hệ thống kho hàng</td>
+                  <td>2 ngày</td>
+                  <td>3</td>
+                  <td>Thiết kế hệ thống</td>
+                </tr>
+                <tr>
+                  <th scope="row"><a id="adminManager" href="adminManager.html">NQ002</a></th>
+                  <td>Tối ưu hóa hệ thống kho hàng</td>
+                  <td>2 ngày</td>
+                  <td>3</td>
+                  <td>Thiết kế hệ thống</td>
+                </tr>
+                <tr>
+                  <th scope="row"><a id="adminManager" href="adminManager.html">NQ003</a></th>
+                  <td>Tối ưu hóa hệ thống kho hàng</td>
+                  <td>2 ngày</td>
+                  <td>3</td>
+                  <td>Thiết kế hệ thống</td>
+                </tr>
+                <tr>
+                  <th scope="row"><a id="adminManager" href="adminManager.html">NQ004</a></th>
+                  <td>Tối ưu hóa hệ thống kho hàng</td>
+                  <td>2 ngày</td>
+                  <td>3</td>
+                  <td>Thiết kế hệ thống</td>
+                </tr>
+                <tr>
+                  <th scope="row"><a id="adminManager" href="adminManager.html">NQ005</a></th>
+                  <td>Tối ưu hóa hệ thống kho hàng</td>
+                  <td>2 ngày</td>
+                  <td>3</td>
+                  <td>Thiết kế hệ thống</td>
+                </tr>
+                <tr>
+                  <th scope="row"><a id="adminManager" href="adminManager.html">NQ006</a></th>
+                  <td>Tối ưu hóa hệ thống kho hàng</td>
+                  <td>2 ngày</td>
+                  <td>3</td>
+                  <td>Thiết kế hệ thống</td>
+                </tr>
+                <tr>
+                  <th scope="row"><a id="adminManager" href="adminManager.html">NQ001</a></th>
+                  <td>Tối ưu hóa hệ thống kho hàng</td>
+                  <td>2 ngày</td>
+                  <td>3</td>
+                  <td>Thiết kế hệ thống</td>
+                </tr>
+                
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </section><!-- /Starter Section Section -->
+  </main>
+
+  <footer id="footer" class="footer position-relative">
+
+    <div class="container footer-top">
+      <div class="row gy-4">
+        <div class="col-lg-4 col-md-6 footer-about">
+          <a href="MainUser.html" class="logo d-flex align-items-center me-auto">
+            <img src="assets/img/logo/fpt-logo.png" alt="">
+            <h1 class="sitename">FPT Retail</h1>
+          </a>
+          <div class="footer-contact pt-1">
+            <p>261 - 263 Khánh Hội, Phường 5,</p>
+            <p>Quận 4, TP. Hồ Chí Minh</p>
+            <p class="mt-3"><strong>Phone:</strong> <span>1800 6601</span></p>
+            <p><strong>Email:</strong> <span>fptshop@fpt.com</span></p>
+          </div>
+        </div>
+
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Về chúng tôi</h4>
+          <ul>
+            <li><a href="#">Giới thiệu</a></li>
+            <li><a href="#">Tin tức</a></li>
+            <li><a href="#">Hệ thống cửa hàng</a></li>
+            <li><a href="#">Câu hỏi thường gặp</a></li>
+            <li><a href="#">Hướng dẫn sử dụng</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Chính sách</h4>
+          <ul>
+            <li><a href="#">Chính sách bảo mật</a></li>
+            <li><a href="#">Chính sách sử dụng</a></li>
+            <li><a href="#">Chính sách xử lý vi phạm</a></li>
+            <li><a href="#">Chính sách bảo hành</a></li>
+            <li><a href="#">Chính sách quyền riêng tư</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-4 col-md-12 footer-newsletter">
+          <h4>Mạng xã hội</h4>
+          <div class="social-links d-flex mt-3">
+            <a href=""><i class="bi bi-twitter-x"></i></a>
+            <a href=""><i class="bi bi-facebook"></i></a>
+            <a href=""><i class="bi bi-instagram"></i></a>
+            <a href=""><i class="bi bi-linkedin"></i></a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="container copyright text-center mt-4">
+      <p>© <span>Copyright</span> <strong class="px-1 sitename">QuickStart</strong><span>All Rights Reserved</span></p>
+      <div class="credits">
+        <!-- All the links in the footer should remain intact. -->
+        <!-- You can delete the links only if you've purchased the pro version. -->
+        <!-- Licensing information: https://bootstrapmade.com/license/ -->
+        <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
+        Designed by <a href="#">TamDa</a>
+      </div>
+    </div>
+
+  </footer>
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
+  <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+  <!-- <script src="assets/vendor/tinymce/tinymce.min.js"></script> -->
+
+  <!-- Main JS File -->
+  <script src="assets/js/user.js"></script>
+
+</body>
+
+</html>

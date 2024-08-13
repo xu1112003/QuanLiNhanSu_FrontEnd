@@ -1,0 +1,265 @@
+<script>
+    function renderTrafficChart() {
+        Chart = echarts.init(document.querySelector("#trafficChart"));
+        Chart.setOption({
+
+            tooltip: {
+                trigger: 'item'
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left'
+            },
+            series: [
+                {
+                    name: 'Access From',
+                    type: 'pie',
+                    radius: '50%',
+                    data: [
+                        { value: 168, name: 'Đã chấm công', itemStyle: { color: '#2bb15f' } },
+                        { value: 12, name: 'Đi muộn', itemStyle: { color: 'rgb(255, 232, 21)' } },
+                        { value: 2, name: 'Nghỉ phép', itemStyle: { color: '#ff0000' } },
+
+                    ],
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        });
+    }
+    // Gọi hàm renderTrafficChart sau khi nội dung đã được load
+    renderTrafficChart();
+
+    options = {
+        series: [{
+            name: 'Đã hoàn thành',
+            data: [31, 40, 28, 51, 42, 82, 56],
+        }, {
+            name: 'Đang hoàn thành',
+            data: [11, 32, 45, 32, 34, 52, 41]
+        }, {
+            name: 'Chưa hoàn thành',
+            data: [15, 11, 32, 18, 9, 24, 11]
+        }],
+        chart: {
+            height: 350,
+            type: 'area',
+            toolbar: {
+                show: false
+            },
+        },
+        markers: {
+            size: 4
+        },
+        colors: ['#4154f1', '#2eca6a', '#ff771d'],
+        fill: {
+            type: "gradient",
+            gradient: {
+                shadeIntensity: 1,
+                opacityFrom: 0.3,
+                opacityTo: 0.4,
+                stops: [0, 90, 100]
+            }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        stroke: {
+            curve: 'smooth',
+            width: 2
+        },
+        xaxis: {
+            type: 'datetime',
+            categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
+        },
+        tooltip: {
+            x: {
+                format: 'dd/MM/yy HH:mm'
+            },
+        }
+    };
+    var chart = new ApexCharts(document.querySelector("#reportsChart"), options);
+    chart.render();
+</script>
+<section class="section dashboard m-2">
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title fs-4 ms-3 mb-3">Tổng quan <span>| Hôm nay</span></h3>
+            <div class="container-fluid">
+
+                <div class="row">
+                    <!-- Left side columns -->
+                    <div class="col-lg-7">
+                        <div class="row">
+                            <div class="col-xl-6 col-md-12">
+                                <div class="card info-card sales-card">
+
+                                    <div class="filter">
+                                        <a class="icon" href="#" data-bs-toggle="dropdown"><i
+                                                class="bi bi-three-dots"></i></a>
+                                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                            <li class="dropdown-header text-start">
+                                                <h6>Lọc</h6>
+                                            </li>
+
+                                            <li><a class="dropdown-item" href="#">Trưởng phòng</a></li>
+                                            <li><a class="dropdown-item" href="#">Nhân viên</a></li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <h5 class="card-title">Số lượng</h5>
+
+                                        <div class="d-flex align-items-center">
+                                            <div
+                                                class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                                <i class="bi bi-person-fill"></i>
+                                            </div>
+                                            <div class="ps-3">
+                                                <h6>210</h6>
+                                                <span class="text-muted small pt-2 ps-1">Nhân viên</span>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <!-- Checked Card -->
+                            <div class="col-xl-6 col-md-12">
+                                <div class="card info-card revenue-card">
+
+                                    <div class="filter">
+                                        <a class="icon" href="#" data-bs-toggle="dropdown"><i
+                                                class="bi bi-three-dots"></i></a>
+                                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                            <li class="dropdown-header text-start">
+                                                <h6>Lọc</h6>
+                                            </li>
+
+                                            <li><a class="dropdown-item" href="#">Hôm nay</a></li>
+                                            <li><a class="dropdown-item" href="#">Tuần này</a></li>
+                                            <li><a class="dropdown-item" href="#">Tháng này</a></li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <h5 class="card-title">Đã chấm công <span>| Hôm nay</span></h5>
+
+                                        <div class="d-flex align-items-center">
+                                            <div
+                                                class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                                <i class="bi bi-calendar-check"></i>
+                                            </div>
+                                            <div class="ps-3">
+                                                <h6>168</h6>
+                                                <span class="text-success small pt-1 fw-bold">85%</span> <span
+                                                    class="text-muted small pt-2 ps-1">checked</span>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div><!-- End Revenue Card -->
+                            <!-- Late Card -->
+                            <div class="col-xl-6 col-md-12">
+
+                                <div class="card info-card customers-card">
+
+                                    <div class="filter">
+                                        <a class="icon" href="#" data-bs-toggle="dropdown"><i
+                                                class="bi bi-three-dots"></i></a>
+                                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                            <li class="dropdown-header text-start">
+                                                <h6>Lọc</h6>
+                                            </li>
+
+                                            <li><a class="dropdown-item" href="#">Hôm nay</a></li>
+                                            <li><a class="dropdown-item" href="#">Tuần này</a></li>
+                                            <li><a class="dropdown-item" href="#">Tháng này</a></li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <h5 class="card-title">Đi muộn <span>| Hôm nay</span></h5>
+
+                                        <div class="d-flex align-items-center">
+                                            <div
+                                                class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                                <i class="bi bi-clock"></i>
+                                            </div>
+                                            <div class="ps-3">
+                                                <h6>2</h6>
+                                                <span class=" text-warning small pt-2 ps-1">Late</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div><!-- End Customers Card -->
+
+                            <div class="col-xl-6 col-md-12">
+                                <div class="card info-card sales-card">
+
+                                    <div class="filter">
+                                        <a class="icon" href="#" data-bs-toggle="dropdown"><i
+                                                class="bi bi-three-dots"></i></a>
+                                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                            <li class="dropdown-header text-start">
+                                                <h6>Lọc</h6>
+                                            </li>
+
+                                            <li><a class="dropdown-item" href="#">Hôm nay</a></li>
+                                            <li><a class="dropdown-item" href="#">Tuần này</a></li>
+                                            <li><a class="dropdown-item" href="#">Tháng này</a></li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <h5 class="card-title">Nghỉ phép <span>| Hôm nay</span></h5>
+
+                                        <div class="d-flex align-items-center">
+                                            <div
+                                                class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                                <i class="bi bi-calendar-x"></i>
+                                            </div>
+                                            <div class="ps-3">
+                                                <h6>1</h6>
+                                                <span class="text-danger small pt-1 fw-bold">Nghỉ có phép</span>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 ps-5">
+                        <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">Hiệu quả công việc <span>/Hôm nay</span></h5>
+
+        <!-- Line Chart -->
+        <div id="reportsChart"></div>
+    </div>
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+        <div class="credits">
+            Designed by <strong>TamDa</strong>
+        </div>
+    </footer><!-- End Footer -->
+</section>

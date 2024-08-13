@@ -1,0 +1,821 @@
+<script>
+  $(document).ready( () => {
+    new ApexCharts(document.querySelector("#pieChart"), {
+      series: [3, 5, 36, 20, 14],
+      chart: {
+        height: 350,
+        type: 'pie',
+        toolbar: {
+          show: true
+        }
+      },
+      labels: ['Administrator', 'IT Manage', 'Kinh doanh', 'Kỹ thuật', 'Tài chính']
+    }).render();
+  });
+  $(document).ready(() => {
+    $(".btnAdmin").click(function (event) {
+      event.preventDefault();
+      var link = $(this).attr("href");
+      $("#main").load(link);
+    });
+  })
+
+
+  var count = 1;
+    var itemId = "";
+    function getItemID(id) {
+        itemId = id;
+        var item = ToChucPhanQuyen.find(obj => obj.id === id);
+        document.getElementById('maNhomQuyen1').value = item.id; 
+        document.getElementById('tenNhomQuyen1').value = item.tenNhom; 
+        document.getElementById('moTaNhomQuyen1').value = item.moTa;
+        document.getElementById('thanhVienNhomQuyen1').value = item.thanhVien;
+        document.getElementById('nghiepVuNhomQuyen1').value = item.nghiepVu;
+    }
+    function renderNhomQuyen() {
+        var listNhomQuyen = document.querySelector('#list-nhomQuyen');
+        var htmls = ToChucPhanQuyen.map(function (nhomQuyen) {
+            count++;
+            return `
+                <tr class="item-${nhomQuyen.id}">
+                    <th scope="row"><a href="userAdmin.html" class="btnAdmin">${nhomQuyen.id}</a></th>
+                    <td>${nhomQuyen.tenNhom}</td>
+                    <td>${nhomQuyen.moTa}</td>
+                    <td>${nhomQuyen.thanhVien}</td>
+                    <td>${nhomQuyen.nghiepVu}</td>
+
+                    <td><span onclick="getItemID('${nhomQuyen.id}')" class="btn btn-outline-success btn1" data-bs-toggle="modal"
+                            data-bs-target="#suaNhomQuyen"> 
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                class="bi bi-pencil-square"
+                                viewBox="0 0 16 16"
+                              >
+                                <path
+                                  d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+                                />
+                                <path
+                                  fill-rule="evenodd"
+                                  d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
+                                />
+                              </svg>
+                          </span> 
+                        <span onclick="getItemID('${nhomQuyen.id}')" class="btn btn-outline-danger btn1" data-bs-toggle="modal"
+                            data-bs-target="#xoaNhomQuyen">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                class="bi bi-trash3-fill"
+                                viewBox="0 0 16 16"
+                              >
+                                <path
+                                  d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"
+                                />
+                              </svg>
+                        </span>
+                    </td>
+                </tr>
+            `;
+        });
+        console.log(htmls);
+        listNhomQuyen.innerHTML = htmls.join('');
+    }
+    // hienThi();
+    renderNhomQuyen();
+    function addNhomQuyen() {
+        var ds = document.querySelector('#list-nhomQuyen');
+        var item = {
+            id: document.getElementById('maNhomQuyen').value,
+            tenNhom: document.getElementById('tenNhomQuyen').value,
+            moTa: document.getElementById('moTaNhomQuyen').value,
+            thanhVien: document.getElementById('thanhVienNhomQuyen').value,
+            nghiepVu: document.getElementById('nghiepVuNhomQuyen').value
+        };
+        console.log(item);
+        ToChucPhanQuyen.push(item);
+        //chèn vào sau thì thay beforeend bằng afterbegin
+        ds.insertAdjacentHTML('beforeend', `
+        <tr class="item-${item.id}">
+            <th scope="row"><a href="#">${item.id}</a></th>
+            <td>${item.tenNhom}</td>
+            <td>${item.moTa}</td>
+            <td>${item.thanhVien}</td>
+            <td>${item.nghiepVu}</td>
+            <td>
+                <span onclick="getItemID('${item.id}')" class="btn btn-outline-success btn1" data-bs-toggle="modal"
+                            data-bs-target="#suaNhomQuyen">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                class="bi bi-pencil-square"
+                                viewBox="0 0 16 16"
+                              >
+                                <path
+                                  d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+                                />
+                                <path
+                                  fill-rule="evenodd"
+                                  d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
+                                />
+                              </svg>
+                            </span>
+                <span onclick="getItemID('${item.id}')" class="btn btn-outline-danger btn1" data-bs-toggle="modal"
+                            data-bs-target="#xoaNhomQuyen">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                class="bi bi-trash3-fill"
+                                viewBox="0 0 16 16"
+                              >
+                                <path
+                                  d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"
+                                />
+                              </svg>
+                            </span>
+            </td>
+        </tr>
+        `);
+        count++;
+    }
+    function deleteNhomQuyen(id) {
+      ToChucPhanQuyen = ToChucPhanQuyen.filter(function (nhomQuyen) {
+            return nhomQuyen.id !== id;
+        });
+        var NhomQuyenItem = document.querySelector('.item-' + id);
+        if (NhomQuyenItem) {
+          NhomQuyenItem.remove();
+        }
+    }
+    function editNhomQuyen(id) {
+        var item = ToChucPhanQuyen.find(obj => obj.id === id);
+        item.id = document.getElementById('maNhomQuyen1').value;
+        item.tenNhom = document.getElementById('tenNhomQuyen1').value;
+        item.moTa = document.getElementById('moTaNhomQuyen1').value;
+        item.thanhVien = document.getElementById('thanhVienNhomQuyen1').value;
+        item.nghiepVu = document.getElementById('nghiepVuNhomQuyen1').value;
+        console.log(item.id);
+        console.log(item.tenNhom);
+        console.log(item.moTa);
+        console.log(item.thanhVien);
+        console.log(item.nghiepVu);
+        var newRowHTML = `
+            <tr class="item-${item.id}">
+                <th scope="row"><a href="#">${item.id}</a></th>
+                <td>${item.tenNhom}</td>
+                <td>${item.moTa}</td>
+                <td>${item.thanhVien}</td>
+                <td>${item.nghiepVu}</td>
+                <td>
+                    <span onclick="getItemID('${item.id}')" class="btn btn-outline-success btn1" data-bs-toggle="modal"
+                        data-bs-target="#suaNhomQuyen">
+                        <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                class="bi bi-pencil-square"
+                                viewBox="0 0 16 16"
+                              >
+                                <path
+                                  d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+                                />
+                                <path
+                                  fill-rule="evenodd"
+                                  d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
+                                />
+                              </svg>
+                        </span> 
+                    <span onclick="getItemID('${item.id}')" class="btn btn-outline-danger btn1" data-bs-toggle="modal"
+                        data-bs-target="#xoaNhomQuyen">
+                        <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                class="bi bi-trash3-fill"
+                                viewBox="0 0 16 16"
+                              >
+                                <path
+                                  d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"
+                                />
+                              </svg>
+                        </span>
+                </td>
+            </tr>
+        `;
+
+        // Thay thế nội dung của thẻ tr cũ bằng chuỗi HTML mới
+        $('.item-' + id).replaceWith(newRowHTML);
+    }
+</script>
+  <body>
+    <main id="main" class="main container-fluid">
+      <!-- Start Page Title -->
+      <div class="pagetitle mt-3">
+        <h1>Quản lý tổ chức & phân quyền</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="main.html" class="text-decoration-none">Trang chủ</a></li>
+            <li class="breadcrumb-item active">Quản lý tổ chức</li>
+          </ol>
+        </nav>
+      </div>
+      <!-- End Page Title -->
+
+      <section class="section dashboard">
+        <div class="row">
+          <!-- Left side columns -->
+          <!-- <div class="col-lg-9"> -->
+          <div class="row">
+            <!-- Recent Sales -->
+            <div class="col-12">
+              <div class="card recent-sales overflow-auto">
+
+                <div class="card-body">
+                  <button
+                    type="button"
+                    class="btn btn-outline-primary mb-1 mt-3"
+                    data-bs-toggle="modal"
+                    data-bs-target="#themNhomQuyen"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-cloud-plus-fill"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2m.5 4v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 1 0"
+                      />
+                    </svg>
+                    Thêm nhóm quản trị mới
+                  </button>
+                  <table class="table table-borderless datatable">
+                    <thead>
+                      <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Tên nhóm quyền</th>
+                        <th scope="col">Mô tả</th>
+                        <th scope="col">Thành viên</th>
+                        <th scope="col">Nghiệp vụ</th>
+                        <th scope="col">Hoạt động</th>
+                      </tr>
+                    </thead>
+                    <tbody id="list-nhomQuyen">
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <!-- End Recent Sales -->
+
+            <!-- </div> -->
+          </div>
+          <!-- End Left side columns -->
+        </div>
+        <!-- The Modal thêm nhóm quản trị -->
+        <div class="modal fade " id="themNhomQuyen" data-backdrop="false" 
+        style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); height: 1400px;">
+          <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+              <!-- Modal Header -->
+              <div class="modal-header">
+                <h4 class="modal-title">Thêm nhóm quản trị</h4>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                ></button>
+              </div>
+
+              <!-- Modal body -->
+              <div class="modal-body">
+                <form class="form-inline">
+                  <div class="form-group mx-sm-3 mb-2">
+                    <label for="maNhomQuyen" class="sr-only">ID</label>
+                    <input type="text" class="form-control" id="maNhomQuyen">
+                  </div>
+                  <div class="form-group mx-sm-3 mb-2">
+                    <label for="tenNhomQuyen" class="sr-only">Tên nhóm quản trị</label>
+                    <input type="text" class="form-control" id="tenNhomQuyen">
+                  </div>
+                  <div class="form-group mx-sm-3 mb-2">
+                    <label for="moTaNhomQuyen" class="sr-only">Mô tả</label>
+                    <input type="text" class="form-control" id="moTaNhomQuyen">
+                  </div>
+                  <div class="form-group mx-sm-3 mb-2">
+                    <label for="thanhVienNhomQuyen" class="sr-only">Số lượng thành viên</label>
+                    <input type="text" class="form-control" id="thanhVienNhomQuyen">
+                  </div>
+                  <div class="form-group mx-sm-3 mb-2">
+                    <label for="nghiepVuNhomQuyen" class="sr-only">Nghiệp vụ</label>
+                    <input type="text" class="form-control" id="nghiepVuNhomQuyen">
+                  </div>
+                </form>
+                <div class="card-body">
+                  <h4>Quyền truy cập</h4>
+                  <div class="container mt-3">
+                    <div class="row">
+                      <div class="col-sm-4">
+                        <div class="dropdown">
+                          <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown">
+                            Nhân viên
+                          </button>
+                          <ul class="dropdown-menu">
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="Nvien1" />
+                                  <label class="form-check-label" for="Nvien1">Quản lý thông tin cá nhân</label>
+                                </div>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="Nvien2" />
+                                  <label class="form-check-label" for="Nvien2">Quản lý hợp đồng lao động</label>
+                                </div>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="Nvien3" />
+                                  <label class="form-check-label" for="Nvien3">Quản lý bảo hiểm và phúc lợi</label>
+                                </div>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="Nvien4" />
+                                  <label class="form-check-label" for="Nvien4">Quản lý nghỉ phép và chấm công</label>
+                                </div>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="Nvien5" />
+                                  <label class="form-check-label" for="Nvien5">Quản lý hiệu suất lao động</label>
+                                </div>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="Nvien6" />
+                                  <label class="form-check-label" for="Nvien6">Quản lý thông tin về kỷ luật và khen thưởng</label>
+                                </div>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="Nvien7" />
+                                  <label class="form-check-label" for="Nvien7">Quản lý lịch trực và lịch làm việc</label>
+                                </div>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="dropdown">
+                          <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown">
+                            Công ty
+                          </button>
+                          <ul class="dropdown-menu">
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="Cty1" />
+                                  <label class="form-check-label" for="Cty1">Quản lý kế hoạch và chiến lược</label>
+                                </div>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="Cty2" />
+                                  <label class="form-check-label" for="Cty2">Quản lý tài chính</label>
+                                </div>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="Cty3" />
+                                  <label class="form-check-label" for="Cty3">Quản lý phát triển đội ngũ kế thừa</label>
+                                </div>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="Cty4" />
+                                  <label class="form-check-label" for="Cty4">Quản lý hệ thống khung năng lực</label>
+                                </div>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="Cty5" />
+                                  <label class="form-check-label" for="Cty5">Quản lý tuân thủ luật pháp và quy định</label>
+                                </div>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="Cty6" />
+                                  <label class="form-check-label" for="Cty6">Quản lý dự án</label>
+                                </div>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="dropdown">
+                          <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown">
+                            Tài nguyên nội bộ
+                          </button>
+                          <ul class="dropdown-menu">
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="Tnguyen1" />
+                                  <label class="form-check-label" for="Tnguyen1">Quản lý tuyển dụng nhân tài</label>
+                                </div>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="Tnguyen3" />
+                                  <label class="form-check-label" for="Tnguyen3">Quản lý tài sản trí tuệ</label>
+                                </div>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="Tnguyen4" />
+                                  <label class="form-check-label" for="Tnguyen4">Quản lý tài sản vật chất</label>
+                                </div>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="Tnguyen5" />
+                                  <label class="form-check-label" for="Tnguyen5">Quản lý rủi ro và an toàn</label>
+                                </div>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Modal footer -->
+              <div class="modal-footer">
+                <button
+                  onclick="addNhomQuyen()"
+                  type="button"
+                  class="btn btn-success"
+                  data-bs-dismiss="modal"
+                >
+                  Thêm
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  data-bs-dismiss="modal"
+                >
+                  Đóng
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End modal add group manager -->
+        
+
+        <!-- The Modal sửa nhóm quản trị -->
+        <div class="modal fade" id="suaNhomQuyen" data-backdrop="false" 
+        style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); height: 1400px;">
+          <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+              <!-- Modal Header -->
+              <div class="modal-header">
+                <h4 class="modal-title">Chỉnh sửa</h4>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                ></button>
+              </div>
+
+              <!-- Modal body -->
+              <div class="modal-body">
+                <form class="form-inline">
+                  <div class="form-group mx-sm-3 mb-2">
+                    <label for="maNhomQuyen1" class="sr-only">ID</label>
+                    <input type="text" class="form-control" id="maNhomQuyen1">
+                  </div>
+                  <div class="form-group mx-sm-3 mb-2">
+                    <label for="tenNhomQuyen1" class="sr-only">Tên nhóm quản trị</label>
+                    <input type="text" class="form-control" id="tenNhomQuyen1">
+                  </div>
+                  <div class="form-group mx-sm-3 mb-2">
+                    <label for="moTaNhomQuyen1" class="sr-only">Mô tả</label>
+                    <input type="text" class="form-control" id="moTaNhomQuyen1">
+                  </div>
+                  <div class="form-group mx-sm-3 mb-2">
+                    <label for="thanhVienNhomQuyen1" class="sr-only">Số lượng thành viên</label>
+                    <input type="text" class="form-control" id="thanhVienNhomQuyen1">
+                  </div>
+                  <div class="form-group mx-sm-3 mb-2">
+                    <label for="nghiepVuNhomQuyen1" class="sr-only">Nghiệp vụ</label>
+                    <input type="text" class="form-control" id="nghiepVuNhomQuyen1">
+                  </div>
+                </form>
+                <div class="card-body">
+                  <h4>Quyền truy cập</h4>
+                  <div class="container mt-3">
+                    <div class="row">
+                      <div class="col-sm-4">
+                        <div class="dropdown">
+                          <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown">
+                            Nhân viên
+                          </button>
+                          <ul class="dropdown-menu">
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="Nvien1" />
+                                  <label class="form-check-label" for="Nvien1">Quản lý thông tin cá nhân</label>
+                                </div>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="Nvien2" />
+                                  <label class="form-check-label" for="Nvien2">Quản lý hợp đồng lao động</label>
+                                </div>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="Nvien3" />
+                                  <label class="form-check-label" for="Nvien3">Quản lý bảo hiểm và phúc lợi</label>
+                                </div>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="Nvien4" />
+                                  <label class="form-check-label" for="Nvien4">Quản lý nghỉ phép và chấm công</label>
+                                </div>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="Nvien5" />
+                                  <label class="form-check-label" for="Nvien5">Quản lý hiệu suất lao động</label>
+                                </div>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="Nvien6" />
+                                  <label class="form-check-label" for="Nvien6">Quản lý thông tin về kỷ luật và khen thưởng</label>
+                                </div>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="Nvien7" />
+                                  <label class="form-check-label" for="Nvien7">Quản lý lịch trực và lịch làm việc</label>
+                                </div>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="dropdown">
+                          <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown">
+                            Công ty
+                          </button>
+                          <ul class="dropdown-menu">
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="Cty1" />
+                                  <label class="form-check-label" for="Cty1">Quản lý kế hoạch và chiến lược</label>
+                                </div>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="Cty2" />
+                                  <label class="form-check-label" for="Cty2">Quản lý tài chính</label>
+                                </div>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="Cty3" />
+                                  <label class="form-check-label" for="Cty3">Quản lý phát triển đội ngũ kế thừa</label>
+                                </div>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="Cty4" />
+                                  <label class="form-check-label" for="Cty4">Quản lý hệ thống khung năng lực</label>
+                                </div>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="Cty5" />
+                                  <label class="form-check-label" for="Cty5">Quản lý tuân thủ luật pháp và quy định</label>
+                                </div>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="Cty6" />
+                                  <label class="form-check-label" for="Cty6">Quản lý dự án</label>
+                                </div>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="dropdown">
+                          <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown">
+                            Tài nguyên nội bộ
+                          </button>
+                          <ul class="dropdown-menu">
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="Tnguyen1" />
+                                  <label class="form-check-label" for="Tnguyen1">Quản lý tuyển dụng nhân tài</label>
+                                </div>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="Tnguyen3" />
+                                  <label class="form-check-label" for="Tnguyen3">Quản lý tài sản trí tuệ</label>
+                                </div>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="Tnguyen4" />
+                                  <label class="form-check-label" for="Tnguyen4">Quản lý tài sản vật chất</label>
+                                </div>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="Tnguyen5" />
+                                  <label class="form-check-label" for="Tnguyen5">Quản lý rủi ro và an toàn</label>
+                                </div>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Modal footer -->
+              <div class="modal-footer">
+                <button
+                  onclick="editNhomQuyen(itemId)"
+                  type="button"
+                  class="btn btn-success"
+                  data-bs-dismiss="modal"
+                >
+                  Lưu
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  data-bs-dismiss="modal"
+                >
+                  Hủy
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End modal edit group manager -->
+
+        <!-- The Modal xóa nhóm quản trị -->
+        <div class="modal" id="xoaNhomQuyen" data-backdrop="false" 
+        style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); height: 1400px;">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+              <!-- Modal Header -->
+              <div class="modal-header">
+                <h4 class="modal-title">Xóa</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+
+              <!-- Modal body -->
+              <div class="modal-body">
+                Bạn có chắc chắn muốn xóa dữ liệu này?
+              </div>
+
+              <!-- Modal footer -->
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-success"
+                  data-bs-dismiss="modal"
+                  onclick="deleteNhomQuyen(itemId)"
+                >
+                  Xóa
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  data-bs-dismiss="modal"
+                >
+                  Hủy
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <!-- End modal delete group manager -->
+      </section>
+      <section class="section dashboard">
+        <div class="row">
+          <div class="row">
+            <div class="col-12 container-fluid">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Thống kê nhân viên theo nhóm quyền</h5>
+      
+                  <!-- Pie Chart -->
+                  <div id="pieChart"></div>
+                  <!-- End Pie Chart -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+    <!-- End #main -->
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+      <div class="credits">Designed by <a href="#">TamDa</a></div>
+    </footer>
+  </body>

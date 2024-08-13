@@ -1,0 +1,420 @@
+<!-- Vendor CSS Files -->
+
+<script>
+  $(document).ready(() => {
+    $(".btnChiTiet").click(function (event) {
+      event.preventDefault();
+      var link = $(this).attr("href");
+      $("#main").load(link);
+    });
+  })
+  var count=1;
+  var itemId = "";
+  function getItemID(id) {
+    itemId = id;
+    var item = dsCongViec.find(obj => obj.id === id);
+    document.getElementById('maCV1').value = item.id;
+    document.getElementById('tenCV1').value = item.tenCV;
+    document.getElementById('moTa1').value = item.moTa;
+    document.getElementById('loiNhuan1').value = item.loiNhuan;
+    document.getElementById('trangThai1').value = item.trangThai;
+  }
+  function renderCongViec() {
+    var listChamCongBlock = document.querySelector('#list-congViec');
+    var htmls = dsCongViec.map(function (congViec) {
+      var mau="";
+      if(congViec.trangThai=="Đã hoàn thành"){
+        mau="bg-success";
+      }
+      else if(congViec.trangThai=="Đang hoàn thành"){
+        mau="bg-warning";
+      }
+      else if(congViec.trangThai=="Chưa hoàn thành"){
+        mau="bg-danger";
+      }
+      count++;
+      return `
+                <tr class="item-${congViec.id}">
+                    <th scope="row"><a href="ql-cvchitiet.html" class="btnChiTiet">${congViec.id}</a></th>
+                    <td>${congViec.tenCV}</td>
+                    <td>${congViec.moTa}</td>
+                    <td>${congViec.loiNhuan}</td>
+                    <td class="badge ${mau} text-white">${congViec.trangThai}</td>
+
+                    <td>
+                      <div class="d-flex">
+                        <button onclick="getItemID('${congViec.id}')" type="button" class="btn btn-success btn1"
+                            data-bs-toggle="modal" data-bs-target="#suaCongViec">Sửa</button>
+                        <button onclick="getItemID('${congViec.id}')" type="button" class="btn btn-danger btn1"
+                            data-bs-toggle="modal" data-bs-target="#xoaCongViec">Xóa</button>
+                      </div>
+                    </td>
+                </tr>
+            `;
+    });
+    listChamCongBlock.innerHTML = htmls.join('');
+  }
+  // hienThi();
+  renderCongViec();
+  function addCongViec() {
+    var ds = document.querySelector('#list-congViec');
+    var item = {
+      id: document.getElementById('maCV').value,
+      tenCV: document.getElementById('tenCV').value,
+      moTa: document.getElementById('moTa').value,
+      loiNhuan: document.getElementById('loiNhuan').value,
+      trangThai: document.getElementById('trangThai').value
+    };
+    var mau="";
+      if(item.trangThai=="Đã hoàn thành"){
+        mau="bg-success";
+      }
+      else if(item.trangThai=="Đang hoàn thành"){
+        mau="bg-warning";
+      }
+      else if(item.trangThai=="Chưa hoàn thành"){
+        mau="bg-danger";
+      }
+    dsCongViec.push(item);
+    //chèn vào sau thì thay beforeend bằng afterbegin
+    ds.insertAdjacentHTML('beforeend', `
+        <tr class="item-${item.id}">
+          <th scope="row"><a href="#">${item.id}</a></th>
+          <td>${item.tenCV}</td>
+          <td>${item.moTa}</td>
+          <td>${item.loiNhuan}</td>
+          <td class="badge ${mau} text-white">${item.trangThai}</td>
+
+          <td>
+            <div class="d-flex">
+              <button onclick="getItemID('${item.id}')" type="button" class="btn btn-success btn1"
+                  data-bs-toggle="modal" data-bs-target="#suaCongViec">Sửa</button>
+              <button onclick="getItemID('${item.id}')" type="button" class="btn btn-danger btn1"
+                  data-bs-toggle="modal" data-bs-target="#xoaCongViec">Xóa</button>
+            </div>
+          </td>
+        </tr>
+        `);
+    count++;
+  }
+  function deleteCongViec(id) {
+    dsCongViec = dsCongViec.filter(function (congViec) {
+      return congViec.id !== id;
+    });
+    var CongViecItem = document.querySelector('.item-' + id);
+    console.log('.item-' + id);
+    if (CongViecItem) {
+      CongViecItem.remove();
+    }
+  }
+  function editCongViec(id) {
+    var item = dsCongViec.find(obj => obj.id === id);
+    item.id = document.getElementById('maCV1').value;
+    item.tenCV = document.getElementById('tenCV1').value;
+    item.moTa = document.getElementById('moTa1').value;
+    item.loiNhuan = document.getElementById('loiNhuan1').value;
+    item.trangThai = document.getElementById('trangThai1').value;
+    var mau="";
+      if(item.trangThai=="Đã hoàn thành"){
+        mau="bg-success";
+      }
+      else if(item.trangThai=="Đang hoàn thành"){
+        mau="bg-warning";
+      }
+      else if(item.trangThai=="Chưa hoàn thành"){
+        mau="bg-danger";
+      }
+    var newRowHTML = `
+        <tr class="item-${item.id}">
+          <th scope="row"><a href="#">${item.id}</a></th>
+          <td>${item.tenCV}</td>
+          <td>${item.moTa}</td>
+          <td>${item.loiNhuan}</td>
+          <td class="badge ${mau} text-white">${item.trangThai}</td>
+          <td>
+            <div class="d-flex">
+              <button onclick="getItemID('${item.id}')" type="button" class="btn btn-success btn1"
+                  data-bs-toggle="modal" data-bs-target="#suaCongViec">Sửa</button>
+              <button onclick="getItemID('${item.id}')" type="button" class="btn btn-danger btn1"
+                  data-bs-toggle="modal" data-bs-target="#xoaCongViec">Xóa</button>
+            </div>
+          </td>
+        </tr>
+        `;
+
+    // Thay thế nội dung của thẻ tr cũ bằng chuỗi HTML mới
+    $('.item-' + id).replaceWith(newRowHTML);
+  }
+</script>
+
+
+<main id="main" class="main container-fluid">
+
+  <div class="pagetitle">
+    <h1>Quản lý hiệu quả công việc và hệ thống khung năng lực</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="main.html">Trang chủ</a></li>
+        <li class="breadcrumb-item active">Quản lý công việc</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+
+  <section class="section dashboard">
+    <div class="row">
+
+      <!-- Left side columns -->
+      <div class="col-lg-9">
+        <div class="row">
+          <!-- Recent Sales -->
+          <div class="col-12">
+            <div class="card recent-sales overflow-auto">
+
+              <div class="filter">
+                <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                  <li class="dropdown-header text-start">
+                    <h6>Filter</h6>
+                  </li>
+
+                  <li><a class="dropdown-item" href="#">Hôm nay</a></li>
+                  <li><a class="dropdown-item" href="#">Trong tháng</a></li>
+                  <li><a class="dropdown-item" href="#">Trong năm</a></li>
+                </ul>
+              </div>
+
+              <div class="card-body">
+                <h5 class="card-title">Công việc gần đây <span>| Hôm nay</span></h5>
+                <button type="button" class="btn btn-outline-primary mb-1" data-bs-toggle="modal"
+                  data-bs-target="#themCongViec">Tạo mới</button>
+                <table class="table table-borderless datatable">
+                  <thead>
+                    <tr>
+                      <th scope="col">Mã công việc</th>
+                      <th scope="col">Tên công việc</th>
+                      <th scope="col">Mô tả</th>
+                      <th scope="col">Lợi nhuận</th>
+                      <th scope="col">Trạng thái</th>
+                      <th>Khác</th>
+                    </tr>
+                  </thead>
+                  <tbody id="list-congViec">
+
+                  </tbody>
+                </table>
+
+              </div>
+
+            </div>
+          </div><!-- End Recent Sales -->
+
+        </div>
+      </div><!-- End Left side columns -->
+
+      <!-- Right side columns -->
+      <div class="col-lg-3">
+
+        <!-- Recent Activity -->
+        <div class="card">
+          <div class="filter">
+            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+              <li class="dropdown-header text-start">
+                <h6>Filter</h6>
+              </li>
+
+              <li><a class="dropdown-item" href="#">Hôm nay</a></li>
+              <li><a class="dropdown-item" href="#">Trong tháng</a></li>
+              <li><a class="dropdown-item" href="#">Trong năm</a></li>
+            </ul>
+          </div>
+
+          <div class="card-body">
+            <h5 class="card-title">Gần đây <span>| Hôm nay</span></h5>
+
+            <div class="activity">
+
+              <div class="activity-item d-flex">
+                <div class="activite-label">32 phút</div>
+                <i class='bi bi-circle-fill activity-badge text-danger align-self-start'></i>
+                <div class="activity-content">
+                  <a href="#" class="fw-bold text-dark">Phân tích thị trường và dự báo xu hướng</a>
+                </div>
+              </div><!-- End activity item-->
+
+              <div class="activity-item d-flex">
+                <div class="activite-label">56 phút</div>
+                <i class='bi bi-circle-fill activity-badge text-warning align-self-start'></i>
+                <div class="activity-content">
+                  <a href="ql-cvchitiet.html" class="fw-bold text-dark">Phát triển ứng dụng di động</a>
+                </div>
+              </div><!-- End activity item-->
+
+              <div class="activity-item d-flex">
+                <div class="activite-label">2 giờ</div>
+                <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                <div class="activity-content">
+                  <a href="#" class="fw-bold text-dark">Nâng cấp hệ thống thanh toán trực tuyến</a>
+                </div>
+              </div><!-- End activity item-->
+
+              <div class="activity-item d-flex">
+                <div class="activite-label">1 ngày</div>
+                <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                <div class="activity-content">
+                  <a href="#" class="fw-bold text-dark">Tối ưu hóa hệ thống kho hàng</a>
+                </div>
+              </div><!-- End activity item-->
+
+              <div class="activity-item d-flex">
+                <div class="activite-label">2 ngày</div>
+                <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                <div class="activity-content">
+                  <a href="#" class="fw-bold text-dark">Xây dựng chiến lược marketing online</a>
+                </div>
+              </div><!-- End activity item-->
+
+              <div class="activity-item d-flex">
+                <div class="activite-label">4 tuần</div>
+                <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                <div class="activity-content">
+                  <a href="#" class="fw-bold text-dark">Triển khai chương trình khuyến mãi</a>
+                </div>
+              </div><!-- End activity item-->
+
+            </div>
+
+          </div>
+        </div><!-- End Recent Activity -->
+      </div><!-- End Right side columns -->
+
+    </div>
+  </section>
+  <footer id="footer" class="footer">
+    <div class="credits">
+      Designed by <strong>TamDa</strong>
+    </div>
+  </footer><!-- End Footer -->
+
+
+</main><!-- End #main -->
+<!-- ======= Footer ======= -->
+<!-- modal Thêm công việc -->
+<div class="modal fade pt-5" id="themCongViec" style="height: 670px;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <!-- header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Thêm công việc mới</h4>
+        <div class="btn-close" data-bs-dismiss="modal"></div>
+      </div>
+      <!-- body -->
+      <form class="form-inline">
+        <div class="form-group mx-sm-3 mb-2">
+          <label for="maCV" class="sr-only">Mã công việc</label>
+          <input type="text" class="form-control" id="maCV">
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+          <label for="tenCV" class="sr-only">Tên công việc</label>
+          <input type="text" class="form-control" id="tenCV">
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+          <label for="moTa" class="sr-only">Mô tả</label>
+          <input type="text" class="form-control" id="moTa">
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+          <label for="loiNhuan" class="sr-only">Lợi nhuận</label>
+          <input type="text" class="form-control" id="loiNhuan">
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+          <label for="trangThai" class="sr-only">Trạng thái</label>
+          <input type="text" class="form-control" id="trangThai">
+        </div>
+      </form>
+      <!-- footer -->
+      <div class="modal-footer">
+        <button onclick="addCongViec()" type="button" class="btn btn-success" data-bs-dismiss="modal">
+          Thêm
+        </button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+          Đóng
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end modal Thêm công việc -->
+<!-- modal sửa công việc -->
+<div class="modal fade pt-5" id="suaCongViec" style="height: 670px;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <!-- header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Sửa thông tin công việc</h4>
+        <div class="btn-close" data-bs-dismiss="modal"></div>
+      </div>
+      <!-- body -->
+      <form class="form-inline">
+        <div class="form-group mx-sm-3 mb-2">
+          <label for="maCV1" class="sr-only">Mã công việc</label>
+          <input type="text" class="form-control" id="maCV1">
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+          <label for="tenCV1" class="sr-only">Tên công việc</label>
+          <input type="text" class="form-control" id="tenCV1">
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+          <label for="moTa1" class="sr-only">Mô tả</label>
+          <input type="text" class="form-control" id="moTa1">
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+          <label for="loiNhuan1" class="sr-only">Lợi nhuận</label>
+          <input type="text" class="form-control" id="loiNhuan1">
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+          <label for="trangThai1" class="sr-only">Trạng thái</label>
+          <input type="text" class="form-control" id="trangThai1">
+        </div>
+      </form>
+      <!-- footer -->
+      <div class="modal-footer">
+        <button onclick="editCongViec(itemId)" type="button" class="btn btn-success" data-bs-dismiss="modal">
+          Cập nhật
+        </button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+          Đóng
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end modal Sửa công việc -->
+<!-- modal xóa công việc -->
+<div class="modal fade" id="xoaCongViec" style="height: 670px;">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Xóa công việc</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        Bạn có chắc chắn muốn xóa bản ghi này?
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button onclick="deleteCongViec(itemId)" type="button" class="btn btn-success" data-bs-dismiss="modal">
+          Xóa
+        </button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+          Đóng
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end modal Xóa công việc -->
+

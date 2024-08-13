@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Pages / Login - NiceAdmin Bootstrap Template</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="assets/css/main.css" rel="stylesheet">
+
+    <style>
+        body{
+            background-image: url(assets/img/hero-bg-light.webp);
+
+            
+        }
+        .card {
+            margin-bottom: 30px;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
+        }
+
+        .card-header,
+        .card-footer {
+            border-color: #ebeef4;
+            background-color: #fff;
+            color: #798eb3;
+            padding: 15px;
+        }
+
+        .card-title {
+            padding: 20px 0 15px 0;
+            font-size: 18px;
+            font-weight: 500;
+            color: #012970;
+            font-family: "Poppins", sans-serif;
+        }
+
+        .card-title span {
+            color: #899bbd;
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        .card-body {
+            padding: 0 20px 20px 20px;
+        }
+
+        .card-img-overlay {
+            background-color: rgba(255, 255, 255, 0.6);
+        }
+        .lopPhu{
+            position: absolute;
+            top:0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background-color: rgba(224, 255, 220, 0.5);
+            z-index: -9999999;
+        }
+        .card{
+            background-color: rgb(255, 255, 255);
+            border-radius: 30px;
+            padding: 10px;
+        }
+    </style>
+    <script>
+        function register(){
+            var username = document.getElementById('yourUsername').value;
+            var password = document.getElementById('yourPassword').value;
+            if(username == "user" && password == "user"){
+                window.location.href = "MainUser.html";
+            }
+            else if(username == "admin" && password == "admin"){
+                window.location.href = "main.html";
+            }
+            else{
+                alert("Tài khoản hoặc mật khẩu không chính xác!");
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div class="lopPhu"></div>
+    <main>
+        <div class="container">
+
+            <section class="section min-vh-100 d-flex align-items-center ">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-5 col-md-6">
+
+                            
+
+                            <div class="card mb-3">
+                                <div class="d-flex justify-content-center align-items-center w-auto mt-4">
+                                    <img style="width: 70px; height: 60px;" src="assets/img/logo/fpt-logo.png" alt="">
+                                    <span style="font-size: 24px;" class="d-none d-lg-block fw-bold">FPT Retail</span>
+                                </div><!-- End Logo -->
+                                <div class="card-body">
+
+                                    <div class="pt-4 pb-2">
+                                        <h5 class="card-title text-center pb-0 fs-4">Login to Your Account</h5>
+                                        <p class="text-center small">Enter your username & password to login</p>
+                                    </div>
+
+                                    <form class="row g-3 needs-validation" onsubmit="register(); return false;">
+
+                                        <div class="col-12">
+                                            <label for="yourUsername" class="form-label">Username</label>
+                                            <div class="input-group has-validation">
+                                                <input type="text" name="username" class="form-control"
+                                                    id="yourUsername" required>
+                                                <div class="invalid-feedback">Please enter your username.</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label for="yourPassword" class="form-label">Password</label>
+                                            <input type="password" name="password" class="form-control"
+                                                id="yourPassword" required>
+                                            <div class="invalid-feedback">Please enter your password!</div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="remember"
+                                                    value="true" id="rememberMe">
+                                                <label class="form-check-label" for="rememberMe">Remember me</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <button class="btn btn-primary w-100" type="submit">Login</button>
+                                        </div>
+                                        <div class="col-12">
+                                            <p class="small mb-0">Don't have account? <a href="Admin/main.html">Create
+                                                    an account</a></p>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+        </div>
+    </main><!-- End #main -->
+
+    <!-- <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+            class="bi bi-arrow-up-short"></i></a> -->
+
+    <!-- Vendor JS Files -->
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

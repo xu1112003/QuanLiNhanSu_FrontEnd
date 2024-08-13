@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Starter Page - QuickStart Bootstrap Template</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet" />
+    <!-- Main CSS File -->
+    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="assets/css/main.css" rel="stylesheet">
+    <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+    <script src="assets/vendor/jquery/jquery-3.7.1.js"></script>
+    <style>
+        .datatable thead th {
+            background-color: #2151e2;
+            /* Màu nền cho tiêu đề */
+            color: white;
+            /* Màu chữ cho tiêu đề */
+        }
+    </style>
+
+    <script>
+        $(document).ready(() => {
+            options = {
+                series: [{
+                    name: 'Thưởng',
+                    data: [44, 55, 57, 56, 61, 58]
+                }, {
+                    name: 'Lương',
+                    data: [76, 85, 101, 98, 87, 105]
+                }, {
+                    name: 'Thuế',
+                    data: [35, 41, 36, 26, 45, 48]
+                }],
+                chart: {
+                    type: 'bar',
+                    height: 350
+                },
+                plotOptions: {
+                    bar: {
+                        horizontal: false,
+                        columnWidth: '55%',
+                        endingShape: 'rounded'
+                    },
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    show: true,
+                    width: 2,
+                    colors: ['transparent']
+                },
+                xaxis: {
+                    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                },
+                yaxis: {
+                    title: {
+                        text: 'VNĐ (triệu)'
+                    }
+                },
+                fill: {
+                    opacity: 1
+                },
+                tooltip: {
+                    y: {
+                        formatter: function (val) {
+                            return "VNĐ " + val + " triệu"
+                        }
+                    }
+                }
+            };
+
+            var chart = new ApexCharts(document.querySelector("#chartCol"), options);
+            chart.render();
+        })
+    </script>
+</head>
+
+<body class="starter-page-page">
+
+    <header id="header" class="header d-flex align-items-center fixed-top">
+        <div class="container-fluid container-xl position-relative d-flex align-items-center">
+
+            <a href="MainUser.html" class="logo d-flex align-items-center me-auto">
+                <img src="assets/img/logo/fpt-logo.png" alt="">
+                <h1 class="sitename">FPT Reatail</h1>
+            </a>
+
+            <nav id="navmenu" class="navmenu">
+                <ul>
+                    <li><a href="MainUser.html#hero" class="">Trang chủ</a></li>
+                    <li><a href="MainUser.html#about">Giới thiệu</a></li>
+                    <li><a href="MainUser.html#features">Quy định</a></li>
+                    <li><a href="MainUser.html#services">Phúc lợi</a></li>
+                    <li><a href="MainUser.html#pricing">Thành tựu</a></li>
+                    <li><a href="MainUser.html#contact">Liên hệ</a></li>
+                    <li class="dropdown"><a href="#"><span>Công việc</span> <i
+                                class="bi bi-chevron-down toggle-dropdown"></i></a>
+                        <ul>
+                            <li><a href="DiemDanh.html">Chấm công</a></li>
+                            <li><a href="XemTienDoHSCV.html">Tiến độ - Hiệu suất công việc</a></li>
+                            <li><a href="XemLuong.html">Lương</a></li>
+                            <li><a href="XemLichLamViec.html">Lịch làm việc</a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+            </nav>
+
+            <!-- <button class="btn btn-getstarted dropdown" >Get Started</button> -->
+            <div class="dropdown btn-getstarted">
+                <!-- <button type="button" class="btn btn-getstarted" data-bs-toggle="dropdown"> -->
+                <img style="height: 55px; width: 55px;" src="assets/img/features-2.jpg" class="rounded-circle"
+                    data-bs-toggle="dropdown">
+                <!-- </button> -->
+                <ul class="dropdown-menu border-0"
+                    style="box-shadow: 0px 0px 30px color-mix(in srgb, var(--default-color), transparent 85%);">
+                    <li class="bg-light py-2 px-4"><a class="dropdown-header" href="#" style="font-size: 20px;">Nguyễn
+                            Đức
+                            Chung</a></li>
+                    <li class="p-2">
+                        <a class="dropdown-item" href="#">
+                            <i class="bi bi-person p-1 me-2"></i>Thông tin cá nhân</a>
+                    </li>
+                    <li class="p-2"><a class="dropdown-item" href="#">
+                            <i class="bi bi-question-circle p-1 me-2"></i>Trợ giúp</a></li>
+                    <li class="p-2"><a class="dropdown-item" href="Login.html">
+                            <i class="bi bi-box-arrow-in-right p-1 me-2"></i>Đăng xuất</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+      
+      <section class="section profile mt-5">
+        <div class="row">
+          <div class="col-xl-4">
+            <div class="card mx-3">
+              <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                <img src="assets/img/avatar_Thanhtuu/avatar-Chung.jpg" style="height: 120px; width: 120px;" alt="" class="rounded-circle">
+                <h2 class="mt-3">Nguyễn Đức Chung</h2>
+                <h6 class="text-secondary">Nhân viên kỹ thuật</h3>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-8">
+            <div class="card">
+              <!-- Profile Edit Form -->
+              <form class="mx-3 my-3">
+                <div class="row mb-3">
+                  <label for="idEmployee" class="col-md-4 col-lg-3 col-form-label">Mã nhân viên</label>
+                  <div class="col-md-8 col-lg-9">
+                    <input name="idEmployee" type="text" class="form-control w-75 bg-light" id="idEmployee" value="1234567890" disabled>
+                  </div>
+                </div>
+      
+                <div class="row mb-3">
+                  <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Họ và tên</label>
+                  <div class="col-md-8 col-lg-9">
+                    <input name="fullName" type="text" class="form-control w-75 bg-light" id="fullName" value="Nguyễn Đức Chung" disabled>
+                  </div>
+                </div>
+                
+                <div class="row mb-3">
+                  <label for="birthday" class="col-md-4 col-lg-3 col-form-label">Ngày sinh</label>
+                  <div class="col-md-8 col-lg-9">
+                    <input name="birthday" type="text" class="form-control w-75 bg-light" id="birthday" value="25/09/2003" disabled>
+                  </div>
+                </div>
+      
+                <div class="row mb-3">
+                  <label for="gender" class="col-md-4 col-lg-3 col-form-label">Giới tính</label>
+                  <div class="col-md-8 col-lg-9">
+                    <input name="gender" type="text" class="form-control w-75 bg-light" id="gender" value="Nam" disabled>
+                  </div>
+                </div>
+      
+                <div class="row mb-3">
+                  <label for="CCCD" class="col-md-4 col-lg-3 col-form-label">CCCD</label>
+                  <div class="col-md-8 col-lg-9">
+                    <input name="CCCD" type="text" class="form-control w-75 bg-light" id="CCCD" value="001147895653" disabled>
+                  </div>
+                </div>
+      
+                <div class="row mb-3">
+                  <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                  <div class="col-md-8 col-lg-9">
+                    <input name="email" type="email" class="form-control w-75 bg-light" id="email" value="chungnd@gmail.com" disabled>
+                  </div>
+                </div>
+      
+                <div class="row mb-3">
+                  <label for="phone" class="col-md-4 col-lg-3 col-form-label">Số điện thoại</label>
+                  <div class="col-md-8 col-lg-9">
+                    <input name="phone" type="text" class="form-control w-75 bg-light" id="phone" value="0987632541" disabled>
+                  </div>
+                </div>
+      
+                <div class="row mb-3">
+                  <label for="position" class="col-md-4 col-lg-3 col-form-label">Chức vụ</label>
+                  <div class="col-md-8 col-lg-9">
+                    <input name="position" type="text" class="form-control w-75 bg-light" id="position" value="Nhân viên kỹ thuật" disabled>
+                  </div>
+                </div>
+      
+                <div class="row mb-3">
+                  <label for="address" class="col-md-4 col-lg-3 col-form-label">Địa chỉ</label>
+                  <div class="col-md-8 col-lg-9">
+                    <input name="address" type="text" class="form-control w-75 bg-light" id="address" value="Hà Nam" disabled>
+                  </div>
+                </div>
+      
+                <div class="row mb-3">
+                  <label for="note" class="col-md-4 col-lg-3 col-form-label">Ghi chú</label>
+                  <div class="col-md-8 col-lg-9">
+                    <input name="note" type="text" class="form-control w-75 bg-light" id="note" value="" disabled>
+                  </div>
+                </div>
+              </form><!-- End Profile Edit Form -->
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer id="footer" class="footer position-relative">
+
+      <div class="container footer-top">
+        <div class="row gy-4">
+          <div class="col-lg-4 col-md-6 footer-about">
+            <a href="MainUser.html" class="logo d-flex align-items-center me-auto">
+              <img src="assets/img/logo/fpt-logo.png" alt="">
+              <h1 class="sitename">FPT Retail</h1>
+            </a>
+            <div class="footer-contact pt-1">
+              <p>261 - 263 Khánh Hội, Phường 5,</p>
+              <p>Quận 4, TP. Hồ Chí Minh</p>
+              <p class="mt-3"><strong>Phone:</strong> <span>1800 6601</span></p>
+              <p><strong>Email:</strong> <span>fptshop@fpt.com</span></p>
+            </div>
+          </div>
+  
+          <div class="col-lg-2 col-md-3 footer-links">
+            <h4>Về chúng tôi</h4>
+            <ul>
+              <li><a href="#">Giới thiệu</a></li>
+              <li><a href="#">Tin tức</a></li>
+              <li><a href="#">Hệ thống cửa hàng</a></li>
+              <li><a href="#">Câu hỏi thường gặp</a></li>
+              <li><a href="#">Hướng dẫn sử dụng</a></li>
+            </ul>
+          </div>
+  
+          <div class="col-lg-2 col-md-3 footer-links">
+            <h4>Chính sách</h4>
+            <ul>
+              <li><a href="#">Chính sách bảo mật</a></li>
+              <li><a href="#">Chính sách sử dụng</a></li>
+              <li><a href="#">Chính sách xử lý vi phạm</a></li>
+              <li><a href="#">Chính sách bảo hành</a></li>
+              <li><a href="#">Chính sách quyền riêng tư</a></li>
+            </ul>
+          </div>
+  
+          <div class="col-lg-4 col-md-12 footer-newsletter">
+            <h4>Mạng xã hội</h4>
+            <div class="social-links d-flex mt-3">
+              <a href=""><i class="bi bi-twitter-x"></i></a>
+              <a href=""><i class="bi bi-facebook"></i></a>
+              <a href=""><i class="bi bi-instagram"></i></a>
+              <a href=""><i class="bi bi-linkedin"></i></a>
+            </div>
+          </div>
+  
+        </div>
+      </div>
+  
+      <div class="container copyright text-center mt-4">
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">QuickStart</strong><span>All Rights Reserved</span></p>
+        <div class="credits">
+          <!-- All the links in the footer should remain intact. -->
+          <!-- You can delete the links only if you've purchased the pro version. -->
+          <!-- Licensing information: https://bootstrapmade.com/license/ -->
+          <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
+          Designed by <a href="#">TamDa</a>
+        </div>
+      </div>
+  
+    </footer>
+
+    <!-- Scroll Top -->
+    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+            class="bi bi-arrow-up-short"></i></a>
+
+    <!-- Preloader -->
+    <div id="preloader"></div>
+
+    <!-- Vendor JS Files -->
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/php-email-form/validate.js"></script>
+    <script src="assets/vendor/aos/aos.js"></script>
+    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
+    <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+    <!-- <script src="assets/vendor/tinymce/tinymce.min.js"></script> -->
+
+    <!-- Main JS File -->
+    <script src="assets/js/user.js"></script>
+
+</body>
+
+</html>

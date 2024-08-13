@@ -1,0 +1,615 @@
+<script>
+  // Lịch làm việc
+  var count = 1;
+  var itemId = "";
+  function getItemID(id) {
+    itemId = id;
+    var item = dsLichLamViec.find(obj => obj.STT === id);
+    document.getElementById('inputDate1').value = item.ngay;
+    document.getElementById('inputDescribeMorningWork1').value = item.sang;
+    document.getElementById('inputDescribeAfternoonWork1').value = item.chieu;
+    document.getElementById('inputDescribeEveningWork1').value = item.toi;
+  }
+  function renderLich() {
+    var listChamCongBlock = document.querySelector('#list-lichLamViec');
+    var htmls = dsLichLamViec.map(function (lichLV) {
+      count++;
+      return `
+                <tr class="item-${lichLV.STT}">
+                    <th scope="row">${lichLV.STT}</th>
+                    <td>${lichLV.ngay}</td>
+                    <td>${lichLV.sang}</td>
+                    <td>${lichLV.chieu}</td>
+                    <td>${lichLV.toi}</td>
+                    <td>
+                      <div class="d-flex">
+                        <button onclick="getItemID(${lichLV.STT})" type="button" class="btn btn-success btn1"
+                          data-bs-toggle="modal" data-bs-target="#modalEditAWorkSchedule">Sửa</button>
+                        <button onclick="getItemID(${lichLV.STT})" type="button" class="btn btn-danger btn1"
+                          data-bs-toggle="modal" data-bs-target="#modalDeleteAWorkSchedule">Xóa</button>
+                      </div>
+                    </td>
+                </tr>
+            `;
+    });
+    listChamCongBlock.innerHTML = htmls.join('');
+  }
+  // hienThi();
+  renderLich();
+  function addLichLamViec() {
+    var ds = document.querySelector('#list-lichLamViec');
+    var item = {
+      STT: count,
+      ngay: document.getElementById('inputDate').value,
+      sang: document.getElementById('inputDescribeMorningWork').value,
+      chieu: document.getElementById('inputDescribeAfternoonWork').value,
+      toi: document.getElementById('inputDescribeEveningWork').value
+    };
+    dsLichLamViec.push(item);
+    //chèn vào sau thì thay beforeend bằng afterbegin
+    ds.insertAdjacentHTML('beforeend', `
+        <tr class="item-${item.STT}">
+                    <th scope="row">${item.STT}</th>
+                    <td>${item.ngay}</td>
+                    <td>${item.sang}</td>
+                    <td>${item.chieu}</td>
+                    <td>${item.toi}</td>
+                    <td>
+                      <div class="d-flex">
+                        <button onclick="getItemID(${item.STT})" type="button" class="btn btn-success btn1"
+                          data-bs-toggle="modal" data-bs-target="#modalEditAWorkSchedule">Sửa</button>
+                        <button onclick="getItemID(${item.STT})" type="button" class="btn btn-danger btn1"
+                          data-bs-toggle="modal" data-bs-target="#modalDeleteAWorkSchedule">Xóa</button>
+                      </div>
+                    </td>
+                </tr>
+        `);
+    count++;
+  }
+  function deleteLichLamViec(id) {
+    dsLichLamViec = dsLichLamViec.filter(function (lichLV) {
+      return lichLV.STT !== id;
+    });
+    var KhauTruItem = document.querySelector('.item-' + id);
+    if (KhauTruItem) {
+      KhauTruItem.remove();
+    }
+  }
+  function editLichLamViec(id) {
+    var item = dsLichLamViec.find(obj => obj.STT === id);
+    item.ngay = document.getElementById('inputDate1').value;
+    item.sang = document.getElementById('inputDescribeMorningWork1').value;
+    item.chieu = document.getElementById('inputDescribeAfternoonWork1').value;
+    item.toi = document.getElementById('inputDescribeEveningWork1').value;
+    var newRowHTML = `
+            <tr class="item-${item.STT}">
+              <th scope="row">${item.STT}</th>
+              <td>${item.ngay}</td>
+              <td>${item.sang}</td>
+              <td>${item.chieu}</td>
+              <td>${item.toi}</td>
+              <td>
+                <div class="d-flex">
+                  <button onclick="getItemID(${item.STT})" type="button" class="btn btn-success btn1"
+                    data-bs-toggle="modal" data-bs-target="#modalEditAWorkSchedule">Sửa</button>
+                  <button onclick="getItemID(${item.STT})" type="button" class="btn btn-danger btn1"
+                    data-bs-toggle="modal" data-bs-target="#modalDeleteAWorkSchedule">Xóa</button>
+                </div>
+              </td>
+            </tr>
+        `;
+
+    // Thay thế nội dung của thẻ tr cũ bằng chuỗi HTML mới
+    $('.item-' + id).replaceWith(newRowHTML);
+  }
+  // End Lịch Làm việc
+  //Các yêu cầu thay đổi lịch
+  var count1 = 1;
+  function renderThayDoiLich() {
+    var listChamCongBlock = document.querySelector('#list-thayDoiLich');
+    var htmls = dsLichLamViec_ThayDoiLich.map(function (lichLV) {
+      count1++;
+      return `
+                <tr class="item1-${lichLV.STT}">
+                    <th scope="row"><a href="" data-bs-toggle="modal" data-bs-target="#modalLeaveScheduleDetail">${lichLV.STT}</a></th>
+                    <td>${lichLV.ngayBatDau}</td>
+                    <td>${lichLV.ngayKetThuc}</td>
+                    <td>${lichLV.thoiGianCapNhat}</td>
+                    <td>
+                      <div class="">
+                        <button onclick="getItemID(${lichLV.STT})" type="button" class="btn btn-danger btn1"
+                          data-bs-toggle="modal" data-bs-target="#modalDeleteEmployeeLeave">Xóa</button>
+                      </div>
+                    </td>
+                </tr>
+            `;
+    });
+    listChamCongBlock.innerHTML = htmls.join('');
+  }
+  // hienThi();
+  renderThayDoiLich();
+  function deleteThayDoiLich(id) {
+    dsLichLamViec_ThayDoiLich = dsLichLamViec_ThayDoiLich.filter(function (lichLV) {
+      return lichLV.STT !== id;
+    });
+    var KhauTruItem = document.querySelector('.item1-' + id);
+    if (KhauTruItem) {
+      KhauTruItem.remove();
+    }
+  }
+  //End Các yêu cầu thay đổi lịch
+  var count2 = 1;
+  function renderNhanVien() {
+    var listChamCongBlock = document.querySelector('#list-nhanVien');
+    var htmls = dsLichLamViec_ThayDoiLich_ChiTiet.map(function (lichLV) {
+      count2++;
+      var mau = "";
+      var tt = "";
+      if (lichLV.trangThai == "Đã đồng ý") {
+        mau = "bg-success";
+        tt = "disabled";
+      }
+      else if (lichLV.trangThai == "Chưa xác nhận") {
+        mau = "bg-warning";
+      }
+      else if (lichLV.trangThai == "Đã từ chối") {
+        mau = "bg-danger";
+        tt = "disabled";
+      }
+      return `
+                <tr class="item2-${lichLV.STT}">
+                    <th scope="row"><a href="">${lichLV.STT}</a></th>
+                    <td>${lichLV.hoTen}</td>
+                    <td>${lichLV.ngay}</td>
+                    <td>${lichLV.noiDung}</td>
+                    <td>${lichLV.lyDo}</td>
+                    <td class="badge ${mau} text-white">${lichLV.trangThai}</td>
+                    <td>
+                      <div class="d-flex">
+                        <button type="button" ${tt} onclick="confirm1(${lichLV.STT})" class="btn btn-success btn2">Đồng ý</button>
+                        <button type="button" ${tt} onclick="confirm2(${lichLV.STT})" class="btn btn-danger btn2">Từ chối</button>
+                      </div>
+                    </td>
+                </tr>
+            `;
+    });
+    listChamCongBlock.innerHTML = htmls.join('');
+  }
+  // hienThi();
+  renderNhanVien();
+  //Xác nhận đồng ý
+  function confirm1(id) {
+    var item = dsLichLamViec_ThayDoiLich_ChiTiet.find(obj => obj.STT === id);
+    item.trangThai = "Đã đồng ý";
+    mau = "bg-success";
+    tt = "disabled";
+    var newRowHTML = `
+        <tr class="item2-${item.STT}">
+                    <th scope="row"><a href="">${item.STT}</a></th>
+                    <td>${item.hoTen}</td>
+                    <td>${item.ngay}</td>
+                    <td>${item.noiDung}</td>
+                    <td>${item.lyDo}</td>
+                    <td class="badge ${mau} text-white">${item.trangThai}</td>
+                    <td>
+                      <div class="d-flex">
+                        <button type="button" ${tt} onclick="confirm1(${item.STT})" class="btn btn-success btn2">Đồng ý</button>
+                        <button type="button" ${tt} onclick="confirm2(${item.STT})" class="btn btn-danger btn2">Từ chối</button>
+                      </div>
+                    </td>
+                </tr>
+        `;
+
+    // Thay thế nội dung của thẻ tr cũ bằng chuỗi HTML mới
+    $('.item2-' + id).replaceWith(newRowHTML);
+  }
+  //Xác nhận từ chối
+  function confirm2(id) {
+    var item = dsLichLamViec_ThayDoiLich_ChiTiet.find(obj => obj.STT === id);
+    item.trangThai = "Đã từ chối";
+    mau = "bg-danger";
+    tt = "disabled";
+    var newRowHTML = `
+        <tr class="item2-${item.STT}">
+                    <th scope="row"><a href="">${item.STT}</a></th>
+                    <td>${item.hoTen}</td>
+                    <td>${item.ngay}</td>
+                    <td>${item.noiDung}</td>
+                    <td>${item.lyDo}</td>
+                    <td class="badge ${mau} text-white">${item.trangThai}</td>
+                    <td>
+                      <div class="d-flex">
+                        <button type="button" ${tt} onclick="confirm1(${item.STT})" class="btn btn-success btn2">Đồng ý</button>
+                        <button type="button" ${tt} onclick="confirm2(${item.STT})" class="btn btn-danger btn2">Từ chối</button>
+                      </div>
+                    </td>
+                </tr>
+        `;
+
+    // Thay thế nội dung của thẻ tr cũ bằng chuỗi HTML mới
+    $('.item2-' + id).replaceWith(newRowHTML);
+  }
+</script>
+<!-- Start Page Title -->
+<div class="pagetitle m-3">
+  <h1>Quản lý lịch làm việc</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
+      <li class="breadcrumb-item active">Quản lý lịch làm việc</li>
+    </ol>
+  </nav>
+</div>
+<!-- End Page Title -->
+<div class="m-3">
+  <div class="">
+    <!-- Bordered Tabs -->
+    <ul class="nav nav-tabs nav-tabs-bordered" id="borderedTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="contact-tab" data-bs-toggle="tab" data-bs-target="#bordered-contact"
+          type="button" role="tab" aria-controls="contact" aria-selected="true">Lịch làm việc</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#bordered-profile" type="button"
+          role="tab" aria-controls="profile" aria-selected="false">Các yêu cầu thay đổi lịch <b
+            class="text-danger">(1)</b>
+        </button>
+      </li>
+    </ul>
+    <div class="tab-content pt-4" id="borderedTabContent">
+      <!-- TAB1 -->
+      <div class="tab-pane fade show active" id="bordered-contact" role="tabpanel" aria-labelledby="contact-tab">
+        <section class="section faq">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="card overflow-auto">
+                <div class="card-body">
+                  <div class="row justify-content-center m-3">
+                    <div class="row col-md-6 col-lg-4 d-flex">
+                      <div class="col-6">
+                        <label class=" col-form-label"><b>Ngày bắt đầu</b></label>
+                      </div>
+                      <div class="col-6" style="margin-left: -50px;">
+                        <div class="ms-3">
+                          <input type="date" class="form-control" id="inputStartDate" value="2024-05-02">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row justify-content-center m-3">
+                    <div class="row col-md-6 col-lg-4 d-flex">
+                      <div class="col-6">
+                        <label class=" col-form-label"><b>Ngày kết thúc</b></label>
+                      </div>
+                      <div class="col-6" style="margin-left: -50px;">
+                        <div class="ms-3">
+                          <input type="date" class="form-control" id="inputStartDate" value="2024-05-22">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="text-center">
+                    <button type="" class="btn btn-primary me-3">Lọc</button>
+                    <button type="reset" class="btn btn-secondary">Xóa</button>
+                  </div><!-- End Horizontal Form -->
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <!-- Recent Sales -->
+            <div class="col-lg-12">
+              <div class="card recent-sales overflow-auto">
+
+                <div class="card-body">
+                  <h5 class="card-title">Lịch làm việc</h5>
+                  <button type="button" class="btn btn-outline-primary mb-1" data-bs-toggle="modal"
+                    data-bs-target="#modalCreateAWorkSchedule">Tạo mới</button>
+                  <table class="table table-borderless datatable">
+                    <thead>
+                      <tr>
+                        <th scope="col">STT</th>
+                        <th scope="col">Ngày</th>
+                        <th scope="col">Sáng</th>
+                        <th scope="col">Chiều</th>
+                        <th scope="col">Tối</th>
+                        <th>Hành động</th>
+                      </tr>
+                    </thead>
+                    <tbody id="list-lichLamViec">
+
+                    </tbody>
+                  </table>
+
+                </div>
+
+              </div>
+            </div><!-- End Recent Sales -->
+
+          </div>
+
+        </section>
+      </div>
+      <!-- TAB2 -->
+      <div class="tab-pane fade " id="bordered-profile" role="tabpanel" aria-labelledby="profile-tab">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card overflow-auto">
+              <div class="card-body">
+                <div class="row justify-content-center m-3">
+                  <div class="row col-md-6 col-lg-4 d-flex">
+                    <div class="col-6">
+                      <label class=" col-form-label"><b>Ngày bắt đầu</b></label>
+                    </div>
+                    <div class="col-6" style="margin-left: -50px;">
+                      <div class="ms-3">
+                        <input type="date" class="form-control" id="inputStartDate" value="2024-05-02">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row justify-content-center m-3">
+                  <div class="row col-md-6 col-lg-4 d-flex">
+                    <div class="col-6">
+                      <label class=" col-form-label"><b>Ngày kết thúc</b></label>
+                    </div>
+                    <div class="col-6" style="margin-left: -50px;">
+                      <div class="ms-3">
+                        <input type="date" class="form-control" id="inputStartDate" value="2024-05-22">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="text-center">
+                  <button type="submit" class="btn btn-primary me-3">Lọc</button>
+                  <button type="reset" class="btn btn-secondary">Xóa</button>
+                </div><!-- End Horizontal Form -->
+              </div>
+            </div>
+          </div>
+          <!-- <div class="col-lg-6">
+            <div class="card">
+              <div class="card-body"> -->
+          <!-- Pie Chart -->
+          <!-- <div id="chartCol" style="min-height: 400px;" class="echart"></div> -->
+          <!-- End Pie Chart -->
+
+          <!-- </div>
+            </div>
+          </div> -->
+        </div>
+        <div class="row">
+          <!-- Recent Sales -->
+          <div class="col-lg-12">
+            <div class="card recent-sales overflow-auto">
+              <div class="card-body">
+                <h5 class="card-title">Lịch xin nghỉ phép</h5>
+                <!-- <button type="button" class="btn btn-outline-primary mb-1">Tạo mới</button> -->
+                <table class="table table-borderless datatable">
+                  <thead>
+                    <tr>
+                      <th scope="col">STT</th>
+                      <th scope="col">Ngày bắt đầu</th>
+                      <th scope="col">Ngày kết thúc</th>
+                      <th scope="col">Thời gian cập nhật</th>
+                      <th>Hành động</th>
+                    </tr>
+                  </thead>
+                  <tbody id="list-thayDoiLich">
+
+                  </tbody>
+                </table>
+
+              </div>
+
+            </div>
+          </div><!-- End Recent Sales -->
+        </div>
+      </div>
+    </div>
+    <footer id="footer" class="footer">
+      <div class="credits">
+        Designed by <strong>TamDa</strong>
+      </div>
+    </footer><!-- End Footer -->
+
+    <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/echarts/echarts.min.js"></script>
+    <!-- modalLeaveScheduleDetail-->
+    <div class="modal fade" id="modalLeaveScheduleDetail" style="height: 810px;" data-bs-target="#modalConfirmLeave">
+      <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+          <!-- Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Danh sách nhân viên xin nghỉ phép</h4>
+            <div class="btn-close" type="button" data-bs-dismiss="modal"></div>
+          </div>
+          <!-- Body -->
+          <div class="modal-body">
+            <div class="row">
+              <!-- Recent Sales -->
+              <div class="col-lg-12">
+                <div class="card recent-sales overflow-auto">
+                  <div class="card-body">
+                    <table class="table table-borderless datatable">
+                      <thead>
+                        <tr>
+                          <th scope="col">STT</th>
+                          <th scope="col">Họ tên</th>
+                          <th scope="col">Ngày</th>
+                          <th scope="col">Nội dung</th>
+                          <th scope="col">Lý do</th>
+                          <th scope="col">Trạng thái</th>
+                          <th>Hành động</th>
+                        </tr>
+                      </thead>
+                      <tbody id="list-nhanVien">
+
+                      </tbody>
+                    </table>
+
+                  </div>
+
+                </div>
+              </div><!-- End Recent Sales -->
+
+            </div>
+          </div>
+          <!-- Footer -->
+        </div>
+      </div>
+    </div>
+    <!-- end modalLeaveScheduleDetail -->
+
+    <!-- modalCreateAWorkSchedule -->
+    <div class="modal fade" id="modalCreateAWorkSchedule" style="height: 850px;">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <!-- header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Thêm lịch làm việc mới</h4>
+            <div class="btn-close" data-bs-dismiss="modal"></div>
+          </div>
+          <!-- body -->
+          <form class="form-inline">
+            <div class="form-group mx-sm-3 mb-2">
+              <label for="inputDate" class="sr-only">Ngày</label>
+              <input type="date" class="form-control" id="inputDate">
+            </div>
+            <div class="form-group mx-sm-3 mb-2">
+              <label for="inputDescribeMorningWork" class="sr-only">Công việc buổi sáng</label>
+              <input type="text" class="form-control" id="inputDescribeMorningWork">
+            </div>
+            <div class="form-group mx-sm-3 mb-2">
+              <label for="inputDescribeAfternoonWork" class="sr-only">Công việc buổi chiều</label>
+              <input type="text" class="form-control" id="inputDescribeAfternoonWork">
+            </div>
+            <div class="form-group mx-sm-3 mb-2">
+              <label for="inputDescribeEveningWork" class="sr-only">Công việc buổi tối</label>
+              <input type="text" class="form-control" id="inputDescribeEveningWork">
+            </div>
+          </form>
+          <!-- footer -->
+          <div class="modal-footer">
+            <button type="button" onclick="addLichLamViec()" class="btn btn-success" data-bs-dismiss="modal">
+              Thêm
+            </button>
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+              Đóng
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end modalCreateAWorkSchedule -->
+
+    <!-- The Modal edit AWorkSchedule -->
+    <div class="modal fade" id="modalEditAWorkSchedule" style="height: 850px;">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Chỉnh sửa công việc</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            <form class="form-inline">
+              <div class="form-group mx-sm-3 mb-2">
+                <label for="inputDate1" class="sr-only">Ngày</label>
+                <input type="date" class="form-control" id="inputDate1">
+              </div>
+              <div class="form-group mx-sm-3 mb-2">
+                <label for="inputDescribeMorningWork1" class="sr-only">Công việc buổi sáng</label>
+                <input type="text" class="form-control" id="inputDescribeMorningWork1">
+              </div>
+              <div class="form-group mx-sm-3 mb-2">
+                <label for="inputDescribeAfternoonWork1" class="sr-only">Công việc buổi chiều</label>
+                <input type="text" class="form-control" id="inputDescribeAfternoonWork1">
+              </div>
+              <div class="form-group mx-sm-3 mb-2">
+                <label for="inputDescribeEveningWork1" class="sr-only">Công việc buổi tối</label>
+                <input type="text" class="form-control" id="inputDescribeEveningWork1">
+              </div>
+            </form>
+          </div>
+
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button type="button" onclick="editLichLamViec(itemId)" class="btn btn-success" data-bs-dismiss="modal">
+              Cập nhật
+            </button>
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+              Hủy
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End modal edit AWorkSchedule -->
+
+    <!-- The Modal delete AWorkSchedule -->
+    <div class="modal" id="modalDeleteAWorkSchedule" style="height: 810px;">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Xóa</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            Xác nhận xóa lịch làm việc này?
+          </div>
+
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button type="button" onclick="deleteLichLamViec(itemId)" class="btn btn-success" data-bs-dismiss="modal">
+              Xóa
+            </button>
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+              Hủy
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- End modal delete AWorkSchedule -->
+
+    <!-- The Modal delete Thay Đổi Lịch -->
+    <div class="modal" id="modalDeleteEmployeeLeave" style="height: 810px;">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Xóa</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            Xác nhận xóa bản ghi này?
+          </div>
+
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button type="button" onclick="deleteThayDoiLich(itemId)" class="btn btn-success" data-bs-dismiss="modal">
+              Xóa
+            </button>
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+              Hủy
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- End modal delete Thay Đổi Lịch -->
+  </div>
+</div>

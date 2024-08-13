@@ -1,0 +1,561 @@
+<script>
+  options = {
+    series: [{
+      name: 'Đã hoàn thành',
+      data: [31, 40, 28, 51, 42, 82, 56],
+    }, {
+      name: 'Đang hoàn thành',
+      data: [11, 32, 45, 32, 34, 52, 41]
+    }, {
+      name: 'Chưa hoàn thành',
+      data: [15, 11, 32, 18, 9, 24, 11]
+    }],
+    chart: {
+      height: 350,
+      type: 'area',
+      toolbar: {
+        show: false
+      },
+    },
+    markers: {
+      size: 4
+    },
+    colors: ['#4154f1', '#2eca6a', '#ff771d'],
+    fill: {
+      type: "gradient",
+      gradient: {
+        shadeIntensity: 1,
+        opacityFrom: 0.3,
+        opacityTo: 0.4,
+        stops: [0, 90, 100]
+      }
+    },
+    dataLabels: {
+      enabled: false
+    },
+    stroke: {
+      curve: 'smooth',
+      width: 2
+    },
+    xaxis: {
+      type: 'datetime',
+      categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
+    },
+    tooltip: {
+      x: {
+        format: 'dd/MM/yy HH:mm'
+      },
+    }
+  };
+  var chart = new ApexCharts(document.querySelector("#reportsChart"), options);
+  chart.render();
+  // render();
+  function renderTrafficChart() {
+    trafficChart = echarts.init(document.querySelector("#trafficChart"));
+    trafficChart.setOption({
+      tooltip: {
+        trigger: 'item'
+      },
+      legend: {
+        top: '5%',
+        left: 'center'
+      },
+      series: [{
+        name: 'Trạng thái',
+        type: 'pie',
+        radius: ['40%', '70%'],
+        avoidLabelOverlap: false,
+        label: {
+          show: false,
+          position: 'center'
+        },
+        emphasis: {
+          label: {
+            show: true,
+            fontSize: '18',
+            fontWeight: 'bold'
+          }
+        },
+        labelLine: {
+          show: false
+        },
+        data: [{
+          value: 0,
+          name: ''
+        },
+        {
+          value: 6,
+          name: 'Đã hoàn thành'
+        },
+        {
+          value: 3,
+          name: 'Đang hoàn thành'
+        },
+        {
+          value: 1,
+          name: 'Chưa hoàn thành'
+        },
+        {
+          value: 0,
+          name: ''
+        }
+        ]
+      }]
+    });
+  }
+
+  // Gọi hàm renderTrafficChart sau khi nội dung đã được load
+  renderTrafficChart();
+  // End Line Chart
+  var count = 1;
+  var itemId = "";
+  function getItemID(id) {
+    itemId = id;
+    var item = dsCongViec_ChiTiet.find(obj => obj.id === id);
+    document.getElementById('maNV1').value = item.id;
+    document.getElementById('tenNV1').value = item.hoTen;
+    document.getElementById('dongGop1').value = item.dongGop;
+    document.getElementById('moTa1').value = item.moTa;
+    document.getElementById('trangThai1').value = item.trangThai;
+  }
+  function renderCongViec_CT() {
+    var listChamCongBlock = document.querySelector('#list-congViec_CT');
+    var htmls = dsCongViec_ChiTiet.map(function (nhanVien) {
+      var mau = "";
+      if (nhanVien.trangThai == "Đã hoàn thành") {
+        mau = "bg-success";
+      }
+      else if (nhanVien.trangThai == "Đang hoàn thành") {
+        mau = "bg-warning";
+      }
+      else if (nhanVien.trangThai == "Chưa hoàn thành") {
+        mau = "bg-danger";
+      }
+      count++;
+      return `
+                <tr class="item-${nhanVien.id}">
+                    <th scope="row"><a href="#">${nhanVien.id}</a></th>
+                    <td>${nhanVien.hoTen}</td>
+                    <td>${nhanVien.dongGop}</td>
+                    <td>${nhanVien.moTa}</td>
+                    <td class="badge ${mau} text-white">${nhanVien.trangThai}</td>
+
+                    <td>
+                      <div class="d-flex">
+                        <button onclick="getItemID('${nhanVien.id}')" type="button" class="btn btn-success btn1"
+                            data-bs-toggle="modal" data-bs-target="#suaNhanVien">Sửa</button>
+                        <button onclick="getItemID('${nhanVien.id}')" type="button" class="btn btn-danger btn1"
+                            data-bs-toggle="modal" data-bs-target="#xoaNhanVien">Xóa</button>
+                      </div>
+                    </td>
+                </tr>
+            `;
+    });
+    listChamCongBlock.innerHTML = htmls.join('');
+  }
+  // hienThi();
+  renderCongViec_CT();
+  function addNhanVien() {
+    var ds = document.querySelector('#list-congViec_CT');
+    var item = {
+      id: document.getElementById('maNV').value,
+      hoTen: document.getElementById('tenNV').value,
+      dongGop: document.getElementById('dongGop').value,
+      moTa: document.getElementById('moTa').value,
+      trangThai: document.getElementById('trangThai').value
+    };
+    var mau = "";
+    if (item.trangThai == "Đã hoàn thành") {
+      mau = "bg-success";
+    }
+    else if (item.trangThai == "Đang hoàn thành") {
+      mau = "bg-warning";
+    }
+    else if (item.trangThai == "Chưa hoàn thành") {
+      mau = "bg-danger";
+    }
+    dsCongViec.push(item);
+    //chèn vào sau thì thay beforeend bằng afterbegin
+    ds.insertAdjacentHTML('beforeend', `
+        <tr class="item-${item.id}">
+          <th scope="row"><a href="#">${item.id}</a></th>
+          <td>${item.hoTen}</td>
+          <td>${item.dongGop}</td>
+          <td>${item.moTa}</td>
+          <td class="badge ${mau} text-white">${item.trangThai}</td>
+
+          <td>
+            <div class="d-flex">
+              <button onclick="getItemID('${item.id}')" type="button" class="btn btn-success btn1"
+                  data-bs-toggle="modal" data-bs-target="#suaNhanVien">Sửa</button>
+              <button onclick="getItemID('${item.id}')" type="button" class="btn btn-danger btn1"
+                  data-bs-toggle="modal" data-bs-target="#xoaNhanVien">Xóa</button>
+            </div>
+          </td>
+        </tr>
+        `);
+    count++;
+  }
+  function deleteNhanVien(id) {
+    dsCongViec_ChiTiet = dsCongViec_ChiTiet.filter(function (congViec) {
+      return congViec.id !== id;
+    });
+    var CongViecItem = document.querySelector('.item-' + id);
+    console.log('.item-' + id);
+    if (CongViecItem) {
+      CongViecItem.remove();
+    }
+  }
+  function editNhanVien(id) {
+    var item = dsCongViec_ChiTiet.find(obj => obj.id === id);
+    item.id = document.getElementById('maNV1').value;
+    item.tenNV = document.getElementById('tenNV1').value;
+    item.dongGop = document.getElementById('dongGop1').value;
+    item.moTa = document.getElementById('moTa1').value;
+    item.trangThai = document.getElementById('trangThai1').value;
+    var mau = "";
+    if (item.trangThai == "Đã hoàn thành") {
+      mau = "bg-success";
+    }
+    else if (item.trangThai == "Đang hoàn thành") {
+      mau = "bg-warning";
+    }
+    else if (item.trangThai == "Chưa hoàn thành") {
+      mau = "bg-danger";
+    }
+    var newRowHTML = `
+        <tr class="item-${item.id}">
+          <th scope="row"><a href="#">${item.id}</a></th>
+          <td>${item.hoTen}</td>
+          <td>${item.dongGop}</td>
+          <td>${item.moTa}</td>
+          <td class="badge ${mau} text-white">${item.trangThai}</td>
+          <td>
+            <div class="d-flex">
+              <button onclick="getItemID('${item.id}')" type="button" class="btn btn-success btn1"
+                  data-bs-toggle="modal" data-bs-target="#suaNhanVien">Sửa</button>
+              <button onclick="getItemID('${item.id}')" type="button" class="btn btn-danger btn1"
+                  data-bs-toggle="modal" data-bs-target="#xoaNhanVien">Xóa</button>
+            </div>
+          </td>
+        </tr>
+        `;
+
+    // Thay thế nội dung của thẻ tr cũ bằng chuỗi HTML mới
+    $('.item-' + id).replaceWith(newRowHTML);
+  }
+  $(document).ready(function () {
+        $('#btnQuayLai').click(function (event) {
+            event.preventDefault();
+            var link = $(this).attr("href");
+            $("#mainLTT").load(link);
+        });
+    });
+</script>
+
+
+
+<section id="mainLTT" class="section dashboard container-fluid">
+  <div class="pagetitle">
+    <h1>Quản lý hiệu quả công việc và hệ thống khung năng lực</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="main.html">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a id="btnQuayLai" href="ql-congviec.html">Quản lý công việc</a></li>
+        <li class="breadcrumb-item active">Quản lý công việc</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+  <div class="row">
+    <!-- Reports -->
+    <div class="col-12">
+      <div class="card">
+        <div class="filter">
+          <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+            <li class="dropdown-header text-start">
+              <h6>Filter</h6>
+            </li>
+
+            <li><a class="dropdown-item" href="#">Hôm nay</a></li>
+            <li><a class="dropdown-item" href="#">Trong tháng</a></li>
+            <li><a class="dropdown-item" href="#">Trong năm</a></li>
+          </ul>
+        </div>
+
+        <div class="card-body">
+          <h5 class="card-title">Hiệu quả công việc <span>/Hôm nay</span></h5>
+
+          <!-- Line Chart -->
+          <div id="reportsChart"></div>
+        </div>
+
+      </div>
+    </div><!-- End Reports -->
+  </div>
+  <div class="row">
+    <!-- Top Selling -->
+    <div class="col-12">
+      <div class="card top-selling overflow-auto">
+
+        <div class="card-body pb-0">
+          <h5 class="card-title">Chi tiết công việc</h5>
+
+          <table class="table table-borderless">
+            <thead>
+              <tr>
+                <th scope="col">Mã công việc</th>
+                <th scope="col">Tên công việc</th>
+                <th scope="col">Mô tả</th>
+                <th scope="col">Mục tiêu</th>
+                <th scope="col">Lợi nhuận</th>
+                <th scope="col">Các yêu cầu khác</th>
+                <th scope="col">Trạng thái</th>
+                <!-- <th>Khác</th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">CV002</th>
+                <td>Phát triển ứng dụng di động</td>
+                <td>Xây dựng ứng dụng di động để tăng cường trải nghiệm khách hàng</td>
+                <td>Nâng cao chất lượng dịch vụ và tăng cường sự hài lòng của khách hàng</td>
+                <td>40 triệu VND</td>
+                <td>Có kỹ năng lập trình ứng dụng di động, hiểu biết về trải nghiệm người dùng, khả năng làm việc nhóm
+                  tốt</td>
+                <td><span class="badge bg-warning">Đang hoàn thành</span></td>
+                <!-- <td>
+                  <div class="d-flex">
+                    <button onclick="getItemID('${congViec.id}')" type="button" class="btn btn-success btn1"
+                      data-bs-toggle="modal" data-bs-target="#suaCongViec">Sửa</button>
+                    <button onclick="getItemID('${congViec.id}')" type="button" class="btn btn-danger btn1"
+                      data-bs-toggle="modal" data-bs-target="#xoaCongViec">Xóa</button>
+                  </div>
+                </td> -->
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+
+      </div>
+    </div><!-- End Top Selling -->
+
+  </div>
+  </div>
+  <div class="row">
+    <!-- Left side columns -->
+    <div class="col-lg-8">
+      <div class="row">
+
+        <!-- Recent Sales -->
+        <div class="col-12">
+          <div class="card recent-sales overflow-auto">
+
+            <div class="filter">
+              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                <li class="dropdown-header text-start">
+                  <h6>Filter</h6>
+                </li>
+
+                <li><a class="dropdown-item" href="#">Hôm nay</a></li>
+                <li><a class="dropdown-item" href="#">Trong tháng</a></li>
+                <li><a class="dropdown-item" href="#">Trong năm</a></li>
+              </ul>
+            </div>
+
+            <div class="card-body">
+              <h5 class="card-title">Nhân viên tham gia <span>| Hôm nay</span></h5>
+              <button type="button" class="btn btn-outline-primary mb-1" data-bs-toggle="modal"
+                data-bs-target="#themNhanVien">Tạo mới</button>
+              <table class="table table-borderless datatable">
+                <thead>
+                  <tr>
+                    <th scope="col">Mã nhân viên</th>
+                    <th scope="col">Họ tên</th>
+                    <th scope="col">Đóng góp</th>
+                    <th scope="col">Mô tả</th>
+                    <th scope="col">Trạng thái</th>
+                    <th>Khác</th>
+                  </tr>
+                </thead>
+                <tbody id="list-congViec_CT">
+
+                </tbody>
+              </table>
+
+            </div>
+
+          </div>
+        </div><!-- End Recent Sales -->
+
+      </div>
+    </div><!-- End Left side columns -->
+
+    <!-- Right side columns -->
+    <div class="col-lg-4">
+      <!-- Website Traffic -->
+      <div class="card">
+        <div class="filter">
+          <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+            <li class="dropdown-header text-start">
+              <h6>Filter</h6>
+            </li>
+
+            <li><a class="dropdown-item" href="#">Hôm nay</a></li>
+            <li><a class="dropdown-item" href="#">Trong tháng</a></li>
+            <li><a class="dropdown-item" href="#">Trong năm</a></li>
+          </ul>
+        </div>
+
+        <div class="card-body pb-0">
+          <h5 class="card-title">Số nhân viên tham gia dự án <span>| Hôm nay</span></h5>
+
+          <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
+
+        </div>
+      </div>
+      <!-- End Website Traffic -->
+
+    </div><!-- End Right side columns -->
+
+  </div>
+
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+  <div class="credits">
+    Designed by <strong>TamDa</strong>
+  </div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+    class="bi bi-arrow-up-short"></i></a>
+
+<!-- Vendor JS Files -->
+<script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="assets/vendor/echarts/echarts.min.js"></script>
+
+<!-- modal Thêm Nhân viên -->
+<div class="modal fade pt-5" id="themNhanVien" style="height: 1620px;">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <!-- header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Thêm nhân viên mới</h4>
+        <div class="btn-close" data-bs-dismiss="modal"></div>
+      </div>
+      <!-- body -->
+      <form class="form-inline">
+        <div class="form-group mx-sm-3 mb-2">
+          <label for="maNV" class="sr-only">Mã nhân viên</label>
+          <input type="text" class="form-control" id="maNV">
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+          <label for="tenNV" class="sr-only">Tên nhân viên</label>
+          <input type="text" class="form-control" id="tenNV">
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+          <label for="dongGop" class="sr-only">Đóng góp</label>
+          <input type="text" class="form-control" id="dongGop">
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+          <label for="moTa" class="sr-only">Mô tả</label>
+          <input type="text" class="form-control" id="moTa">
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+          <label for="trangThai" class="sr-only">Trạng thái</label>
+          <input type="text" class="form-control" id="trangThai">
+        </div>
+      </form>
+      <!-- footer -->
+      <div class="modal-footer">
+        <button onclick="addNhanVien()" type="button" class="btn btn-success" data-bs-dismiss="modal">
+          Thêm
+        </button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+          Đóng
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end modal Thêm nhân viên -->
+<!-- modal sửa nhân viên -->
+<div class="modal fade pt-5" id="suaNhanVien" style="height: 1620px;">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <!-- header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Sửa thông tin nhân viên</h4>
+        <div class="btn-close" data-bs-dismiss="modal"></div>
+      </div>
+      <!-- body -->
+      <form class="form-inline">
+        <div class="form-group mx-sm-3 mb-2">
+          <label for="maNV1" class="sr-only">Mã nhân viên</label>
+          <input type="text" class="form-control" id="maNV1">
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+          <label for="tenNV1" class="sr-only">Tên nhân viên</label>
+          <input type="text" class="form-control" id="tenNV1">
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+          <label for="dongGop1" class="sr-only">Đóng góp</label>
+          <input type="text" class="form-control" id="dongGop1">
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+          <label for="moTa1" class="sr-only">Mô tả</label>
+          <input type="text" class="form-control" id="moTa1">
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+          <label for="trangThai1" class="sr-only">Trạng thái</label>
+          <input type="text" class="form-control" id="trangThai1">
+        </div>
+      </form>
+      <!-- footer -->
+      <div class="modal-footer">
+        <button onclick="editNhanVien(itemId)" type="button" class="btn btn-success" data-bs-dismiss="modal">
+          Cập nhật
+        </button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+          Đóng
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end modal Sửa nhân viên -->
+<!-- modal xóa nhân viên -->
+<div class="modal fade" id="xoaNhanVien" style="height: 1620px;">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Xóa nhân viên</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        Bạn có chắc chắn muốn xóa bản ghi này?
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button onclick="deleteNhanVien(itemId)" type="button" class="btn btn-success" data-bs-dismiss="modal">
+          Xóa
+        </button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+          Đóng
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end modal Xóa nhân viên -->
+
+</section>

@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Starter Page - QuickStart Bootstrap Template</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <link href="assets/img/logo/fpt-logo.png" rel="icon">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet" />
+    <!-- Main CSS File -->
+    <link href="assets/css/style.css" rel="stylesheet">
+    <!-- <link href="assets/css/main.css" rel="stylesheet"> -->
+    <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+    <script src="assets/vendor/jquery/jquery-3.7.1.js"></script>
+    <style>
+        .datatable thead th {
+            background-color: #2151e2;
+            /* Màu nền cho tiêu đề */
+            color: white;
+            /* Màu chữ cho tiêu đề */
+        }
+    </style>
+
+    <script>
+        $(document).ready(() => {
+            option1 = taoBieuDoTron(75);
+            option2 = taoBieuDoTron(85);
+            option3 = taoBieuDoTron(55);
+            option4 = taoBieuDoTron(25);
+            chart = new ApexCharts(document.querySelector("#reportsChart"), option1);
+            chart.render();
+            chart1 = new ApexCharts(document.querySelector("#reportsChart1"), option2);
+            chart1.render();
+            chart2 = new ApexCharts(document.querySelector("#reportsChart2"), option3);
+            chart2.render();
+            chart3 = new ApexCharts(document.querySelector("#reportsChart3"), option4);
+            chart3.render();
+
+        })
+    </script>
+</head>
+
+<body class="starter-page-page">
+
+    <header id="header" class="header d-flex align-items-center fixed-top">
+        <div class="container-fluid container-xl position-relative d-flex align-items-center">
+
+            <a href="MainUser.html" class="logo d-flex align-items-center me-auto">
+                <img src="assets/img/logo/fpt-logo.png" alt="">
+                <h1 class="sitename">FPT Reatail</h1>
+            </a>
+
+            <nav id="navmenu" class="navmenu">
+                <ul>
+                    <li><a href="MainUser.html#hero" class="">Trang chủ</a></li>
+                    <li><a href="MainUser.html#about">Giới thiệu</a></li>
+                    <li><a href="MainUser.html#features">Quy định</a></li>
+                    <li><a href="MainUser.html#services">Phúc lợi</a></li>
+                    <li><a href="MainUser.html#pricing">Thành tựu</a></li>
+                    <li><a href="MainUser.html#contact">Liên hệ</a></li>
+                    <li class="dropdown"><a href="#"><span>Công việc</span> <i
+                                class="bi bi-chevron-down toggle-dropdown"></i></a>
+                        <ul>
+                            <li><a href="DiemDanh.html">Chấm công</a></li>
+                            <li><a href="XemTienDoHSCV.html">Tiến độ - Hiệu suất công việc</a></li>
+                            <li><a href="XemLuong.html">Lương</a></li>
+                            <li><a href="XemLichLamViec.html">Lịch làm việc</a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+            </nav>
+
+            <!-- <button class="btn btn-getstarted dropdown" >Get Started</button> -->
+            <div class="dropdown btn-getstarted">
+                <!-- <button type="button" class="btn btn-getstarted" data-bs-toggle="dropdown"> -->
+                <img style="height: 55px; width: 55px;" src="assets/img/features-2.jpg" class="rounded-circle"
+                    data-bs-toggle="dropdown">
+                <!-- </button> -->
+                <ul class="dropdown-menu border-0"
+                    style="box-shadow: 0px 0px 30px color-mix(in srgb, var(--default-color), transparent 85%);">
+                    <li class="bg-light py-2 px-4"><a class="dropdown-header" href="#" style="font-size: 20px;">Nguyễn
+                            Đức
+                            Chung</a></li>
+                    <li class="p-2">
+                        <a class="dropdown-item" href="#">
+                            <i class="bi bi-person p-1 me-2"></i>Thông tin cá nhân</a>
+                    </li>
+                    <li class="p-2"><a class="dropdown-item" href="#">
+                            <i class="bi bi-question-circle p-1 me-2"></i>Trợ giúp</a></li>
+                    <li class="p-2"><a class="dropdown-item" href="Login.html">
+                            <i class="bi bi-box-arrow-in-right p-1 me-2"></i>Đăng xuất</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+
+
+
+        <!-- Starter Section Section -->
+        <section id="starter-section" class="starter-section section mt-5">
+
+            <!-- Section Title -->
+            <div class="container section-title" data-aos="fade-up">
+                <h2>Lịch làm việc</h2>
+            </div><!-- End Section Title -->
+
+            <div class="" data-aos="fade-up">
+                <!-- Start Page Title -->
+                <div class="pagetitle">
+
+                    <div class="mx-3">
+                        <div class="">
+                            <!-- Bordered Tabs -->
+                            <ul class="nav nav-tabs nav-tabs-bordered" id="borderedTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="contact-tab" data-bs-toggle="tab"
+                                        data-bs-target="#bordered-contact" type="button" role="tab"
+                                        aria-controls="contact" aria-selected="true">Lịch làm việc</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="profile-tab" data-bs-toggle="tab"
+                                        data-bs-target="#bordered-profile" type="button" role="tab"
+                                        aria-controls="profile" aria-selected="false">Các yêu cầu thay đổi lịch <b
+                                            class="text-danger">(1)</b>
+                                    </button>
+                                </li>
+                            </ul>
+                            <div class="tab-content pt-4" id="borderedTabContent">
+                                <!-- TAB1 -->
+                                <div class="tab-pane fade show active" id="bordered-contact" role="tabpanel"
+                                    aria-labelledby="contact-tab">
+                                    <section class="section faq">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="card overflow-auto">
+                                                    <div class="card-body">
+                                                        <div class="row justify-content-center m-3">
+                                                            <div class="row col-md-6 col-lg-4 d-flex">
+                                                                <div class="col-6">
+                                                                    <label class=" col-form-label"><b>Ngày bắt
+                                                                            đầu</b></label>
+                                                                </div>
+                                                                <div class="col-6" style="margin-left: -50px;">
+                                                                    <div class="ms-3">
+                                                                        <input type="date" class="form-control"
+                                                                            id="inputStartDate" value="2024-05-02">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row justify-content-center m-3">
+                                                            <div class="row col-md-6 col-lg-4 d-flex">
+                                                                <div class="col-6">
+                                                                    <label class=" col-form-label"><b>Ngày kết
+                                                                            thúc</b></label>
+                                                                </div>
+                                                                <div class="col-6" style="margin-left: -50px;">
+                                                                    <div class="ms-3">
+                                                                        <input type="date" class="form-control"
+                                                                            id="inputStartDate" value="2024-05-22">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="text-center">
+                                                            <button type="" class="btn btn-primary me-3">Lọc</button>
+                                                            <button type="reset" class="btn btn-secondary">Xóa</button>
+                                                        </div><!-- End Horizontal Form -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <!-- Recent Sales -->
+                                            <div class="col-lg-12">
+                                                <div class="card recent-sales overflow-auto">
+
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">Lịch làm việc</h5>
+
+                                                        <table class="table table-borderless datatable">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="text-center" scope="col">STT</th>
+                                                                    <th class="text-center" scope="col">Thứ</th>
+                                                                    <th class="text-center" scope="col">Ngày</th>
+                                                                    <th class="text-center" scope="col">Sáng</th>
+                                                                    <th class="text-center" scope="col">Chiều</th>
+                                                                    <th class="text-center" scope="col">Tối</th>
+                                                                    <th class="text-center">Hành động</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <th class="text-center">1</th>
+                                                                    <td class="text-center">Thứ 5</td>
+                                                                    <td class="text-center">02/05/2024</td>
+                                                                    <td class="text-center">Daily Meeting</td>
+                                                                    <td class="text-center">Client Meeting</td>
+                                                                    <td class="text-center">Finance Meeting</td>
+                                                                    <td class="text-center">
+                                                                        <button type="button" class="btn btn-success"
+                                                                            data-bs-target="#doiLichTruc"
+                                                                            data-bs-toggle="modal">Yêu cầu thay đổi
+                                                                        </button>
+
+                                                                    </td>
+                                                                </tr>
+                                                                <tr class="text-center">
+                                                                    <th>2</th>
+                                                                    <td>Thứ 6</td>
+                                                                    <td>03/05/2024</td>
+                                                                    <td>Daily Meeting</td>
+                                                                    <td>Code Review</td>
+                                                                    <td></td>
+                                                                    <td>
+                                                                        <button type="button" class="btn btn-success"
+                                                                            data-bs-target="#doiLichTruc"
+                                                                            data-bs-toggle="modal">Yêu cầu thay đổi
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr class="text-center">
+                                                                    <th>3</th>
+                                                                    <td>Thứ 7</td>
+                                                                    <td>04/05/2024</td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td>
+                                                                        <button type="button" class="btn btn-success"
+                                                                            data-bs-target="#doiLichTruc"
+                                                                            data-bs-toggle="modal">Yêu cầu thay đổi
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr class="text-center">
+                                                                    <th>4</th>
+                                                                    <td>Chủ nhật</td>
+                                                                    <td>05/05/2024</td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td>
+                                                                        <button type="button" class="btn btn-success"
+                                                                            data-bs-target="#doiLichTruc"
+                                                                            data-bs-toggle="modal">Yêu cầu thay đổi
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr class="text-center">
+                                                                    <th>5</th>
+                                                                    <td>Thứ 2</td>
+                                                                    <td>06/05/2024</td>
+                                                                    <td>Daily Meeting</td>
+                                                                    <td>Design</td>
+                                                                    <td>Finance Meeting</td>
+                                                                    <td>
+                                                                        <button type="button" class="btn btn-success"
+                                                                            data-bs-target="#doiLichTruc"
+                                                                            data-bs-toggle="modal">Yêu cầu thay đổi
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>
+
+                                                            </tbody>
+                                                        </table>
+
+                                                    </div>
+
+                                                </div>
+                                            </div><!-- End Recent Sales -->
+
+                                        </div>
+
+                                    </section>
+                                </div>
+                                <!-- TAB2 -->
+                                <div class="tab-pane fade " id="bordered-profile" role="tabpanel"
+                                    aria-labelledby="profile-tab">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="card overflow-auto">
+                                                <div class="card-body">
+                                                    <div class="row justify-content-center m-3">
+                                                        <div class="row col-md-6 col-lg-4 d-flex">
+                                                            <div class="col-6">
+                                                                <label class=" col-form-label"><b>Ngày bắt
+                                                                        đầu</b></label>
+                                                            </div>
+                                                            <div class="col-6" style="margin-left: -50px;">
+                                                                <div class="ms-3">
+                                                                    <input type="date" class="form-control"
+                                                                        id="inputStartDate" value="2024-05-02">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row justify-content-center m-3">
+                                                        <div class="row col-md-6 col-lg-4 d-flex">
+                                                            <div class="col-6">
+                                                                <label class=" col-form-label"><b>Ngày kết
+                                                                        thúc</b></label>
+                                                            </div>
+                                                            <div class="col-6" style="margin-left: -50px;">
+                                                                <div class="ms-3">
+                                                                    <input type="date" class="form-control"
+                                                                        id="inputStartDate" value="2024-05-22">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-center">
+                                                        <button type="submit" class="btn btn-primary me-3">Lọc</button>
+                                                        <button type="reset" class="btn btn-secondary">Xóa</button>
+                                                    </div><!-- End Horizontal Form -->
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <!-- Recent Sales -->
+                                        <div class="col-lg-12">
+                                            <div class="card recent-sales overflow-auto">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Lịch xin nghỉ phép</h5>
+                                                    <!-- <button type="button" class="btn btn-outline-primary mb-1">Tạo mới</button> -->
+                                                    <table class="table table-borderless datatable">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">STT</th>
+                                                                <th scope="col">Ngày bắt đầu</th>
+                                                                <th scope="col">Ngày kết thúc</th>
+                                                                <th scope="col">Thời gian cập nhật</th>
+                                                                <th>Hành động</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td><a href="#">1</a>
+                                                                </td>
+                                                                <td>02/05/2024</td>
+                                                                <td>22/05/2024</td>
+                                                                <td>06:31:30</td>
+                                                                <td>
+                                                                    <div class="d-flex">
+                                                                        <!-- <button type="button" class="btn btn-success btn1">Sửa</button> -->
+                                                                        <button type="button" class="btn btn-danger btn1"
+                                                                            data-bs-target="#modalDeleteEmployeeLeave"
+                                                                            data-bs-toggle="modal">Xóa</button>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><a href="#">2</a></td>
+                                                                <td>01/04/2024</td>
+                                                                <td>30/04/2024</td>
+                                                                <td>15:31:20</td>
+                                                                <td>
+                                                                    <div class="d-flex">
+                                                                        <!-- <button type="button" class="btn btn-success btn1">Sửa</button> -->
+                                                                        <button type="button"
+                                                                            class="btn btn-danger btn1">Xóa</button>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><a href="#">3</a></td>
+                                                                <td>01/03/2024</td>
+                                                                <td>31/03/2024</td>
+                                                                <td>06:31:30 </td>
+                                                                <td>
+                                                                    <div class="d-flex">
+                                                                        <!-- <button type="button" class="btn btn-success btn1">Sửa</button> -->
+                                                                        <button type="button"
+                                                                            class="btn btn-danger btn1">Xóa</button>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><a href="#">4</a></td>
+                                                                <td>01/02/2024</td>
+                                                                <td>29/02/2024</td>
+                                                                <td>06:31:30 </td>
+                                                                <td>
+                                                                    <div class="d-flex">
+                                                                        <!-- <button type="button" class="btn btn-success btn1">Sửa</button> -->
+                                                                        <button type="button"
+                                                                            class="btn btn-danger btn1">Xóa</button>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><a href="#">5</a></td>
+                                                                <td>01/01/2024</td>
+                                                                <td>31/01/2024</td>
+                                                                <td>06:31:30 </td>
+                                                                <td>
+                                                                    <div class="d-flex">
+                                                                        <!-- <button type="button" class="btn btn-success btn1">Sửa</button> -->
+                                                                        <button type="button"
+                                                                            class="btn btn-danger btn1">Xóa</button>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+        
+                                                        </tbody>
+                                                    </table>
+        
+                                                </div>
+        
+                                            </div>
+                                        </div><!-- End Recent Sales -->
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="modal fade" id="doiLichTruc">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <!-- header -->
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Yêu cầu thay đổi lịch trực</h4>
+                                    <button class="btn-close" type="button" data-bs-dismiss="modal"></button>
+                                </div>
+                                <!-- body -->
+                                <div class="modal-body">
+                                    <p>Đổi sang ngày:</p> <input type="date" class="form-control" id="inputStartDate"
+                                        value="2024-05-02"> <br>
+                                    <p>Lý do thay đổi:</p> <textarea class="form-control"
+                                        id="exampleFormControlTextarea1" rows="3"></textarea>
+                                </div>
+                                <!-- footer -->
+                                <div class="modal-footer">
+                                    <button class="btn btn-outline-success" data-bs-dismiss="modal">Gửi</button>
+                                    <button class="btn btn-outline-danger" data-bs-dismiss="modal">Đóng</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                    <div class="modal" id="modalDeleteEmployeeLeave" style="height: 850px;">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+
+                                <!-- Modal Header -->
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Xóa</h4>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+
+                                <!-- Modal body -->
+                                <div class="modal-body">
+                                    Xác nhận xóa lịch xin nghỉ phép này?
+                                </div>
+
+                                <!-- Modal footer -->
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">
+                                        Xóa
+                                    </button>
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                                        Hủy
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+        </section><!-- /Starter Section Section -->
+    </main>
+
+    <footer id="footer" class="footer position-relative">
+
+        <div class="container footer-top">
+          <div class="row gy-4">
+            <div class="col-lg-4 col-md-6 footer-about">
+              <a href="MainUser.html" class="logo d-flex align-items-center me-auto">
+                <img src="assets/img/logo/fpt-logo.png" alt="">
+                <h1 class="sitename">FPT Retail</h1>
+              </a>
+              <div class="footer-contact pt-1">
+                <p>261 - 263 Khánh Hội, Phường 5,</p>
+                <p>Quận 4, TP. Hồ Chí Minh</p>
+                <p class="mt-3"><strong>Phone:</strong> <span>1800 6601</span></p>
+                <p><strong>Email:</strong> <span>fptshop@fpt.com</span></p>
+              </div>
+            </div>
+    
+            <div class="col-lg-2 col-md-3 footer-links">
+              <h4>Về chúng tôi</h4>
+              <ul>
+                <li><a href="#">Giới thiệu</a></li>
+                <li><a href="#">Tin tức</a></li>
+                <li><a href="#">Hệ thống cửa hàng</a></li>
+                <li><a href="#">Câu hỏi thường gặp</a></li>
+                <li><a href="#">Hướng dẫn sử dụng</a></li>
+              </ul>
+            </div>
+    
+            <div class="col-lg-2 col-md-3 footer-links">
+              <h4>Chính sách</h4>
+              <ul>
+                <li><a href="#">Chính sách bảo mật</a></li>
+                <li><a href="#">Chính sách sử dụng</a></li>
+                <li><a href="#">Chính sách xử lý vi phạm</a></li>
+                <li><a href="#">Chính sách bảo hành</a></li>
+                <li><a href="#">Chính sách quyền riêng tư</a></li>
+              </ul>
+            </div>
+    
+            <div class="col-lg-4 col-md-12 footer-newsletter">
+              <h4>Mạng xã hội</h4>
+              <div class="social-links d-flex mt-3">
+                <a href=""><i class="bi bi-twitter-x"></i></a>
+                <a href=""><i class="bi bi-facebook"></i></a>
+                <a href=""><i class="bi bi-instagram"></i></a>
+                <a href=""><i class="bi bi-linkedin"></i></a>
+              </div>
+            </div>
+    
+          </div>
+        </div>
+    
+        <div class="container copyright text-center mt-4">
+          <p>© <span>Copyright</span> <strong class="px-1 sitename">QuickStart</strong><span>All Rights Reserved</span></p>
+          <div class="credits">
+            <!-- All the links in the footer should remain intact. -->
+            <!-- You can delete the links only if you've purchased the pro version. -->
+            <!-- Licensing information: https://bootstrapmade.com/license/ -->
+            <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
+            Designed by <a href="#">TamDa</a>
+          </div>
+        </div>
+    
+      </footer>
+
+    <!-- Scroll Top -->
+    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+            class="bi bi-arrow-up-short"></i></a>
+
+    <!-- Preloader -->
+    <div id="preloader"></div>
+
+    <!-- Vendor JS Files -->
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/php-email-form/validate.js"></script>
+    <script src="assets/vendor/aos/aos.js"></script>
+    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
+    <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+    <!-- <script src="assets/vendor/tinymce/tinymce.min.js"></script> -->
+
+    <!-- Main JS File -->
+    <script src="assets/js/user.js"></script>
+    <script src="assets/js/db.js"></script>
+
+</body>
+
+</html>

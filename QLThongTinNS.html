@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Pages / Login - NiceAdmin Bootstrap Template</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="assets/css/main.css" rel="stylesheet">
+  <!-- Template Main JS File -->
+  <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
+  <script src="assets/vendor/jquery/jquery-3.7.1.js"></script>
+  <script src="assets/js/QLTTNS.js"></script>
+
+</head>
+
+<body>
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="#" class="logo d-flex align-items-center">
+        <img src="assets/img/logo/fpt-logo.png" alt="">
+        <span class="d-none d-lg-block">FPT Retail</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    <div class="search-bar">
+      <form class="search-form d-flex align-items-center">
+        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+      </form>
+    </div><!-- End Search Bar -->
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+
+        <li class="nav-item d-block d-lg-none">
+          <a class="nav-link1 nav-icon search-bar-toggle " href="#">
+            <i class="bi bi-search"></i>
+          </a>
+        </li><!-- End Search Icon-->
+
+        <li class="nav-item dropdown">
+
+          <a class="nav-link1 nav-icon" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-bell"></i>
+            <span class="badge bg-danger badge-number">1</span>
+          </a><!-- End Notification Icon -->
+
+        </li><!-- End Notification Nav -->
+
+        <li class="nav-item dropdown">
+
+          <a class="nav-link1 nav-icon" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-chat-left-dots"></i>
+            <span class="badge bg-success badge-number">1</span>
+          </a><!-- End Messages Icon -->
+
+        </li><!-- End Messages Nav -->
+
+        <li class="nav-item dropdown pe-3">
+
+          <div class="dropdown btn-getstarted">
+            <!-- <button type="button" class="btn btn-getstarted" data-bs-toggle="dropdown"> -->
+            <img style="height: 45px; width: 45px;" src="assets/img/features-2.jpg" class="rounded-circle m-2"
+              data-bs-toggle="dropdown">
+            <!-- </button> -->
+            <ul class="dropdown-menu border-0"
+              style="box-shadow: 0px 0px 30px color-mix(in srgb, var(--default-color), transparent 85%);">
+              <li class="bg-light py-2 px-4"><a class="dropdown-header" href="#" style="font-size: 20px;">Nguyễn Đức
+                  Chung</a></li>
+              <li class="p-2"><a class="dropdown-item" href="#">
+                  <i class="bi bi-question-circle p-1 me-2"></i>Trợ giúp</a></li>
+              <li class="p-2"><a class="dropdown-item" href="Login.html">
+                  <i class="bi bi-box-arrow-in-right p-1 me-2"></i>Đăng xuất</a></li>
+            </ul>
+          </div>
+
+        </li><!-- End Profile Nav -->
+
+      </ul>
+    </nav><!-- End Icons Navigation -->
+  </header>
+  <div class="d-flex bottom">
+    <aside id="sidebar" class="sidebar">
+      <ul class="sidebar-nav" id="sidebar-nav">
+        <li class="nav-item">
+          <a id="btnTrangChu" class="nav-link collapsed" href="TrangChuAdmin.html">
+            <i class="bi bi-house"></i>
+            <span>Trang chủ</span>
+          </a>
+        </li><!-- End Dashboard Nav -->
+        <li class="nav-item">
+          <a id="btnQLToChuc" class="nav-link collapsed" href="QLToChuc.html">
+            <i class="bi bi-grid-fill"></i>
+            <span>QL tổ chức</span>
+          </a>
+        </li><!-- End Dashboard Nav -->
+        <li class="nav-item">
+          <a id="btn1" class="nav-link collapsed" href="QLTuyenDung.html">
+            <i class="bi bi-briefcase"></i>
+            <span>QL Tuyển dụng</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a id="btnQLChamCong" class="nav-link collapsed" href="QLChamCong.html">
+            <i class="bi bi-calendar-check-fill"></i>
+            <span>QL Chấm công</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a id="btnLuong" class="nav-link collapsed" href="QLLuongThuongThue.html">
+            <i class="bi bi-cash-coin"></i>
+            <span>QL Lương - Thưởng - Thuế TNCN</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a id="btnQLHieuQua" class="nav-link collapsed" href="ql-congviec.html">
+            <i class="bi bi-bar-chart-line-fill"></i>
+            <span>Quản lý công việc</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a id="btnDaoTaoPT" class="nav-link collapsed" href="qllichtruc.html">
+            <i class="bi bi-graph-up-arrow"></i>
+            <span>Quản lý lịch làm việc</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a id="btnCongTT" class="nav-link" href="QLThongTinNS.html">
+            <i class="bi bi-xbox"></i>
+            <span>Quản lý chi tiết thông tin nhân sự</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a id="btnCongTT" class="nav-link collapsed" href="MangXHNBDN.html">
+            <i class="bi bi-bank"></i>
+            <span>Mạng xã hội nội bộ doanh nghiệp</span>
+          </a>
+        </li>
+      </ul>
+    </aside>
+    <div id="content" class="content">
+      <main id="main" class="main container-fluid">
+        <!-- Start Page Title -->
+        <div class="pagetitle mt-3">
+          <h1>Quản lý chi tiết thông tin nhân sự</h1>
+          <nav>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item">
+                <a href="main.html" class="text-decoration-none">Trang chủ</a>
+              </li>
+              <li class="breadcrumb-item active">Cổng thông tin nhân viên</li>
+              <li class="breadcrumb-item active">Quản lý thông tin nhân sự</li>
+            </ol>
+          </nav>
+        </div>
+        <!-- End Page Title -->
+
+        <section class="section dashboard">
+          <div class="row">
+            <!-- Left side columns -->
+            <!-- <div class="col-lg-9"> -->
+            <div class="row">
+              <!-- Recent Sales -->
+              <div class="col-12">
+                <div class="card recent-sales overflow-auto">
+                  <div class="card-body">
+                    <div class="pagetitle m-2">
+                      <h1>Thông tin nhân sự</h1>
+                    </div>
+                    <button type="button" class="btn btn-outline-primary mb-1 mt-3" data-bs-toggle="modal"
+                      data-bs-target="#themNhanVien">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-cloud-plus-fill" viewBox="0 0 16 16">
+                        <path
+                          d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2m.5 4v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 1 0" />
+                      </svg>
+                      Thêm nhân viên
+                    </button>
+                    <table class="table table-borderless datatable list-nhanVien">
+                      <thead>
+                        <tr>
+                          <th scope="col">STT</th>
+                          <th scope="col">HỌ TÊN NV</th>
+                          <th scope="col">EMAIL</th>
+                          <th scope="col">GIỚI TÍNH</th>
+                          <th scope="col">NGHIỆP VỤ</th>
+                          <th scope="col">ĐỊA CHỈ</th>
+                          <th scope="col">HOẠT ĐỘNG</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <!-- End Recent Sales -->
+
+              <!-- </div> -->
+            </div>
+            <!-- End Left side columns -->
+
+          </div>
+          <!-- The Modal thêm ứng viên tuyển dụng -->
+          <div class="modal fade pt-5" id="themNhanVien" data-backdrop="false"
+            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); height: 1100px;">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                  <h4 class="modal-title">Thêm ứng viên mới</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                  <form class="form-inline">
+                    <div class="form-group mx-sm-3 mb-2">
+                      <label for="hoTenNV" class="sr-only">Họ tên</label>
+                      <input type="text" class="form-control" id="hoTenNV">
+                    </div>
+                    <div class="form-group mx-sm-3 mb-2">
+                      <label for="emailNV" class="sr-only">Email</label>
+                      <input type="text" class="form-control" id="emailNV">
+                    </div>
+                    <div class="form-group mx-sm-3 mb-2">
+                      <label for="gioiTinhNV" class="sr-only">Giới tính</label>
+                      <select class="form-control" id="gioiTinhNV">
+                          <option value="Male">Male</option>
+                          <option value="Female">Female</option>
+                      </select>
+                  </div>
+                    <div class="form-group mx-sm-3 mb-2">
+                      <label for="nghiepVuNV" class="sr-only">Nghiệp vụ</label>
+                      <input type="text" class="form-control" id="nghiepVuNV">
+                    </div>
+                    <div class="form-group mx-sm-3 mb-2">
+                      <label for="diaChiNV" class="sr-only">Địa chỉ</label>
+                      <input type="text" class="form-control" id="diaChiNV">
+                    </div>
+                  </form>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="addNhanVien()">
+                    Thêm
+                  </button>
+                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                    Đóng
+                  </button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <!-- End modal thêm nhân viên  -->
+
+          <!-- The Modal sửa ứng viên tuyển dụng -->
+          <div class="modal" id="suaNhanVien" data-backdrop="false"
+            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); height: 1100px;">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                  <h4 class="modal-title">Chỉnh sửa nhân viên</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                  <form class="form-inline">
+                    <div class="form-group mx-sm-3 mb-2">
+                      <label for="hoTenNV1" class="sr-only">Họ tên</label>
+                      <input type="text" class="form-control" id="hoTenNV1">
+                    </div>
+                    <div class="form-group mx-sm-3 mb-2">
+                      <label for="emailNV1" class="sr-only">Email</label>
+                      <input type="text" class="form-control" id="emailNV1">
+                    </div>
+                    <div class="form-group mx-sm-3 mb-2">
+                      <label for="gioiTinhNV1" class="sr-only">Giới tính</label>
+                      <select class="form-control" id="gioiTinhNV1">
+                          <option value="Male">Male</option>
+                          <option value="Female">Female</option>
+                      </select>
+                  </div>
+                    <div class="form-group mx-sm-3 mb-2">
+                      <label for="nghiepVuNV1" class="sr-only">Nghiệp vụ</label>
+                      <input type="text" class="form-control" id="nghiepVuNV1">
+                    </div>
+                    <div class="form-group mx-sm-3 mb-2">
+                      <label for="diaChiNV1" class="sr-only">Địa chỉ</label>
+                      <input type="text" class="form-control" id="diaChiNV1">
+                    </div>
+                  </form>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                  <button onclick="editEmployee()" type="button" class="btn btn-success" data-bs-dismiss="modal">
+                    Cập nhật
+                  </button>
+                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                    Hủy
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End modal sửa nhân viên -->
+
+
+          <!-- The Modal xóa nhân viên -->
+          <div class="modal" id="xoaNhanVien" data-backdrop="false"
+            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); height: 1100px;">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                  <h4 class="modal-title">Xóa</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                  Bạn có chắc chắn muốn xóa dữ liệu này?
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-success" data-bs-dismiss="modal"
+                    onclick="deleteEmployee(employeeToDelete)">
+                    Xóa
+                  </button>
+                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                    Hủy
+                  </button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <!-- End modal xóa nhân viên -->
+        </section>
+      </main>
+      <!-- End #main -->
+      <!-- ======= Footer ======= -->
+      <footer id="footer" class="footer">
+        <div class="credits">Designed by <a href="#">Tam Đa</a></div>
+      </footer>
+    </div>
+  </div>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/db.js"></script>
+  <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/echarts/echarts.min.js"></script>
+  <script src="assets/vendor/tinymce/tinymce.min.js"></script>
+  <!-- <script src="assets/vendor/bootstrap/js/bootstrap.min.js"></script> -->
+  
+</body>
+
+</html>

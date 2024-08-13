@@ -1,0 +1,432 @@
+<script>
+    var count = 1;
+    var itemId_L = "";
+    function getItemID(id) {
+        itemId_L = id;
+        var item = dsLuongNV.find(obj => obj.maNV === id);
+        document.getElementById('maNhanVien1').value = item.maNV;
+        document.getElementById('tenNhanVien1').value = item.hoTen;
+        document.getElementById('phongBan1').value = item.phongBan;
+        document.getElementById('chucVu1').value = item.chucVu;
+        document.getElementById('ngayCong1').value = item.ngayCong;
+        document.getElementById('tangCa1').value = item.tangCa;
+        document.getElementById('thucLinh1').value = item.luong;
+    }
+    function renderLuongNV() {
+        var listChamCongBlock = document.querySelector('#list-luongNV');
+        var htmls = dsLuongNV.map(function (congViec) {
+            count++;
+            var pb = "";
+            var cv = "";
+            if (congViec.phongBan == "phongBan_tc") {
+                pb = "Phòng Tài chính";
+            }
+            else if (congViec.phongBan == "phongBan_kt") {
+                pb = "Phòng Kỹ thuật";
+            }
+            else if (congViec.phongBan == "phongBan_kd") {
+                pb = "Phòng Kinh doanh";
+            }
+            else if (congViec.phongBan == "phongBan_mk") {
+                pb = "Phòng Marketing";
+            }
+            if (congViec.chucVu == "chucVu_tp") {
+                cv = "Trưởng phòng";
+            }
+            else if (congViec.chucVu == "chucVu_pp") {
+                cv = "Phó phòng";
+            }
+            else if (congViec.chucVu == "chucVu_ql") {
+                cv = "Quản lý";
+            }
+            else if (congViec.chucVu == "chucVu_nv") {
+                cv = "Nhân viên";
+            }
+            return `
+                <tr class="item-${congViec.maNV}">
+                    <th scope="row">${congViec.maNV}</th>
+                    <td>${congViec.hoTen}</td>
+                    <td>${pb}</td>
+                    <td>${cv}</td>
+                    <td>${congViec.ngayCong}</td>
+                    <td>${congViec.tangCa} giờ</td>
+                    <td>${congViec.luong} đ</td>
+                    <td>
+                      <div class="d-flex">
+                        <button onclick="getItemID('${congViec.maNV}')" type="button" class="btn btn-success btn1"
+                            data-bs-toggle="modal" data-bs-target="#suaLuongNV">Sửa</button>
+                        <button onclick="getItemID('${congViec.maNV}')" type="button" class="btn btn-danger btn1"
+                            data-bs-toggle="modal" data-bs-target="#xoaLuongNV">Xóa</button>
+                      </div>
+                    </td>
+                </tr>
+            `;
+        });
+        listChamCongBlock.innerHTML = htmls.join('');
+    }
+    // hienThi();
+    renderLuongNV();
+    function addLuongNV() {
+        var ds = document.querySelector('#list-luongNV');
+        var item = {
+            maNV: document.getElementById('maNhanVien').value,
+            hoTen: document.getElementById('tenNhanVien').value,
+            phongBan: document.getElementById('phongBan').value,
+            chucVu: document.getElementById('chucVu').value,
+            ngayCong: document.getElementById('ngayCong').value,
+            tangCa: document.getElementById('tangCa').value,
+            luong: document.getElementById('thucLinh').value
+        };
+        dsLuongNV.push(item);
+        var pb = "";
+        var cv = "";
+        if (item.phongBan == "phongBan_tc") {
+            pb = "Phòng Tài chính";
+        }
+        else if (item.phongBan == "phongBan_kt") {
+            pb = "Phòng Kỹ thuật";
+        }
+        else if (item.phongBan == "phongBan_kd") {
+            pb = "Phòng Kinh doanh";
+        }
+        else if (item.phongBan == "phongBan_mk") {
+            pb = "Phòng Marketing";
+        }
+        if (item.chucVu == "chucVu_tp") {
+            cv = "Trưởng phòng";
+        }
+        else if (item.chucVu == "chucVu_pp") {
+            cv = "Phó phòng";
+        }
+        else if (item.chucVu == "chucVu_ql") {
+            cv = "Quản lý";
+        }
+        else if (item.chucVu == "chucVu_nv") {
+            cv = "Nhân viên";
+        }
+        //chèn vào sau thì thay beforeend bằng afterbegin
+        ds.insertAdjacentHTML('beforeend', `
+        <tr class="item-${item.maNV}">
+                    <th scope="row">${item.maNV}</th>
+                    <td>${item.hoTen}</td>
+                    <td>${pb}</td>
+                    <td>${cv}</td>
+                    <td>${item.ngayCong}</td>
+                    <td>${item.tangCa} giờ</td>
+                    <td>${item.luong} đ</td>
+                    <td>
+                      <div class="d-flex">
+                        <button onclick="getItemID('${item.maNV}')" type="button" class="btn btn-success btn1"
+                            data-bs-toggle="modal" data-bs-target="#suaLuongNV">Sửa</button>
+                        <button onclick="getItemID('${item.maNV}')" type="button" class="btn btn-danger btn1"
+                            data-bs-toggle="modal" data-bs-target="#xoaLuongNV">Xóa</button>
+                      </div>
+                    </td>
+                </tr>
+        `);
+        count++;
+    }
+    function deleteLuongNV(id) {
+        dsLuongNV = dsLuongNV.filter(function (congViec) {
+            return congViec.maNV !== id;
+        });
+        var CongViecItem = document.querySelector('.item-' + id);
+        if (CongViecItem) {
+            CongViecItem.remove();
+        }
+    }
+    function editLuongNV(id) {
+        var item = dsLuongNV.find(obj => obj.maNV === id);
+        item.maNV = document.getElementById('maNhanVien1').value,
+            item.hoTen = document.getElementById('tenNhanVien1').value,
+            item.phongBan = document.getElementById('phongBan1').value,
+            item.chucVu = document.getElementById('chucVu1').value,
+            item.ngayCong = document.getElementById('ngayCong1').value,
+            item.tangCa = document.getElementById('tangCa1').value,
+            item.luong = document.getElementById('thucLinh1').value
+        var pb = "";
+        var cv = "";
+        if (item.phongBan == "phongBan_tc") {
+            pb = "Phòng Tài chính";
+        }
+        else if (item.phongBan == "phongBan_kt") {
+            pb = "Phòng Kỹ thuật";
+        }
+        else if (item.phongBan == "phongBan_kd") {
+            pb = "Phòng Kinh doanh";
+        }
+        else if (item.phongBan == "phongBan_mk") {
+            pb = "Phòng Marketing";
+        }
+        if (item.chucVu == "chucVu_tp") {
+            cv = "Trưởng phòng";
+        }
+        else if (item.chucVu == "chucVu_pp") {
+            cv = "Phó phòng";
+        }
+        else if (item.chucVu == "chucVu_ql") {
+            cv = "Quản lý";
+        }
+        else if (item.chucVu == "chucVu_nv") {
+            cv = "Nhân viên";
+        }
+        var newRowHTML = `
+        <tr class="item-${item.maNV}">
+                    <th scope="row">${item.maNV}</th>
+                    <td>${item.hoTen}</td>
+                    <td>${pb}</td>
+                    <td>${cv}</td>
+                    <td>${item.ngayCong}</td>
+                    <td>${item.tangCa} giờ</td>
+                    <td>${item.luong} đ</td>
+                    <td>
+                      <div class="d-flex">
+                        <button onclick="getItemID('${item.maNV}')" type="button" class="btn btn-success btn1"
+                            data-bs-toggle="modal" data-bs-target="#suaLuongNV">Sửa</button>
+                        <button onclick="getItemID('${item.maNV}')" type="button" class="btn btn-danger btn1"
+                            data-bs-toggle="modal" data-bs-target="#xoaLuongNV">Xóa</button>
+                      </div>
+                    </td>
+                </tr>
+        `;
+
+        // Thay thế nội dung của thẻ tr cũ bằng chuỗi HTML mới
+        $('.item-' + id).replaceWith(newRowHTML);
+    }
+    $(document).ready(function () {
+        $('#btnQuayLai').click(function (event) {
+            event.preventDefault();
+            var link = $(this).attr("href");
+            $("#mainLTT").load(link);
+        });
+    });
+</script>
+<!-- Start Page Title -->
+<main id="mainLTT" class="main m-3">
+<div class="pagetitle m-3">
+    <h1>Quản lý Lương - Thưởng - Thuế</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="main.html">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a id="btnQuayLai" href="QLLuongThuongThue.html">Quản lý Lương - Thưởng - Thuế</a></li>
+            <li class="breadcrumb-item active">Quản lý Lương nhân viên</li>
+        </ol>
+    </nav>
+</div>
+<!-- End Page Title -->
+<!-- Bảng lương NV -->
+<section class="section dashboard container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="row">
+                <!-- Recent Sales -->
+                <div class="col-12">
+                    <div class="card recent-sales overflow-auto">
+
+                        <div class="filter">
+                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                <li class="dropdown-header text-start">
+                                    <h6>Filter</h6>
+                                </li>
+
+                                <li><a class="dropdown-item" href="#">Hôm nay</a></li>
+                                <li><a class="dropdown-item" href="#">Trong tháng</a></li>
+                                <li><a class="dropdown-item" href="#">Trong năm</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="card-body">
+                            <h5 class="card-title">Bảng lương nhân viên <span>| Hôm nay</span></h5>
+                            <button type="button" class="btn btn-outline-primary mb-1" data-bs-toggle="modal"
+                                data-bs-target="#themLuongNV">Tạo mới</button>
+                            <table class="table table-borderless datatable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Mã nhân viên</th>
+                                        <th scope="col">Họ tên nhân viên</th>
+                                        <th scope="col">Phòng ban</th>
+                                        <th scope="col">Chức vụ</th>
+                                        <th scope="col">Số ngày công</th>
+                                        <th scope="col">Số giờ tăng ca</th>
+                                        <th scope="col">Thực lĩnh</th>
+                                        <th>Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="list-luongNV">
+
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                    </div>
+                </div><!-- End Recent Sales -->
+
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Bảng lương NV -->
+<!-- Footer -->
+<footer id="footer" class="footer">
+    <div class="credits">
+        Designed by <strong>TamDa</strong>
+    </div>
+</footer>
+<!-- End Footer -->
+<!-- modal Tạo lương nhân viên -->
+<div class="modal fade pt-5" id="themLuongNV" style="height: 700px;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Thêm mới</h4>
+                <div class="btn-close" data-bs-dismiss="modal"></div>
+            </div>
+            <!-- body -->
+            <form class="form-inline">
+                <div class="form-group mx-sm-3 mb-2">
+                    <label for="maNhanVien" class="sr-only">Mã nhân viên</label>
+                    <input type="text" class="form-control" id="maNhanVien">
+                </div>
+                <div class="form-group mx-sm-3 mb-2">
+                    <label for="tenNhanVien" class="sr-only">Họ tên nhân viên</label>
+                    <input type="text" class="form-control" id="tenNhanVien">
+                </div>
+                <div class="form-group mx-sm-3 mb-2">
+                    <label for="phongBan" class="sr-only">Phòng ban</label>
+                    <select name="phongBan" id="phongBan" class="form-control">
+                        <option value="phongBan_tc">Phòng Tài chính</option>
+                        <option value="phongBan_kt">Phòng Kỹ thuật</option>
+                        <option value="phongBan_kd">Phòng Kinh doanh</option>
+                        <option value="phongBan_mk">Phòng Marketing</option>
+                    </select>
+                </div>
+                <div class="form-group mx-sm-3 mb-2">
+                    <label for="chucVu" class="sr-only">Chức vụ</label>
+                    <select name="chucVu" id="chucVu" class="form-control">
+                        <option value="chucVu_tp">Trưởng phòng</option>
+                        <option value="chucVu_pp">Phó phòng</option>
+                        <option value="chucVu_ql">Quản lý</option>
+                        <option value="chucVu_nv">Nhân viên</option>
+                    </select>
+                </div>
+                <div class="form-group mx-sm-3 mb-2">
+                    <label for="ngayCong" class="sr-only">Số ngày công</label>
+                    <input type="text" class="form-control" id="ngayCong" required>
+                </div>
+                <div class="form-group mx-sm-3 mb-2">
+                    <label for="tangCa" class="sr-only">Số giờ tăng ca</label>
+                    <input type="text" class="form-control" id="tangCa" required>
+                </div>
+                <div class="form-group mx-sm-3 mb-2">
+                    <label for="thucLinh" class="sr-only">Lương thực lĩnh</label>
+                    <input type="text" class="form-control" id="thucLinh" required>
+                </div>
+            </form>
+            <!-- footer -->
+            <div class="modal-footer">
+                <button onclick="addLuongNV()" type="button" class="btn btn-success" data-bs-dismiss="modal">
+                    Thêm
+                </button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                    Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end modal Tạo lương nhân viên -->
+<!-- modal sửa lương nhân viên -->
+<div class="modal fade pt-5" id="suaLuongNV" style="height: 700px;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Sửa thông tin lương nhân viên</h4>
+                <div class="btn-close" data-bs-dismiss="modal"></div>
+            </div>
+            <!-- body -->
+            <form class="form-inline">
+                <div class="form-group mx-sm-3 mb-2">
+                    <label for="maNhanVien1" class="sr-only">Mã nhân viên</label>
+                    <input type="text" class="form-control" id="maNhanVien1">
+                </div>
+                <div class="form-group mx-sm-3 mb-2">
+                    <label for="tenNhanVien1" class="sr-only">Họ tên nhân viên</label>
+                    <input type="text" class="form-control" id="tenNhanVien1">
+                </div>
+                <div class="form-group mx-sm-3 mb-2">
+                    <label for="phongBan1" class="sr-only">Phòng ban</label>
+                    <select name="phongBan" id="phongBan1" class="form-control">
+                        <option value="phongBan_tc">Phòng Tài chính</option>
+                        <option value="phongBan_kt">Phòng Kỹ thuật</option>
+                        <option value="phongBan_kd">Phòng Kinh doanh</option>
+                        <option value="phongBan_mk">Phòng Marketing</option>
+                    </select>
+                </div>
+                <div class="form-group mx-sm-3 mb-2">
+                    <label for="chucVu1" class="sr-only">Chức vụ</label>
+                    <select name="chucVu" id="chucVu1" class="form-control">
+                        <option value="chucVu_tp">Trưởng phòng</option>
+                        <option value="chucVu_pp">Phó phòng</option>
+                        <option value="chucVu_ql">Quản lý</option>
+                        <option value="chucVu_nv">Nhân viên</option>
+                    </select>
+                </div>
+                <div class="form-group mx-sm-3 mb-2">
+                    <label for="ngayCong1" class="sr-only">Số ngày công</label>
+                    <input type="text" class="form-control" id="ngayCong1" required>
+                </div>
+                <div class="form-group mx-sm-3 mb-2">
+                    <label for="tangCa1" class="sr-only">Số giờ tăng ca</label>
+                    <input type="text" class="form-control" id="tangCa1" required>
+                </div>
+                <div class="form-group mx-sm-3 mb-2">
+                    <label for="thucLinh1" class="sr-only">Lương thực lĩnh</label>
+                    <input type="text" class="form-control" id="thucLinh1" required>
+                </div>
+            </form>
+            <!-- footer -->
+            <div class="modal-footer">
+                <button onclick="editLuongNV(itemId_L)" type="button" class="btn btn-success" data-bs-dismiss="modal">
+                    Cập nhật
+                </button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                    Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end modal sửa lương nhân viên -->
+<!-- modal xóa lương nhân viên -->
+<div class="modal fade" id="xoaLuongNV" style="height: 700px;">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Xóa</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                Bạn có chắc chắn muốn xóa bản ghi này?
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button onclick="deleteLuongNV(itemId_L)" type="button" class="btn btn-success" data-bs-dismiss="modal">
+                    Xóa
+                </button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                    Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</main>
+<!-- end modal xóa lương nhân viên -->

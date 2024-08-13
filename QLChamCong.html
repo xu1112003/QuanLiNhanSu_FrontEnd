@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Pages / Login - NiceAdmin Bootstrap Template</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="assets/css/main.css" rel="stylesheet">
+  <!-- Template Main JS File -->
+  <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
+  <script src="assets/vendor/jquery/jquery-3.7.1.js"></script>
+  <script src="assets/js/QLCC.js"></script>
+
+</head>
+
+<body>
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="#" class="logo d-flex align-items-center">
+        <img src="assets/img/logo/fpt-logo.png" alt="">
+        <span class="d-none d-lg-block">FPT Retail</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    <div class="search-bar">
+      <form class="search-form d-flex align-items-center">
+        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+      </form>
+    </div><!-- End Search Bar -->
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+
+        <li class="nav-item d-block d-lg-none">
+          <a class="nav-link1 nav-icon search-bar-toggle " href="#">
+            <i class="bi bi-search"></i>
+          </a>
+        </li><!-- End Search Icon-->
+
+        <li class="nav-item dropdown">
+
+          <a class="nav-link1 nav-icon" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-bell"></i>
+            <span class="badge bg-danger badge-number">1</span>
+          </a><!-- End Notification Icon -->
+
+        </li><!-- End Notification Nav -->
+
+        <li class="nav-item dropdown">
+
+          <a class="nav-link1 nav-icon" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-chat-left-dots"></i>
+            <span class="badge bg-success badge-number">1</span>
+          </a><!-- End Messages Icon -->
+
+        </li><!-- End Messages Nav -->
+
+        <li class="nav-item dropdown pe-3">
+
+          <div class="dropdown btn-getstarted">
+            <!-- <button type="button" class="btn btn-getstarted" data-bs-toggle="dropdown"> -->
+            <img style="height: 45px; width: 45px;" src="assets/img/features-2.jpg" class="rounded-circle m-2"
+              data-bs-toggle="dropdown">
+            <!-- </button> -->
+            <ul class="dropdown-menu border-0"
+              style="box-shadow: 0px 0px 30px color-mix(in srgb, var(--default-color), transparent 85%);">
+              <li class="bg-light py-2 px-4"><a class="dropdown-header" href="#" style="font-size: 20px;">Nguyễn Đức
+                  Chung</a></li>
+              <li class="p-2"><a class="dropdown-item" href="#">
+                  <i class="bi bi-question-circle p-1 me-2"></i>Trợ giúp</a></li>
+              <li class="p-2"><a class="dropdown-item" href="Login.html">
+                  <i class="bi bi-box-arrow-in-right p-1 me-2"></i>Đăng xuất</a></li>
+            </ul>
+          </div>
+
+        </li><!-- End Profile Nav -->
+
+      </ul>
+    </nav><!-- End Icons Navigation -->
+  </header>
+  <div class="d-flex bottom">
+    <aside id="sidebar" class="sidebar">
+      <ul class="sidebar-nav" id="sidebar-nav">
+        <li class="nav-item">
+          <a id="btnTrangChu" class="nav-link collapsed" href="TrangChuAdmin.html">
+            <i class="bi bi-house"></i>
+            <span>Trang chủ</span>
+          </a>
+        </li><!-- End Dashboard Nav -->
+        <li class="nav-item">
+          <a id="btnQLToChuc" class="nav-link collapsed" href="QLToChuc.html">
+            <i class="bi bi-grid-fill"></i>
+            <span>QL tổ chức</span>
+          </a>
+        </li><!-- End Dashboard Nav -->
+        <li class="nav-item">
+          <a id="btn1" class="nav-link collapsed" href="QLTuyenDung.html">
+            <i class="bi bi-briefcase"></i>
+            <span>QL Tuyển dụng</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a id="btnQLChamCong" class="nav-link " href="QLChamCong.html">
+            <i class="bi bi-calendar-check-fill"></i>
+            <span>QL Chấm công</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a id="btnLuong" class="nav-link collapsed" href="QLLuongThuongThue.html">
+            <i class="bi bi-cash-coin"></i>
+            <span>QL Lương - Thưởng - Thuế TNCN</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a id="btnQLHieuQua" class="nav-link collapsed" href="ql-congviec.html">
+            <i class="bi bi-bar-chart-line-fill"></i>
+            <span>Quản lý công việc</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a id="btnDaoTaoPT" class="nav-link collapsed" href="qllichtruc.html">
+            <i class="bi bi-graph-up-arrow"></i>
+            <span>Quản lý lịch làm việc</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a id="btnCongTT" class="nav-link collapsed" href="QLThongTinNS.html">
+            <i class="bi bi-xbox"></i>
+            <span>Quản lý chi tiết thông tin nhân sự</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a id="btnCongTT" class="nav-link collapsed" href="MangXHNBDN.html">
+            <i class="bi bi-bank"></i>
+            <span>Mạng xã hội nội bộ doanh nghiệp</span>
+          </a>
+        </li>
+      </ul>
+    </aside>
+    <div id="content" class="content">
+        <section class="section dashboard m-2">
+            <div class="container-fluid">
+
+                <!-- Left side columns -->
+                <div class="col-lg-12">
+                    <div class="row">
+                        <!-- Quantity Card -->
+                        <div class="col-xl-4 col-md-12">
+                            <div class="card info-card sales-card">
+
+                                <div class="filter">
+                                    <a class="icon" href="#" data-bs-toggle="dropdown"><i
+                                            class="bi bi-three-dots"></i></a>
+                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                        <li class="dropdown-header text-start">
+                                            <h6>Lọc</h6>
+                                        </li>
+
+                                        <li><a class="dropdown-item" href="#">Trưởng phòng</a></li>
+                                        <li><a class="dropdown-item" href="#">Nhân viên</a></li>
+                                    </ul>
+                                </div>
+
+                                <div class="card-body">
+                                    <h5 class="card-title">Số lượng</h5>
+
+                                    <div class="d-flex align-items-center">
+                                        <div
+                                            class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                            <i class="bi bi-person-fill"></i>
+                                        </div>
+                                        <div class="ps-3">
+                                            <h6 id="soLuong"></h6>
+                                            <span class="text-muted small pt-2 ps-1">Nhân viên</span>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div><!-- End Sales Card -->
+
+                        <!-- Checked Card -->
+                        <div class="col-xl-4 col-md-12">
+                            <div class="card info-card revenue-card">
+
+                                <div class="filter">
+                                    <a class="icon" href="#" data-bs-toggle="dropdown"><i
+                                            class="bi bi-three-dots"></i></a>
+                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                        <li class="dropdown-header text-start">
+                                            <h6>Lọc</h6>
+                                        </li>
+
+                                        <li><a class="dropdown-item" href="#">Hôm nay</a></li>
+                                        <li><a class="dropdown-item" href="#">Tuần này</a></li>
+                                        <li><a class="dropdown-item" href="#">Tháng này</a></li>
+                                    </ul>
+                                </div>
+
+                                <div class="card-body">
+                                    <h5 class="card-title">Đã chấm công <span>| Hôm nay</span></h5>
+
+                                    <div class="d-flex align-items-center">
+                                        <div
+                                            class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                            <i class="bi bi-calendar-check"></i>
+                                        </div>
+                                        <div class="ps-3">
+                                            <h6 id="daCham"></h6>
+                                            <span class="text-success small pt-1 fw-bold">Checked</span>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div><!-- End Revenue Card -->
+                        <!-- Late Card -->
+                        <div class="col-xl-4 col-md-12">
+
+                            <div class="card info-card customers-card">
+
+                                <div class="filter">
+                                    <a class="icon" href="#" data-bs-toggle="dropdown"><i
+                                            class="bi bi-three-dots"></i></a>
+                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                        <li class="dropdown-header text-start">
+                                            <h6>Lọc</h6>
+                                        </li>
+
+                                        <li><a class="dropdown-item" href="#">Hôm nay</a></li>
+                                        <li><a class="dropdown-item" href="#">Tuần này</a></li>
+                                        <li><a class="dropdown-item" href="#">Tháng này</a></li>
+                                    </ul>
+                                </div>
+
+                                <div class="card-body">
+                                    <h5 class="card-title">Đi muộn <span>| Hôm nay</span></h5>
+
+                                    <div class="d-flex align-items-center">
+                                        <div
+                                            class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                            <i class="bi bi-clock"></i>
+                                        </div>
+                                        <div class="ps-3">
+                                            <h6 id="diMuon"></h6>
+                                            <span class=" text-warning small pt-2 ps-1">Late</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div><!-- End Customers Card -->
+
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="card recent-sales overflow-auto">
+
+                        <div class="filter">
+                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                <li class="dropdown-header text-start">
+                                    <h6>Lọc dữ liệu</h6>
+                                </li>
+
+                                <li><a class="dropdown-item" href="#">Hôm nay</a></li>
+                                <li><a class="dropdown-item" href="#">Tuần này</a></li>
+                                <li><a class="dropdown-item" href="#">Tháng này</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="card-body">
+                            <h5 class="card-title">Báo cáo chấm công <span>| Hôm nay</span></h5>
+
+                            <table class="table table-borderless datatable list-chamCong">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">STT</th>
+                                        <th scope="col">Ngày chấm</th>
+                                        <th scope="col">Checkin</th>
+                                        <th scope="col">Trạng thái</th>
+                                        <th scope="col">Checkout</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                    
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                    </div>
+                </div><!-- End Recent Sales -->
+                <!-- <div class="col-12 card">
+                <div class="card-body">
+                    <h5 class="card-title">Xuất báo cáo</h5>
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-xxl-2 col-md-6">
+                                <select class="p-1">
+                                    <option>Tất cả</option>
+                                    <option>Tăng ca</option>
+                                    <option>Hành chính</option>
+                                </select>
+                            </div>
+                            <div class="col-xxl-3 col-md-6">
+                                <label>Phòng ban:</label>
+                                <select class="p-1">
+                                    <option>Phòng Kinh doanh</option>
+                                    <option>Phòng Tài chính</option>
+                                    <option>Phòng kỹ thuật</option>
+                                </select>
+                            </div>
+                            <div class="col-xxl-5 col-md-6">
+                                <label>Thời gian: </label>
+                                <input type="date"> - <input type="date">
+                            </div>
+                            <div class="col-xxl-2 col-md-6">
+                                <button class="btn bg-primary text-white" type="button">Xuất báo cáo</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+            </div>
+
+
+            <!-- ======= Footer ======= -->
+            <footer id="footer" class="footer">
+                <div class="credits">
+                    Designed by <strong>TamDa</strong>
+                </div>
+            </footer><!-- End Footer -->
+        </section>
+        <script src="assets/js/main.js"></script>
+        <div class="modal fade" id="xoaChamCong" style="height: 800px;">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content" style="margin-top: 200px;">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Xóa chấm công</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        Bạn có chắc chắn muốn xóa?
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button onclick="deleteCong()" type="button" class="btn btn-success"
+                            data-bs-dismiss="modal">
+                            Xóa
+                        </button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                            Đóng
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="suaChamCong" style="height: 800px;">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content" style="margin-top: 200px;">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Sửa chấm công</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <form class="form-inline">
+                          <div class="form-group mx-sm-3 mb-2">
+                            <label for="hoTenNV1" class="sr-only">Ngày chấm</label>
+                            <input type="date" class="form-control" id="ngaycham">
+                          </div>
+                            <div class="form-group mx-sm-3 mb-2">
+                              <label for="hoTenNV1" class="sr-only">Checkin</label>
+                              <input type="text" class="form-control" id="checkin">
+                            </div>
+                            <div class="form-group mx-sm-3 mb-2">
+                              <label for="emailNV1" class="sr-only">Checkout</label>
+                              <input type="text" class="form-control" id="checkout">
+                            </div>
+                          </form>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button onclick="editCong()" type="button" class="btn btn-success"
+                            data-bs-dismiss="modal">
+                            Sửa
+                        </button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                            Đóng
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/db.js"></script>
+  <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/echarts/echarts.min.js"></script>
+  <script src="assets/vendor/tinymce/tinymce.min.js"></script>
+  <!-- <script src="assets/vendor/bootstrap/js/bootstrap.min.js"></script> -->
+  
+</body>
+
+</html>

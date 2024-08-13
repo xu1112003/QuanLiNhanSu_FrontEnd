@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate QR Code</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+    <div id="qr-container"></div>
+
+    <script>
+        // Giả sử bạn đã có ID nhân viên
+        const employeeId = 1; 
+
+        // Tạo dữ liệu QR từ ID nhân viên (có thể là một URL hoặc một chuỗi đơn giản)
+        const qrData = `${employeeId}`;
+
+        // Tạo mã QR và hiển thị nó trên trang web
+        const qrCode = new QRCode(document.getElementById("qr-container"), {
+            text: qrData,
+            width: 128,
+            height: 128
+        });
+    </script>
+</body>
+</html>
