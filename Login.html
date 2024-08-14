@@ -79,17 +79,46 @@
         }
     </style>
     <script>
-        function register(){
-            var username = document.getElementById('yourUsername').value;
-            var password = document.getElementById('yourPassword').value;
-            if(username == "user" && password == "user"){
-                window.location.href = "MainUser.html";
+        // function register(){
+        //     var username = document.getElementById('yourUsername').value;
+        //     var password = document.getElementById('yourPassword').value;
+        //     if(username == "user" && password == "user"){
+        //         window.location.href = "MainUser.html";
+        //     }
+        //     else if(username == "admin" && password == "admin"){
+        //         window.location.href = "main.html";
+        //     }
+        //     else{
+        //         alert("Tài khoản hoặc mật khẩu không chính xác!");
+        //     }
+        // }
+        var accounts = [];
+        function fetchEmployee() {
+            fetch('https://localhost:7146/api/Account')
+            
+                .then(response => response.json())
+                .then(data => {
+                accounts = data;
+                })
+                .catch(error => console.error('Error fetching employee:', error));
             }
-            else if(username == "admin" && password == "admin"){
-                window.location.href = "main.html";
-            }
-            else{
-                alert("Tài khoản hoặc mật khẩu không chính xác!");
+        fetchEmployee();
+        async function login(event) {
+            event.preventDefault();
+            const username = document.getElementById('yourUsername').value;
+            const password = document.getElementById('yourPassword').value;
+            console.log(username, password);
+            // window.location.href = 'MainUser.html';
+            var account = accounts.find(account => account.username === username && account.password === password);
+            console.log(accounts); 
+            if (account){
+                if (account.role === 'user') {
+                    window.location.href = 'MainUser.html'; // Redirect to user page
+                } else if (account.role === 'admin') {
+                    window.location.href = 'main.html'; // Redirect to admin page
+                }else {
+                    alert('Role không xác định');
+                }
             }
         }
     </script>
@@ -104,9 +133,6 @@
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-lg-5 col-md-6">
-
-                            
-
                             <div class="card mb-3">
                                 <div class="d-flex justify-content-center align-items-center w-auto mt-4">
                                     <img style="width: 70px; height: 60px;" src="assets/img/logo/fpt-logo.png" alt="">
@@ -119,7 +145,7 @@
                                         <p class="text-center small">Enter your username & password to login</p>
                                     </div>
 
-                                    <form class="row g-3 needs-validation" onsubmit="register(); return false;">
+                                    <form class="row g-3 needs-validation" onsubmit="login(event); return false;">
 
                                         <div class="col-12">
                                             <label for="yourUsername" class="form-label">Username</label>
