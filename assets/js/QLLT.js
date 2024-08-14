@@ -88,7 +88,7 @@ async function fetchLuong() {
         .then(data => {
             dsLuong = data;
             renderLuong();
-            //initializeDataTable();
+            initializeDataTable();
         })
         .catch(error => console.error('Error fetching luong:', error));
 }
@@ -114,7 +114,7 @@ function renderLuong() {
         `;
     });
     listThueBlock.innerHTML = htmls.join('');            
-    initializeDataTable();
+    //initializeDataTable();
 }
 fetchLuong();
 function getLuongID(id) {
@@ -218,11 +218,12 @@ function editLuong(id) {
             });
         }
             fetchLuong();
+            location.reload();
             renderLuong();
             return response.json();
     })
     .then(updatedItem => { 
-        var index = dsLuong.findIndex(obj => obj.SalaryId === id);
+        var index = dsLuong.findIndex(obj => obj.salaryId === id);
         dsLuong[index] = updatedItem;  // Update the item in the local array
         fetchLuong(); // Sau khi cập nhật, gọi lại fetchLuong() để cập nhật
         renderLuong();  // Re-render the entire list to reflect changes
@@ -268,20 +269,13 @@ function renderHSL() {
                 <td>${position.id}</td>
                 <td>${position.name}</td>
                 <td>${position.heSo}</td>
-
-                <td>
-                    <span onclick="getHSLID(${position.id})" class="btn btn-success btn1" data-bs-toggle="modal"
-                                data-bs-target="#suaHSL">Sửa</span> 
-                    <span onclick="getHSLID(${position.id})" class="btn btn-danger btn1" data-bs-toggle="modal"
-                                data-bs-target="#xoaHSL">Xóa</span>
-                </td>
             </tr>
         `;
     });
     listThueBlock.innerHTML = htmls.join('');
     //initializeDataTable();
 }
-fetchHSL();
+//fetchHSL();
 function createHSL() {
     var dshsl = document.querySelector('.list-hsl');
     var item = {
@@ -381,7 +375,7 @@ async function fetchPL() {
         const data = await response.json();
         dsPhucLoi = data;
         //await fetchLuong();
-        //await fetchHSL();
+        await fetchHSL();
         renderPhucLoi();
         //initializeDataTable();
     }
