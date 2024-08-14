@@ -103,7 +103,7 @@ function initializeDataTable() {
       .then(data => {
         console.log('Data received from API:', data);
         lichs.push(data); // Thêm lịch làm việc mới vào danh sách
-        // location.reload();
+      
         fetchLich(); 
         // Xóa dữ liệu form sau khi thêm thành công
         document.getElementById('inputDate').value = '';
@@ -134,6 +134,7 @@ function deleteSchedule() {
   })
   .then(() => {
       fetchLich();
+      
   })
   .catch(error => console.error('Error deleting schedule:', error));
 }
@@ -186,6 +187,7 @@ function editSchedule() {
       if (response.status === 200 || response.status === 204) {
           // Cập nhật danh sách nhân viên
           fetchLich(); 
+        
       } else {
           // Đọc và xử lý phản hồi nếu cần
           return response.json();
@@ -216,7 +218,7 @@ function filterSchedule() {
       })
       .then((data) => {
         lichs = data;
-     
+        
         renderLich();
     })
       .catch(error => {

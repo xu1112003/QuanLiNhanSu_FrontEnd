@@ -86,7 +86,7 @@ function renderCong() {
         }
         return `
                 <tr class="item-${chamCong.congId}">
-                    <td>${chamCong.employeeName}</th>
+<td>${chamCong.employeeName}</th>
                     <td>${formatDate(chamCong.ngayCham)}</td>
                     <td>${chamCong.checkIn}</td>
                     
@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 video.srcObject = stream;
                 video.setAttribute('playsinline', true);
                 video.play();
-                requestAnimationFrame(tick);
+requestAnimationFrame(tick);
             });
 
         function tick() {
@@ -243,11 +243,22 @@ document.addEventListener('DOMContentLoaded', function () {
                     });
 
                     var em = employees.find(emp => emp.employeeId === response.employeeId);
-                    DisplayInforCheckin(em);
-                    closeModal("addChamCongModal");
-                    // capNhatTime();
-
-                    openModal("modalConfirm");
+                    var date = new Date();
+var thoigianht = date.getFullYear() + "-" + formatMonth(date.getMonth() + 1) + "-" + date.getDate() + "T00:00:00";
+                    var cong = congs.find(c => c.employeeId == em.id && c.ngayCham == thoigianht)
+                    if(cong){
+                        alert("Nhân viên " + em.name + " đã chấm công hôm nay rồi");
+                        closeModal("addChamCongModal");
+                        return;
+                    }
+                    else{
+                        DisplayInforCheckin(em);
+                    
+                        // capNhatTime();
+                        
+                        openModal("modalConfirm");
+                    }
+                    
                 } else {
                     alert("QR không hợp lệ hoặc không tìm thấy nhân viên.");
                     return;
@@ -308,7 +319,7 @@ function addCong() {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(cong)
+body: JSON.stringify(cong)
 
     })
         .then(response => {
