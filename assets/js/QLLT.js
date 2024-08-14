@@ -88,7 +88,7 @@ async function fetchLuong() {
         .then(data => {
             dsLuong = data;
             renderLuong();
-            initializeDataTable();
+            //initializeDataTable();
         })
         .catch(error => console.error('Error fetching luong:', error));
 }
@@ -114,7 +114,7 @@ function renderLuong() {
         `;
     });
     listThueBlock.innerHTML = htmls.join('');            
-    //initializeDataTable();
+    initializeDataTable();
 }
 fetchLuong();
 function getLuongID(id) {
@@ -238,7 +238,7 @@ async function fetchHSL() {
         .then(data => {
             dsHeSoLuong = data;
             renderHSL();
-            initializeDataTable();
+            //initializeDataTable();
         })
         .catch(error => console.error('Error fetching HSL: ', error));
         
