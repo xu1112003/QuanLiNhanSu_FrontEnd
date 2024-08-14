@@ -269,6 +269,10 @@ function renderHSL() {
                 <td>${position.id}</td>
                 <td>${position.name}</td>
                 <td>${position.heSo}</td>
+                <td>
+                    <span onclick="getHSLID(${position.id})" class="btn btn-success btn1" data-bs-toggle="modal"
+                                    data-bs-target="#suaHSL">Sửa</span> 
+                </td>
             </tr>
         `;
     });
