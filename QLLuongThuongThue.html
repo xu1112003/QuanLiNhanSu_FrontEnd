@@ -1,1145 +1,650 @@
-<style>
-    .popup {
-        display: none;
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0, 0, 0, 0.4);
-        color: red;
-    }
-
-    .popup-content {
-        background-color: #fefefe;
-        margin: 15% auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 30%;
-        opacity: 2;
-    }
-</style>
-<script>
-    options = {
-        series: [{
-            name: 'Thưởng',
-            data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
-        }, {
-            name: 'Lương',
-            data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
-        }, {
-            name: 'Thuế',
-            data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
-        }],
-        chart: {
-            type: 'bar',
-            height: 350
-        },
-        plotOptions: {
-            bar: {
-                horizontal: false,
-                columnWidth: '55%',
-                endingShape: 'rounded'
-            },
-        },
-        dataLabels: {
-            enabled: false
-        },
-        stroke: {
-            show: true,
-            width: 2,
-            colors: ['transparent']
-        },
-        xaxis: {
-            categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
-        },
-        yaxis: {
-            title: {
-                text: '$ (thousands)'
-            }
-        },
-        fill: {
-            opacity: 1
-        },
-        tooltip: {
-            y: {
-                formatter: function (val) {
-                    return "$ " + val + " thousands"
-                }
-            }
+<!DOCTYPE html>
+<html lang="en">
+    <style>
+        .popup {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            color: red;
         }
-    };
-
-    chart = new ApexCharts(document.querySelector("#chartCol"), options);
-    chart.render();
-
-    //TAB 2
-    count1 = 1;
-    var dsLuong = [];
-    var luongId = "";
-    var STT1 = 0;
-
-    async function fetchLuong() {
-        await fetch('https://localhost:44302/api/Salarys')
-            .then(response => { return response.json() })
-            .then(data => {
-                dsLuong = data;
-                renderLuong();
-            })
-            .catch(error => console.error('Error fetching luong:', error));
-    }
-
-    function renderLuong() {
-        var listThueBlock = document.querySelector('#list-luong');
-        var htmls = dsLuong.map(function (luong) {
-            STT1++;
-            return `
-               <tr class="item-Luong-${luong.salaryId}">
-                    <td>${luong.salaryId}</td>
-                    <td>${luong.salaryType}</td>
-                    <td>${luong.money}</td>
-
-                    <td>
-                        <span onclick="getLuongID(${luong.salaryId})" class="btn btn-success btn1" data-bs-toggle="modal"
-                                    data-bs-target="#suaLuong">Sửa</span>
-                        <span onclick="getLuongID(${luong.salaryId})" class="btn btn-danger btn1" data-bs-toggle="modal"
-                                    data-bs-target="#xoaLuong">Xóa</span>
-                    </td>
-                </tr>
-            `;
-        });
-        listThueBlock.innerHTML = htmls.join('');
-        //initializeDataTable();
-    }
-    //fetchLuong();
-    function getLuongID(id) {
-        fetch(`https://localhost:44302/api/Salarys/${id}`)
-            .then(response => response.json())
-            .then(item => {
-                if (item) {
-                    luongId = item.salaryId;
-                    document.getElementById('loai1').value = item.salaryType;
-                    document.getElementById('sotien1').value = item.money;
-                } else {
-                    console.error('Salary not found with ID:', id);
-                }
-            })
-            .catch(error => console.error('Error fetching luong by ID:', error));
-    }
-
-
-    function createLuong() {
-        try {
-            var dsluong = document.querySelector('.list-luong');
-            var item = {
-                salaryType: document.getElementById('loai').value,
-                money: document.getElementById('sotien').value
-            };
-
-
-            fetch('https://localhost:44302/api/Salarys', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    SalaryType: item.salaryType,
-                    Money: item.money
-                })
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.json().then(data => {
-                            showErrorPopup(data.title);
-                        });
-                    }
-                    fetchLuong();
-                    return response.json();
-                    ;
-                })
-                .then(data => {
-                    dsluong.push(item);
-                    fetchLuong();
-                })
-                .catch(error => console.error('Error creating luong:', error)
-                );
-            document.getElementById('loai').value = "";
-            document.getElementById('sotien').value = "";
-        } catch (error) {
-            showErrorPopup('An unexpected error occurred.');
+    
+        .popup-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 30%;
+            opacity: 2;
         }
-    }
+    </style>
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
+  <title>Pages / Login - NiceAdmin Bootstrap Template</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
 
-    function deleteLuong(id) {
-        fetch(`https://localhost:44302/api/Salarys/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(response => {
-                if (response.ok) {
-                    // Xóa thành công, cập nhật lại danh sách
-                    console.log('Xóa bản ghi thành công');
-                    fetchLuong(); // Sau khi xóa, gọi lại fetchLuong() để cập nhật lại danh sách
-                } else {
-                    // Xóa không thành công, hiển thị thông báo lỗi
-                    return response.json().then(data => {
-                        console.error('Error deleting luong:', data.title);
-                    });
-                }
-            })
-            .catch(error => console.error('Error deleting luong:', error));
-    }
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
 
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
 
-    function editLuong(id) {
-        var item = {
-            salaryType: document.getElementById('loai1').value,
-            money: document.getElementById('sotien1').value
-        };
+  <!-- Template Main CSS File -->
+  <link href="assets/css/main.css" rel="stylesheet">
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/db.js"></script>
+  <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/echarts/echarts.min.js"></script>
+  <script src="assets/vendor/tinymce/tinymce.min.js"></script>
+  <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
+  <script src="assets/vendor/jquery/jquery-3.7.1.js"></script>
+  <script src="assets/js/QLLT.js"></script>
 
-        fetch(`https://localhost:44302/api/Salarys/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(item)
-        })
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(data => {
-                        showErrorPopup(data.title);
-                    });
-                }
-                fetchLuong();
-                renderLuong();
-                return response.json();
-            })
-            .then(updatedItem => {
-                var index = dsLuong.findIndex(obj => obj.SalaryId === id);
-                dsLuong[index] = updatedItem;  // Update the item in the local array
-                fetchLuong(); // Sau khi cập nhật, gọi lại fetchLuong() để cập nhật
-                renderLuong();  // Re-render the entire list to reflect changes
-            })
-            .catch(error => console.error('Error editing luong:', error));
-    }
-    //Hệ số lương
-    var hslID = "";
-    var dsHeSoLuong = [];
-    async function fetchHSL() {
-        await fetch('https://localhost:44302/api/HeSos')
-            .then(response => { return response.json() })
-            .then(data => {
-                dsHeSoLuong = data;
-                renderHSL();
-            })
-            .catch(error => console.error('Error fetching HSL: ', error));
-    }
-    function getHSLID(id) {
+</head>
 
-        fetch(`https://localhost:44302/api/HeSos/${id}`)
-            .then(response => response.json())
-            .then(item => {
-                if (item) {
-                    hslID = item.id;
-                    document.getElementById('chucvu1').value = item.name;
-                    document.getElementById('heso1').value = item.heSo;
-                } else {
-                    console.error('He so not found with ID:', id);
-                }
-            })
-            .catch(error => console.error('Error fetching luong by ID:', error));
-    }
-    var count2 = 0;
-    function renderHSL() {
-        var listThueBlock = document.querySelector('#list-hsl');
-        var htmls = dsHeSoLuong.map(function (position) {
-            count2++;
-            return `
-               <tr class="item-hsl-${position.id}">
-                    <td>${position.id}</td>
-                    <td>${position.name}</td>
-                    <td>${position.heSo}</td>
+<body>
+  <header id="header" class="header fixed-top d-flex align-items-center">
 
-                    <td>
-                        <span onclick="getHSLID(${position.id})" class="btn btn-success btn1" data-bs-toggle="modal"
-                                    data-bs-target="#suaHSL">Sửa</span>
-                        <span onclick="getHSLID(${position.id})" class="btn btn-danger btn1" data-bs-toggle="modal"
-                                    data-bs-target="#xoaHSL">Xóa</span>
-                    </td>
-                </tr>
-            `;
-        });
-        listThueBlock.innerHTML = htmls.join('');
-        //initializeDataTable();
-    }
-    //fetchHSL();
-    function createHSL() {
-        var dshsl = document.querySelector('.list-hsl');
-        var item = {
-            name: document.getElementById('chucvu').value,
-            heSo: document.getElementById('heso').value
-        };
-        try {
-            fetch('https://localhost:44302/api/HeSos', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    Name: item.name,
-                    HeSo: item.heSo
-                })
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.json().then(data => {
-                            showErrorPopup(data.title);
-                        });
-                    }
-                    fetchHSL();
-                    return response.json();
-                })
-                .then(() => {
-                    // Re-fetch and render the updated salary list
-                    fetchHSL();
-                })
-                .catch(error => console.error('Error creating he so luong:', error));
-        } catch (error) {
-            return Console.log(error);
-        }
-        //chèn vào sau thì thay beforeend bằng afterbegin
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="#" class="logo d-flex align-items-center">
+        <img src="assets/img/logo/fpt-logo.png" alt="">
+        <span class="d-none d-lg-block">FPT Retail</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
 
-    }
-    function deleteHSL(id) {
-        fetch(`https://localhost:44302/api/HeSos/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(response => {
-                if (response.ok) {
-                    // Xóa thành công, cập nhật lại danh sách
-                    console.log('Xóa bản ghi thành công');
-                    fetchHSL(); // Sau khi xóa, gọi lại fetchLuong() để cập nhật lại danh sách
-                } else {
-                    // Xóa không thành công, hiển thị thông báo lỗi
-                    return response.json().then(data => {
-                        console.error('Error deleting luong:', data.message);
-                    });
-                }
-            })
-            .catch(error => console.error('Error deleting luong:', error));
-    }
-    function editHSL(id) {
-        var item = {
-            name: document.getElementById('chucvu1').value,
-            heSo: document.getElementById('heso1').value
-        };
+    <div class="search-bar">
+      <form class="search-form d-flex align-items-center">
+        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+      </form>
+    </div><!-- End Search Bar -->
 
-        fetch(`https://localhost:44302/api/HeSos/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(item)
-        })
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(data => {
-                        showErrorPopup(data.title);
-                    });
-                }
-                fetchHSL();
-                renderHSL();
-                return response.json()
-            })
-            .then(updatedItem => {
-                var index = dsHeSoLuong.findIndex(obj => obj.id === id);
-                dsHeSoLuong[index] = updatedItem;
-                fetchHSL();
-            })
-            .catch(error => console.error('Error editing he so luong:', error));
-    }
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
 
-    // Phúc lợi
-    var count_PL = 0;
-    var itemId_PL = "";
-    var dsPhucLoi = [];
-    async function fetchPL() {
-        await fetchLuong();
-        await fetchHSL();
-        await fetch('https://localhost:44302/api/PhucLois')
-            .then(response => { return response.json() })
-            .then(data => {
-                dsPhucLoi = data;
-                renderPhucLoi();
-                //initializeDataTable();
-            })
-            .catch(error => console.error('Error fetching Phuc Loi:', error));
-    }
-    function getItemID_PL(id) {
-        fetch(`https://localhost:44302/api/PhucLois/${id}`)
-            .then(response => response.json())
-            .then(item => {
-                if (item) {
-                    itemId_PL = item.phucLoiId;
-                    document.getElementById('tenPhucLoi1').value = item.phucLoiType;
-                    document.getElementById('ndPhucLoi1').value = item.money;
-                } else {
-                    console.error('Phuc Loi not found with ID:', id);
-                }
-            })
-            .catch(error => console.error('Error fetching phuc loi by ID:', error));
-    }
-    function renderPhucLoi() {
-        var listPhucLoiBlock = document.querySelector('#list-phucLoi');
-        var htmls = dsPhucLoi.map(function (PhucLoi) {
-            count_PL++;
-            return `
-                <tr class="item-PL-${PhucLoi.phucLoiId}">
-                    <th>${PhucLoi.phucLoiId}</th>
-                    <td>${PhucLoi.phucLoiType}</td>
-                    <td>${PhucLoi.money}</td>
+        <li class="nav-item d-block d-lg-none">
+          <a class="nav-link1 nav-icon search-bar-toggle " href="#">
+            <i class="bi bi-search"></i>
+          </a>
+        </li><!-- End Search Icon-->
 
-                    <td><span onclick="getItemID_PL(${PhucLoi.phucLoiId})" class="btn btn-success btn1" data-bs-toggle="modal"
-                            data-bs-target="#suaPhucLoi">Sửa</span>
-                        <span onclick="getItemID_PL(${PhucLoi.phucLoiId})" class="btn btn-danger btn1" data-bs-toggle="modal"
-                            data-bs-target="#xoaPhucLoi">Xóa</span>
-                    </td>
-                </tr>
-            `;
-        });
-        listPhucLoiBlock.innerHTML = htmls.join('');
-        //initializeDataTable();
-    }
-    // hienThi();
-    fetchPL();
+        <li class="nav-item dropdown">
 
-    function addPhucLoi() {
-        var item = {
-            phucLoiType: document.getElementById('tenPhucLoi').value,
-            money: document.getElementById('ndPhucLoi').value
-        };
+          <a class="nav-link1 nav-icon" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-bell"></i>
+            <span class="badge bg-danger badge-number">1</span>
+          </a><!-- End Notification Icon -->
 
-        fetch('https://localhost:44302/api/PhucLois', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(item)
-        })
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(data => {
-                        showErrorPopup(data.title);
-                    });
-                }
-                return response.json();
-            })
-            .then(() => {
-                fetchPL();
-            })
-            .catch(error => console.error('Error creating Phuc Loi:', error));
-    }
-    function deletePhucLoi(id) {
-        fetch(`https://localhost:44302/api/PhucLois/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(response => {
-                if (response.ok) {
-                    console.log('Xóa bản ghi thành công');
-                    fetchPL();
-                    window.location.href = 'http://127.0.0.1:5500/QLNhanSu/QLLuongThuongThue.html';
-                } else {
-                    return response.json().then(data => {
-                        console.error('Error deleting Pl:', data.message);
-                    });
-                }
-            })
-            .catch(error => console.error('Error deleting Pl:', error));
-    }
-    function editPhucLoi(id) {
-        var item = {
-            phucLoiType: document.getElementById('tenPhucLoi1').value,
-            money: document.getElementById('ndPhucLoi1').value
-        };
+        </li><!-- End Notification Nav -->
 
-        fetch(`https://localhost:44302/api/PhucLois/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(item)
-        })
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(data => {
-                        showErrorPopup(data.title);
-                    });
-                }
-                return response.json();
-            })
-            .then(updatedItem => {
-                var index = dsPhucLoi.findIndex(obj => obj.phucLoiId === id);
-                dsPhucLoi[index] = updatedItem;
-                fetchPL();
-            })
-            .catch(error => console.error('Error editing luong:', error));
-    }
-    function showErrorPopup(errorMessage) {
+        <li class="nav-item dropdown">
 
-        document.getElementById("errorMessage1").textContent = errorMessage;
-        document.getElementById("errorPopup1").style.display = "block";
-    }
+          <a class="nav-link1 nav-icon" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-chat-left-dots"></i>
+            <span class="badge bg-success badge-number">1</span>
+          </a><!-- End Messages Icon -->
 
-    function closePopup() {
-        document.getElementById("errorPopup1").style.display = "none";
-    }
-    function getThucLinh() {
-        fetch('https://localhost:44302/api/UserSalary/Tong')
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("totalCost").textContent = `đ ${data.tong.toLocaleString()}`;
-                document.getElementById("monthly").textContent = `đ ${data.monthly.toLocaleString()}`;
-                document.getElementById("yearly").textContent = `đ ${data.yearly.toLocaleString()}`;
-                document.getElementById("ttl").textContent = `đ ${data.tongThucLinh.toLocaleString()}`;
-                let ttlmonth = data.tongThucLinh / 12;
-                document.getElementById("ttl-monthly").textContent = `đ ${ttlmonth.toLocaleString()}`;
-                let ttlyear = data.tongThucLinh;
-                document.getElementById("ttl-year").textContent = `đ ${ttlyear.toLocaleString()}`;
-            })
-            .catch(error => console.error('Error fetching Tong:', error));
-    }
+        </li><!-- End Messages Nav -->
 
-    function initializeDataTable() {
-        const datatables = document.querySelectorAll('.datatable');
-        datatables.forEach(datatable => {
-            new simpleDatatables.DataTable(datatable, {
-                labels: {
-                    placeholder: "Tìm kiếm...", // Placeholder cho ô tìm kiếm
-                    perPage: "Số mục mỗi trang", // Dropdown số mục mỗi trang
-                    noRows: "Không có dữ liệu", // Thông báo khi không có hàng dữ liệu
-                    info: "Hiển thị {start} đến {end} của {rows} mục" // Thông tin về các mục hiển thị
-                },
-                columns: [
-                    { select: 2, sortSequence: ["desc", "asc"] },
-                    { select: 3, sortSequence: ["desc", "asc"] }
-                ]
-            });
-        });
-    }
-    var tg = 0;
-    function renderChuKyLuong() {
-        var listCKLBlock = document.querySelector('#chuKyLuong');
-        var htmls = dsChuKyLuong.map(function (item) {
-            tg++;
-            return `
-               <div class="col-xl-3 col-md-6 it-${tg}" >
-                        <div class="card overflow-auto p-4">
-                            <div class="filter py-2">
-                                <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                    <li><a class="dropdown-item btnChiTiet" href="ql-luongNV.html">Chi tiết</a></li>
-                                    <li onclick="deleteChuKyLuong(${tg})"><a class="dropdown-item" href="#">Xóa</a></li>
-                                </ul>
-                            </div>
-                            <div class="card-body">
-                                <h1 class="text-primary py-2">${item.header}</h1>
-                                <p class="py-1">${item.ngay}</p>
-                                <hr>
-                                <div class="col-12 d-flex">
-                                    <i class="bi bi-wallet" style="font-size: 1.8rem;"></i>
-                                    <div class="pagetitle ms-4">
-                                        <h2 class="text-success ">Tổng chi phí</h2>
-                                        <p class="mt-1">${item.tongChiPhi}</p>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex">
-                                    <i class="bi bi-currency-dollar" style="font-size: 1.8rem;"></i>
-                                    <div class="pagetitle ms-4">
-                                        <h2 class="text-success ">Tổng thực lĩnh</h2>
-                                        <p class="mt-1">${item.tongThucLinh}</p>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex">
-                                    <i class="bi bi-cash-coin" style="font-size: 1.8rem;"></i>
-                                    <div class="pagetitle ms-4">
-                                        <h2 class="text-success ">Chi phí vận hành</h2>
-                                        <p class="mt-1">${item.chiPhiVanHanh}</p>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex">
-                                    <i class="bi bi-star" style="font-size: 1.8rem;"></i>
-                                    <div class="pagetitle ms-4">
-                                        <h2 class="text-success ">Doanh thu</h2>
-                                        <p class="mt-1">${item.doanhThu}</p>
-                                    </div>
-                                </div>
+        <li class="nav-item dropdown pe-3">
 
-                            </div>
-                        </div>
-                    </div>
-            `;
-        });
-        listCKLBlock.innerHTML = htmls.join('');
-    }
-    renderChuKyLuong();
-    function createChuKyLuong() {
-        var dsCKL = document.querySelector('#chuKyLuong');
-        var ngayBD = new Date(document.getElementById('tgbatdau').value);
-        tg++;
-        var ngayKT = new Date(document.getElementById('tgketthuc').value);
-        var item = {
-            header: document.getElementById('head').value,
-            ngay: "Tháng " + ngayBD.getMonth() + " " + ngayBD.getDay() + " - " + "Tháng " + ngayKT.getMonth() + " " + ngayKT.getDay(),
-            tongChiPhi: document.getElementById('tongchiphi').value,
-            tongThucLinh: document.getElementById('tongthuclinh').value,
-            chiPhiVanHanh: document.getElementById('chiphivanhanh').value,
-            doanhThu: document.getElementById('doanhthu').value
-        };
-        console.log(item);
-        dsChuKyLuong.push(item);
-        //chèn vào sau thì thay beforeend bằng afterbegin
-        dsCKL.insertAdjacentHTML('afterbegin', `
-           <div class="col-xl-3 col-md-6 it-${tg}" >
-                        <div class="card overflow-auto p-4">
-                            <div class="filter py-2">
-                                <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                    <li><a class="dropdown-item btnChiTiet" href="ql-luongNV.html">Chi tiết</a></li>
-                                    <li onclick="deleteChuKyLuong(${tg})"><a class="dropdown-item" href="#">Xóa</a></li>
-                                </ul>
-                            </div>
-                            <div class="card-body">
-                                <h1 class="text-primary py-2">${item.header}</h1>
-                                <p class="py-1">${item.ngay}</p>
-                                <hr>
-                                <div class="col-12 d-flex">
-                                    <i class="bi bi-wallet" style="font-size: 1.8rem;"></i>
-                                    <div class="pagetitle ms-4">
-                                        <h2 class="text-success ">Tổng chi phí</h2>
-                                        <p class="mt-1">${item.tongChiPhi}</p>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex">
-                                    <i class="bi bi-currency-dollar" style="font-size: 1.8rem;"></i>
-                                    <div class="pagetitle ms-4">
-                                        <h2 class="text-success ">Tổng thực lĩnh</h2>
-                                        <p class="mt-1">${item.tongThucLinh}</p>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex">
-                                    <i class="bi bi-cash-coin" style="font-size: 1.8rem;"></i>
-                                    <div class="pagetitle ms-4">
-                                        <h2 class="text-success ">Chi phí vận hành</h2>
-                                        <p class="mt-1">${item.chiPhiVanHanh}</p>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex">
-                                    <i class="bi bi-star" style="font-size: 1.8rem;"></i>
-                                    <div class="pagetitle ms-4">
-                                        <h2 class="text-success ">Doanh thu</h2>
-                                        <p class="mt-1">${item.doanhThu}</p>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-        `);
-    }
-    function deleteChuKyLuong(id) {
-        dsChuKyLuong = dsChuKyLuong.filter(function (ckl) {
-            return ckl.id !== id;
-        });
-        var CKLItem = document.querySelector('.it-' + id);
-        if (CKLItem) {
-            CKLItem.remove();
-        }
-    }
-    // $('.btnChiTiet').click(function (event) {
-    //     event.preventDefault();
-    //     var link = $(this).attr("href");
-    //     $("#mainLTT").load(link);
-    // });
-    $(document).on('click', '.btnChiTiet', function (event) {
-        event.preventDefault();
-        var link = $(this).attr("href");
-        $("#mainLTT").load(link);
-    })
-</script>
-<main id="mainLTT" class="main m-3">
-
-    <!-- Start Page Title -->
-    <div class="pagetitle m-3">
-        <h1>Quản lý Lương - Phúc lợi - Hệ số</h1>
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="main.html">Trang chủ</a></li>
-                <li class="breadcrumb-item active">Quản lý Lương - Phúc lợi - Hệ số</li>
-            </ol>
-        </nav>
-    </div>
-
-    <div class="m-3">
-        <div class="">
-            <!-- Bordered Tabs -->
-            <ul class="nav nav-tabs nav-tabs-bordered" id="borderedTab" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#bordered-profile"
-                            type="button" role="tab" aria-controls="profile" aria-selected="true">
-                        Chính sách Lương - Phúc
-                        lợi
-                    </button>
-                </li>
-                <li class="nav-item tabhead" role="presentation">
-                    <button class="nav-link  " id="home-tab" data-bs-toggle="tab" data-bs-target="#bordered-home"
-                            type="button" role="tab" aria-controls="home" aria-selected="false" onclick="getThucLinh()">
-                        Chu kỳ lương
-                    </button>
-                </li>
+          <div class="dropdown btn-getstarted">
+            <!-- <button type="button" class="btn btn-getstarted" data-bs-toggle="dropdown"> -->
+            <img style="height: 45px; width: 45px;" src="assets/img/features-2.jpg" class="rounded-circle m-2"
+              data-bs-toggle="dropdown">
+            <!-- </button> -->
+            <ul class="dropdown-menu border-0"
+              style="box-shadow: 0px 0px 30px color-mix(in srgb, var(--default-color), transparent 85%);">
+              <li class="bg-light py-2 px-4"><a class="dropdown-header" href="#" style="font-size: 20px;">Nguyễn Đức
+                  Chung</a></li>
+              <li class="p-2"><a class="dropdown-item" href="#">
+                  <i class="bi bi-question-circle p-1 me-2"></i>Trợ giúp</a></li>
+              <li class="p-2"><a class="dropdown-item" href="Login.html">
+                  <i class="bi bi-box-arrow-in-right p-1 me-2"></i>Đăng xuất</a></li>
             </ul>
-            <div class="tab-content pt-4" id="borderedTabContent">
-                <!-- TAB2 -->
-                <div class="tab-pane fade " id="bordered-home" role="tabpanel" aria-labelledby="home-tab">
-                    <div class="card">
-                        <div class="container-fluid">
-                            <div class="col-12">
+          </div>
+
+        </li><!-- End Profile Nav -->
+
+      </ul>
+    </nav><!-- End Icons Navigation -->
+  </header>
+  <div class="d-flex bottom">
+    <aside id="sidebar" class="sidebar">
+      <ul class="sidebar-nav" id="sidebar-nav">
+        <li class="nav-item">
+          <a id="btnTrangChu" class="nav-link collapsed" href="TrangChuAdmin.html">
+            <i class="bi bi-house"></i>
+            <span>Trang chủ</span>
+          </a>
+        </li><!-- End Dashboard Nav -->
+        <li class="nav-item">
+          <a id="btnQLToChuc" class="nav-link collapsed" href="QLToChuc.html">
+            <i class="bi bi-grid-fill"></i>
+            <span>QL tổ chức</span>
+          </a>
+        </li><!-- End Dashboard Nav -->
+        <li class="nav-item">
+          <a id="btn1" class="nav-link collapsed" href="QLTuyenDung.html">
+            <i class="bi bi-briefcase"></i>
+            <span>QL Tuyển dụng</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a id="btnQLChamCong" class="nav-link collapsed" href="QLChamCong.html">
+            <i class="bi bi-calendar-check-fill"></i>
+            <span>QL Chấm công</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a id="btnLuong" class="nav-link" href="QLLuongThuongThue.html">
+            <i class="bi bi-cash-coin"></i>
+            <span>QL Lương - Thưởng - Thuế TNCN</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a id="btnQLHieuQua" class="nav-link collapsed" href="ql-congviec.html">
+            <i class="bi bi-bar-chart-line-fill"></i>
+            <span>Quản lý công việc</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a id="btnDaoTaoPT" class="nav-link collapsed" href="qllichtruc.html">
+            <i class="bi bi-graph-up-arrow"></i>
+            <span>Quản lý lịch làm việc</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a id="btnCongTT" class="nav-link collapsed" href="QLThongTinNS.html">
+            <i class="bi bi-xbox"></i>
+            <span>Quản lý chi tiết thông tin nhân sự</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a id="btnCongTT" class="nav-link collapsed" href="MangXHNBDN.html">
+            <i class="bi bi-bank"></i>
+            <span>Mạng xã hội nội bộ doanh nghiệp</span>
+          </a>
+        </li>
+      </ul>
+    </aside>
+    <div id="content" class="content">
+        <main id="mainLTT" class="main m-3">
+
+            <!-- Start Page Title -->
+            <div class="pagetitle m-3">
+                <h1>Quản lý Lương - Phúc lợi - Hệ số</h1>
+                <nav>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="main.html">Trang chủ</a></li>
+                        <li class="breadcrumb-item active">Quản lý Lương - Phúc lợi - Hệ số</li>
+                    </ol>
+                </nav>
+            </div>
+            
+                <div class="m-3">
+                    <div class="">
+                        <!-- Bordered Tabs -->
+                        <ul class="nav nav-tabs nav-tabs-bordered" id="borderedTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#bordered-profile"
+                                    type="button" role="tab" aria-controls="profile" aria-selected="true">Chính sách Lương - Phúc
+                                    lợi
+                                </button>
+                            </li>
+                            <li class="nav-item tabhead" role="presentation">
+                                <button class="nav-link  " id="home-tab" data-bs-toggle="tab" data-bs-target="#bordered-home"
+                                    type="button" role="tab" aria-controls="home" aria-selected="false" onclick="getThucLinh()">Chu kỳ lương</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content pt-4" id="borderedTabContent">
+                            <!-- TAB2 -->
+                            <div class="tab-pane fade " id="bordered-home" role="tabpanel" aria-labelledby="home-tab">
+                                <div class="card">
+                                    <div class="container-fluid">
+                                        <div class="col-12">
+                                            <div class="row">
+                                                <div class="card-body  d-flex flex-wrap">
+                                                    <div class="left col-md-12 col-xl-7 pagetitle mt-4">
+                                                        <h3 class="p-3">BẢNG LƯƠNG ĐỊNH KỲ</h3>
+                                                        <div id="chartCol"></div>
+                                                    </div>
+                                                    <div class="right col-md-12 col-xl-5 pagetitle p-4">
+                                                        <h3 class="p-3">TỔNG QUAN</h3>
+                                                        <div class="row">
+                                                            <div class="col-4">
+                                                                <p>Tổng chi phí</p>
+                                                                <p class="text-primary" id="totalCost"></p><br><br>
+            
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <p>Chi phí cả năm</p>
+                                                                <p class="text-primary" id="yearly">đ 162.50B</p><br><br>
+            
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <p>Chi phí tháng gần đây</p>
+                                                                <p class="text-primary" id="monthly">đ 162.50B</p><br><br>
+            
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-4">
+                                                                <p>Tổng thực lĩnh</p>
+                                                                <p class="text-primary" id ="ttl">đ 162.03B</p>
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <p>Thực lĩnh cả năm</p>
+                                                                <p class="text-primary" id="ttl-year">đ 162.03B</p>
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <p>Thực lĩnh tháng gần đây</p>
+                                                                <p class="text-primary" id = "ttl-monthly">đ 162.03B</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- TAB3 -->
+                            <div class="tab-pane fade show active" id="bordered-profile" role="tabpanel" aria-labelledby="profile-tab">
                                 <div class="row">
-                                    <div class="card-body  d-flex flex-wrap">
-                                        <div class="left col-md-12 col-xl-7 pagetitle mt-4">
-                                            <h3 class="p-3">BẢNG LƯƠNG ĐỊNH KỲ</h3>
-                                            <div id="chartCol"></div>
-                                        </div>
-                                        <div class="right col-md-12 col-xl-5 pagetitle p-4">
-                                            <h3 class="p-3">TỔNG QUAN</h3>
-                                            <div class="row">
-                                                <div class="col-4">
-                                                    <p>Tổng chi phí</p>
-                                                    <p class="text-primary" id="totalCost"></p><br><br>
-
-                                                </div>
-                                                <div class="col-4">
-                                                    <p>Chi phí cả năm</p>
-                                                    <p class="text-primary" id="yearly">đ 162.50B</p><br><br>
-
-                                                </div>
-                                                <div class="col-4">
-                                                    <p>Chi phí tháng gần đây</p>
-                                                    <p class="text-primary" id="monthly">đ 162.50B</p><br><br>
-
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-4">
-                                                    <p>Tổng thực lĩnh</p>
-                                                    <p class="text-primary" id="ttl">đ 162.03B</p>
-                                                </div>
-                                                <div class="col-4">
-                                                    <p>Thực lĩnh cả năm</p>
-                                                    <p class="text-primary" id="ttl-year">đ 162.03B</p>
-                                                </div>
-                                                <div class="col-4">
-                                                    <p>Thực lĩnh tháng gần đây</p>
-                                                    <p class="text-primary" id="ttl-monthly">đ 162.03B</p>
+                                    <div class="col-12 d-flex flex-wrap">
+                                        <div style="margin-left: -5px;" class="col-lg-6 col-sm-12 pe-1">
+                                            <div class="card recent-sales overflow-auto">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">CÁC LOẠI LƯƠNG</h5>
+                                                    <button type="button" class="btn btn-outline-primary mb-1"
+                                                        data-bs-toggle="modal" data-bs-target="#addLuong">Tạo mới</button>
+                                                    <table class="table table-borderless datatable list-luong">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">ID</th>
+                                                                <th scope="col">TÊN LOẠI</th>
+                                                                <th scope="col">SỐ TIỀN</th>
+                                                                <th scope="col"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+            
+                                                        </tbody>
+                                                    </table>
+            
                                                 </div>
                                             </div>
                                         </div>
+                                        <div style="margin-left: 5px;" class="col-lg-6 col-sm-12 ps-1">
+                                            <div class="card recent-sales overflow-auto">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">HỆ SỐ LƯƠNG</h5>
+                                                    <!-- <button type="button" class="btn btn-outline-primary mb-1"
+                                                        data-bs-toggle="modal" data-bs-target="#addHSL">Tạo mới</button> -->
+                                                    <table class="table table-borderless list-hsl">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">ID</th>
+                                                                <th scope="col">CHỨC VỤ</th>
+                                                                <th scope="col">HỆ SỐ</th>
+                                                                <th scope="col"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+            
+                                                        </tbody>
+                                                    </table>
+            
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="card recent-sales overflow-auto">
+                                            <div class="card-body">
+                                                <h5 class="card-title">PHÚC LỢI</h5>
+                                                <button type="button" class="btn btn-outline-primary mb-1" data-bs-toggle="modal"
+                                                    data-bs-target="#themPhucLoi">Tạo mới</button>
+                                                <table class="table table-borderless list-phucLoi">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">ID</th>
+                                                            <th scope="col">TÊN</th>
+                                                            <th scope="col">Nội dung</th>
+                                                            <th scope="col"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+            
+                                                    </tbody>
+                                                </table>
+            
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="pagetitle d-flex justify-content-between mt-5">
-                        <h2 class="p-2">DANH SÁCH CHU KỲ LƯƠNG</h2>
-                        <button type="button" class="btn bg-primary text-white" data-bs-toggle="modal"
-                                data-bs-target="#addCKL">
-                            + Thêm chu kỳ
-                        </button>
-                    </div>
-                    <hr class="mb-4">
-                    <div id="chuKyLuong" class="pagetitle row d-flex m-2 dashboard">
-
+            
+                        </div><!-- End Bordered Tabs -->
+            
                     </div>
                 </div>
-                <!-- TAB3 -->
-                <div class="tab-pane fade show active" id="bordered-profile" role="tabpanel" aria-labelledby="profile-tab">
-                    <div class="row">
-                        <div class="col-12 d-flex flex-wrap">
-                            <div style="margin-left: -5px;" class="col-lg-6 col-sm-12 pe-1">
-                                <div class="card recent-sales overflow-auto">
-                                    <div class="card-body">
-                                        <h5 class="card-title">CÁC LOẠI LƯƠNG</h5>
-                                        <button type="button" class="btn btn-outline-primary mb-1"
-                                                data-bs-toggle="modal" data-bs-target="#addLuong">
-                                            Tạo mới
-                                        </button>
-                                        <table class="table table-borderless datatable list-luong">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">ID</th>
-                                                    <th scope="col">TÊN LOẠI</th>
-                                                    <th scope="col">SỐ TIỀN</th>
-                                                    <th scope="col"></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="list-luong">
-                                            </tbody>
-                                        </table>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="margin-left: 5px;" class="col-lg-6 col-sm-12 ps-1">
-                                <div class="card recent-sales overflow-auto">
-                                    <div class="card-body">
-                                        <h5 class="card-title">HỆ SỐ LƯƠNG</h5>
-                                        <!-- <button type="button" class="btn btn-outline-primary mb-1"
-                                            data-bs-toggle="modal" data-bs-target="#addHSL">Tạo mới</button> -->
-                                        <table class="table table-borderless datatable list-hsl">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">ID</th>
-                                                    <th scope="col">CHỨC VỤ</th>
-                                                    <th scope="col">HỆ SỐ</th>
-                                                    <th scope="col"></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="list-hsl">
-                                            </tbody>
-                                        </table>
-
-                                    </div>
-                                </div>
-                            </div>
+                <footer id="footer" class="footer">
+                    <div class="credits">
+                        Designed by <strong>EHEHEHE</strong>
+                    </div>
+                </footer><!-- End Footer -->
+            </main>
+            <!-- TAB2 -->
+            <div id="errorPopup1" class="popup">
+                <div class="popup-content" >
+                    <h2>Error</h2>
+                    <p id="errorMessage1" >
+                        <p>Please check again.</p>
+                    </p>
+                    <button onclick="closePopup()">Close</button>
+                </div>
+            </div>
+            <!-- Lương -->
+            <div class="modal fade pt-5" id="addLuong" style="height: 1140px;">
+                <div class="modal-dialog modal-lg" style="margin-top: 150px;">
+                    <div class="modal-content">
+                        <!-- header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Thêm loại lương mới</h4>
+                            <div class="btn-close" data-bs-dismiss="modal"></div>
                         </div>
-                        <div class="col-lg-12">
-                            <div class="card recent-sales overflow-auto">
-                                <div class="card-body">
-                                    <h5 class="card-title">PHÚC LỢI</h5>
-                                    <button type="button" class="btn btn-outline-primary mb-1" data-bs-toggle="modal"
-                                            data-bs-target="#themPhucLoi">
-                                        Tạo mới
-                                    </button>
-                                    <table class="table table-borderless datatable list-phucLoi">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">ID</th>
-                                                <th scope="col">TÊN</th>
-                                                <th scope="col">Nội dung</th>
-                                                <th scope="col"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="list-phucLoi">
-                                        </tbody>
-                                    </table>
-
-                                </div>
+                        <!-- body -->
+                        <form class="form-inline">
+                            <div class="form-group mx-sm-3 mb-2">
+                                <label for="loai" class="sr-only">Tên loại</label>
+                                <input type="text" class="form-control" id="loai">
                             </div>
+                            <div class="form-group mx-sm-3 mb-2">
+                                <label for="sotien" class="sr-only">Số tiền</label>
+                                <input type="text" class="form-control" id="sotien">
+                            </div>
+                        </form>
+                        <!-- footer -->
+                        <div class="modal-footer">
+                            <button onclick="createLuong()" type="button" class="btn btn-success" data-bs-dismiss="modal">
+                                Thêm
+                            </button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                                Đóng
+                            </button>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="modal fade pt-5" id="suaLuong" style="height: 1140px;">
+                <div class="modal-dialog modal-lg" style="margin-top: 150px;">
+                    <div class="modal-content">
+                        <!-- header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Sửa loại lương</h4>
+                            <div class="btn-close" data-bs-dismiss="modal"></div>
+                        </div>
+                        <!-- body -->
+                        <form class="form-inline">
+                            <div class="form-group mx-sm-3 mb-2">
+                                <label for="loai1" class="sr-only">Tên loại</label>
+                                <input type="text" class="form-control" id="loai1">
+                            </div>
+                            <div class="form-group mx-sm-3 mb-2">
+                                <label for="sotien1" class="sr-only">Số tiền</label>
+                                <input type="text" class="form-control" id="sotien1">
+                            </div>
+                        </form>
+                        <!-- footer -->
+                        <div class="modal-footer">
+                            <button onclick="editLuong(luongId)" type="button" class="btn btn-success" data-bs-dismiss="modal">
+                                Sửa
+                            </button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                                Đóng
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="xoaLuong" style="height: 1140px;">
+                <div class="modal-dialog modal-md" style="margin-top: 150px;">
+                    <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Xóa luong</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+            
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            Bạn có chắc chắn muốn xóa?
+                        </div>
+            
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button onclick="deleteLuong(luongId)" type="button" class="btn btn-success" data-bs-dismiss="modal">
+                                Xóa
+                            </button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                                Đóng
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- HSL -->
+            <div class="modal fade pt-5" id="addHSL" style="height: 1140px;">
+                <div class="modal-dialog modal-lg" style="margin-top: 150px;">
+                    <div class="modal-content">
+                        <!-- header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Thêm hệ số lương mới</h4>
+                            <div class="btn-close" data-bs-dismiss="modal"></div>
+                        </div>
+                        <!-- body -->
+                        <form class="form-inline">
+                            <div class="form-group mx-sm-3 mb-2">
+                                <label for="chucvu" class="sr-only">Chức vụ</label>
+                                <input type="text" class="form-control" id="chucvu">
+                            </div>
+                            <div class="form-group mx-sm-3 mb-2">
+                                <label for="heso" class="sr-only">Hệ số</label>
+                                <input type="text" class="form-control" id="heso">
+                            </div>
+                        </form>
+                        <!-- footer -->
+                        <div class="modal-footer">
+                            <button onclick="createHSL()" type="button" class="btn btn-success" data-bs-dismiss="modal">
+                                Thêm
+                            </button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                                Đóng
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="xoaHSL" style="height: 1140px;">
+                <div class="modal-dialog modal-md" style="margin-top: 150px;">
+                    <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Xóa hệ số lương</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+            
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            Bạn có chắc chắn muốn xóa?
+                        </div>
+            
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button onclick="deleteHSL(hslID)" type="button" class="btn btn-success" data-bs-dismiss="modal">
+                                Xóa
+                            </button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                                Đóng
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade pt-5" id="suaHSL" style="height: 1140px;">
+                <div class="modal-dialog modal-lg" style="margin-top: 150px;">
+                    <div class="modal-content">
+                        <!-- header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Sửa hệ số lương</h4>
+                            <div class="btn-close" data-bs-dismiss="modal"></div>
+                        </div>
+                        <!-- body -->
+                        <form class="form-inline">
+                            <div class="form-group mx-sm-3 mb-2">
+                                <label for="chucvu1" class="sr-only">Chức vụ</label>
+                                <input type="text" class="form-control" id="chucvu1">
+                            </div>
+                            <div class="form-group mx-sm-3 mb-2">
+                                <label for="heso1" class="sr-only">Hệ số</label>
+                                <input type="text" class="form-control" id="heso1">
+                            </div>
+                        </form>
+                        <!-- footer -->
+                        <div class="modal-footer">
+                            <button onclick="editHSL(hslID)" type="button" class="btn btn-success" data-bs-dismiss="modal">
+                                Sửa
+                            </button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                                Đóng
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- modal Tạo Phúc lợi -->
+            <div class="modal fade pt-5" id="themPhucLoi" style="height: 1140px;">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content">
+                        <!-- header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Thêm phúc lợi mới</h4>
+                            <div class="btn-close" data-bs-dismiss="modal"></div>
+                        </div>
+                        <!-- body -->
+                        <form class="form-inline">
+                            <div class="form-group mx-sm-3 mb-2">
+                                <label for="tenPhucLoi" class="sr-only">Tên phúc lợi</label>
+                                <input type="text" class="form-control" id="tenPhucLoi">
+                            </div>
+                            <div class="form-group mx-sm-3 mb-2">
+                                <label for="ndPhucLoi" class="sr-only">Nội dung</label>
+                                <input type="text" class="form-control" id="ndPhucLoi">
+                            </div>
+                        </form>
+                        <!-- footer -->
+                        <div class="modal-footer">
+                            <button onclick="addPhucLoi()" type="button" class="btn btn-success" data-bs-dismiss="modal">
+                                Thêm
+                            </button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                                Đóng
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end modal Tạo Phúc lợi -->
+            <!-- modal sửa Phúc lợi -->
+            <div class="modal fade pt-5" id="suaPhucLoi" style="height: 1140px;">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content">
+                        <!-- header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Sửa phúc lợi</h4>
+                            <div class="btn-close" data-bs-dismiss="modal"></div>
+                        </div>
+                        <!-- body -->
+                        <form class="form-inline">
+                            <div class="form-group mx-sm-3 mb-2">
+                                <label for="tenPhucLoi1" class="sr-only">Tên phúc lợi</label>
+                                <input type="text" class="form-control" id="tenPhucLoi1">
+                            </div>
+                            <div class="form-group mx-sm-3 mb-2">
+                                <label for="ndPhucLoi1" class="sr-only">Nội dung</label>
+                                <input type="text" class="form-control" id="ndPhucLoi1">
+                            </div>
+                        </form>
+                        <!-- footer -->
+                        <div class="modal-footer">
+                            <button onclick="editPhucLoi(itemId_PL)" type="button" class="btn btn-success" data-bs-dismiss="modal">
+                                Cập nhật
+                            </button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                                Đóng
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end modal sửa Phúc lợi -->
+            <!-- modal xóa Phúc lợi -->
+            <div class="modal fade" id="xoaPhucLoi" style="height: 1140px;">
+                <div class="modal-dialog modal-dialog-centered modal-md">
+                    <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Xóa phúc lợi</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+            
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            Bạn có chắc chắn muốn xóa bản ghi này?
+                        </div>
+            
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button onclick="deletePhucLoi(itemId_PL)" type="button" class="btn btn-success"
+                                data-bs-dismiss="modal">
+                                Xóa
+                            </button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                                Đóng
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end modal xóa Phúc lợi -->
+      <!-- End #main -->
+      <!-- ======= Footer ======= -->
+      <footer id="footer" class="footer">
+        <div class="credits">Designed by <a href="#">Tam Đa</a></div>
+      </footer>
+    </div>
+  </div>
+  <!-- <script src="assets/vendor/bootstrap/js/bootstrap.min.js"></script> -->
+  
+</body>
 
-            </div><!-- End Bordered Tabs -->
-
-        </div>
-    </div>
-    <footer id="footer" class="footer">
-        <div class="credits">
-            Designed by <strong>EHEHEHE</strong>
-        </div>
-    </footer><!-- End Footer -->
-</main>
-<!-- TAB2 -->
-<div id="errorPopup1" class="popup">
-    <div class="popup-content">
-        <h2>Error</h2>
-        <p id="errorMessage1">
-        <p>Please check again.</p>
-        </p>
-        <button onclick="closePopup()">Close</button>
-    </div>
-</div>
-<!-- Lương -->
-<div class="modal fade pt-5" id="addLuong" style="height: 1140px;">
-    <div class="modal-dialog modal-lg" style="margin-top: 150px;">
-        <div class="modal-content">
-            <!-- header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Thêm loại lương mới</h4>
-                <div class="btn-close" data-bs-dismiss="modal"></div>
-            </div>
-            <!-- body -->
-            <form class="form-inline">
-                <div class="form-group mx-sm-3 mb-2">
-                    <label for="loai" class="sr-only">Tên loại</label>
-                    <input type="text" class="form-control" id="loai">
-                </div>
-                <div class="form-group mx-sm-3 mb-2">
-                    <label for="sotien" class="sr-only">Số tiền</label>
-                    <input type="text" class="form-control" id="sotien">
-                </div>
-            </form>
-            <!-- footer -->
-            <div class="modal-footer">
-                <button onclick="createLuong()" type="button" class="btn btn-success" data-bs-dismiss="modal">
-                    Thêm
-                </button>
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-                    Đóng
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade pt-5" id="suaLuong" style="height: 1140px;">
-    <div class="modal-dialog modal-lg" style="margin-top: 150px;">
-        <div class="modal-content">
-            <!-- header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Sửa loại lương</h4>
-                <div class="btn-close" data-bs-dismiss="modal"></div>
-            </div>
-            <!-- body -->
-            <form class="form-inline">
-                <div class="form-group mx-sm-3 mb-2">
-                    <label for="loai1" class="sr-only">Tên loại</label>
-                    <input type="text" class="form-control" id="loai1">
-                </div>
-                <div class="form-group mx-sm-3 mb-2">
-                    <label for="sotien1" class="sr-only">Số tiền</label>
-                    <input type="text" class="form-control" id="sotien1">
-                </div>
-            </form>
-            <!-- footer -->
-            <div class="modal-footer">
-                <button onclick="editLuong(luongId)" type="button" class="btn btn-success" data-bs-dismiss="modal">
-                    Sửa
-                </button>
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-                    Đóng
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="xoaLuong" style="height: 1140px;">
-    <div class="modal-dialog modal-md" style="margin-top: 150px;">
-        <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Xóa luong</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-
-            <!-- Modal body -->
-            <div class="modal-body">
-                Bạn có chắc chắn muốn xóa?
-            </div>
-
-            <!-- Modal footer -->
-            <div class="modal-footer">
-                <button onclick="deleteLuong(luongId)" type="button" class="btn btn-success" data-bs-dismiss="modal">
-                    Xóa
-                </button>
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-                    Đóng
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- HSL -->
-<div class="modal fade pt-5" id="addHSL" style="height: 1140px;">
-    <div class="modal-dialog modal-lg" style="margin-top: 150px;">
-        <div class="modal-content">
-            <!-- header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Thêm hệ số lương mới</h4>
-                <div class="btn-close" data-bs-dismiss="modal"></div>
-            </div>
-            <!-- body -->
-            <form class="form-inline">
-                <div class="form-group mx-sm-3 mb-2">
-                    <label for="chucvu" class="sr-only">Chức vụ</label>
-                    <input type="text" class="form-control" id="chucvu">
-                </div>
-                <div class="form-group mx-sm-3 mb-2">
-                    <label for="heso" class="sr-only">Hệ số</label>
-                    <input type="text" class="form-control" id="heso">
-                </div>
-            </form>
-            <!-- footer -->
-            <div class="modal-footer">
-                <button onclick="createHSL()" type="button" class="btn btn-success" data-bs-dismiss="modal">
-                    Thêm
-                </button>
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-                    Đóng
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="xoaHSL" style="height: 1140px;">
-    <div class="modal-dialog modal-md" style="margin-top: 150px;">
-        <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Xóa hệ số lương</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-
-            <!-- Modal body -->
-            <div class="modal-body">
-                Bạn có chắc chắn muốn xóa?
-            </div>
-
-            <!-- Modal footer -->
-            <div class="modal-footer">
-                <button onclick="deleteHSL(hslID)" type="button" class="btn btn-success" data-bs-dismiss="modal">
-                    Xóa
-                </button>
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-                    Đóng
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade pt-5" id="suaHSL" style="height: 1140px;">
-    <div class="modal-dialog modal-lg" style="margin-top: 150px;">
-        <div class="modal-content">
-            <!-- header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Sửa hệ số lương</h4>
-                <div class="btn-close" data-bs-dismiss="modal"></div>
-            </div>
-            <!-- body -->
-            <form class="form-inline">
-                <div class="form-group mx-sm-3 mb-2">
-                    <label for="chucvu1" class="sr-only">Chức vụ</label>
-                    <input type="text" class="form-control" id="chucvu1">
-                </div>
-                <div class="form-group mx-sm-3 mb-2">
-                    <label for="heso1" class="sr-only">Hệ số</label>
-                    <input type="text" class="form-control" id="heso1">
-                </div>
-            </form>
-            <!-- footer -->
-            <div class="modal-footer">
-                <button onclick="editHSL(hslID)" type="button" class="btn btn-success" data-bs-dismiss="modal">
-                    Sửa
-                </button>
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-                    Đóng
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- modal Tạo Phúc lợi -->
-<div class="modal fade pt-5" id="themPhucLoi" style="height: 1140px;">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <!-- header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Thêm phúc lợi mới</h4>
-                <div class="btn-close" data-bs-dismiss="modal"></div>
-            </div>
-            <!-- body -->
-            <form class="form-inline">
-                <div class="form-group mx-sm-3 mb-2">
-                    <label for="tenPhucLoi" class="sr-only">Tên phúc lợi</label>
-                    <input type="text" class="form-control" id="tenPhucLoi">
-                </div>
-                <div class="form-group mx-sm-3 mb-2">
-                    <label for="ndPhucLoi" class="sr-only">Nội dung</label>
-                    <input type="text" class="form-control" id="ndPhucLoi">
-                </div>
-            </form>
-            <!-- footer -->
-            <div class="modal-footer">
-                <button onclick="addPhucLoi()" type="button" class="btn btn-success" data-bs-dismiss="modal">
-                    Thêm
-                </button>
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-                    Đóng
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- end modal Tạo Phúc lợi -->
-<!-- modal sửa Phúc lợi -->
-<div class="modal fade pt-5" id="suaPhucLoi" style="height: 1140px;">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <!-- header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Sửa phúc lợi</h4>
-                <div class="btn-close" data-bs-dismiss="modal"></div>
-            </div>
-            <!-- body -->
-            <form class="form-inline">
-                <div class="form-group mx-sm-3 mb-2">
-                    <label for="tenPhucLoi1" class="sr-only">Tên phúc lợi</label>
-                    <input type="text" class="form-control" id="tenPhucLoi1">
-                </div>
-                <div class="form-group mx-sm-3 mb-2">
-                    <label for="ndPhucLoi1" class="sr-only">Nội dung</label>
-                    <input type="text" class="form-control" id="ndPhucLoi1">
-                </div>
-            </form>
-            <!-- footer -->
-            <div class="modal-footer">
-                <button onclick="editPhucLoi(itemId_PL)" type="button" class="btn btn-success" data-bs-dismiss="modal">
-                    Cập nhật
-                </button>
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-                    Đóng
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- end modal sửa Phúc lợi -->
-<!-- modal xóa Phúc lợi -->
-<div class="modal fade" id="xoaPhucLoi" style="height: 1140px;">
-    <div class="modal-dialog modal-dialog-centered modal-md">
-        <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Xóa phúc lợi</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-
-            <!-- Modal body -->
-            <div class="modal-body">
-                Bạn có chắc chắn muốn xóa bản ghi này?
-            </div>
-
-            <!-- Modal footer -->
-            <div class="modal-footer">
-                <button onclick="deletePhucLoi(itemId_PL)" type="button" class="btn btn-success"
-                        data-bs-dismiss="modal">
-                    Xóa
-                </button>
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-                    Đóng
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- end modal xóa Phúc lợi -->
+</html>
