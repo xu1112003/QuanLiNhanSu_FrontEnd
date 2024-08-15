@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 video.srcObject = stream;
                 video.setAttribute('playsinline', true);
                 video.play();
-requestAnimationFrame(tick);
+                requestAnimationFrame(tick);
             });
 
         function tick() {
@@ -198,21 +198,57 @@ requestAnimationFrame(tick);
 
 
     })
+    // $("#addCheckout").click(() => {
+    //     var date = new Date();
+    //     var hour = String(date.getHours()).padStart(2, '0');
+    //     var minute = String(date.getMinutes()).padStart(2, '0');
+    //     var second = String(date.getSeconds()).padStart(2, '0');
+    //     var thoigianht = date.getFullYear() + "-" + formatMonth(date.getMonth() + 1) + "-" + date.getDate() + "T00:00:00";
+    //     var timenow = hour + ":" + minute + ":" + second;
+    //     var cong = congs.find(c => c.ngayCham === thoigianht);
+    //     console.log(thoigianht);
+    //     if (cong) {
+    //         document.getElementById('checkout').textContent = timenow;
+    //         openEditModal(cong.congId);
+    //     }
+    //     else {
+    //         document.getElementById('checkout').textContent = "Bạn chưa checkin!";
+    //     }
+    // })
     $("#addCheckout").click(() => {
-        var date = new Date();
-        var hour = String(date.getHours()).padStart(2, '0');
-        var minute = String(date.getMinutes()).padStart(2, '0');
-        var second = String(date.getSeconds()).padStart(2, '0');
-        var thoigianht = date.getFullYear() + "-" + formatMonth(date.getMonth() + 1) + "-" + date.getDate() + "T00:00:00";
-        var timenow = hour + ":" + minute + ":" + second;
-        var cong = congs.find(c => c.ngayCham === thoigianht);
-        console.log(thoigianht);
-        if (cong) {
-            document.getElementById('checkout').textContent = timenow;
-            openEditModal(cong.congId);
-        }
-        else {
-            document.getElementById('checkout').textContent = "Bạn chưa checkin!";
+        var video = document.getElementById('video');
+        var canvasElement = document.getElementById('canvas');
+        var canvas = canvasElement.getContext('2d');
+        var loadingMessage = document.getElementById('loadingMessage');
+
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+            .then(function (stream) {
+                video.srcObject = stream;
+                video.setAttribute('playsinline', true);
+                video.play();
+                requestAnimationFrame(tick);
+            });
+
+        function tick() {
+            if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                canvasElement.hidden = false;
+                canvasElement.height = video.videoHeight;
+                canvasElement.width = video.videoWidth;
+                canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
+                var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
+                var code = jsQR(imageData.data, imageData.width, imageData.height, {
+                    inversionAttempts: "dontInvert",
+                });
+                if (code) {
+                    console.log("Found QR code:", code);
+                    checkEmployeeByQR1(code.data);
+                    // closeModal("addChamCongModal");
+                    // // capNhatTime();
+
+                    // openModal("modalConfirm");
+                }
+            }
+            requestAnimationFrame(tick);
         }
     })
     document.getElementById("addChamCongModal").addEventListener('hidden.bs.modal', function () {
@@ -231,6 +267,55 @@ requestAnimationFrame(tick);
         document.getElementById('name').textContent = em.name;
         capNhatTime();
     }
+    function checkEmployeeByQR1(qrData) {
+        $.ajax({
+            url: `https://localhost:44302/api/Employees/${qrData}`,
+            type: 'GET',
+            success: function (response) {
+                if (response && response.id) {
+                    console.log("Employee found:", response);
+                    video.srcObject.getTracks().forEach(function (track) {
+                        track.stop();
+                    });
+
+                    var em = employees.find(emp => emp.id === response.id);
+                    var date = new Date();
+                    var thoigianht = date.getFullYear() + "-" + formatMonth(date.getMonth() + 1) + "-" + date.getDate() + "T00:00:00";
+                    var cong = congs.find(c => c.employeeId == em.id && c.ngayCham == thoigianht)
+                    if (!cong) {
+                        alert("Nhân viên " + em.name + " chưa chấm công hôm nay!");
+                        closeModal("addChamCongModal");
+                        return;
+                    }
+                    else {
+                        var date = new Date();
+                        var hour = String(date.getHours()).padStart(2, '0');
+                        var minute = String(date.getMinutes()).padStart(2, '0');
+                        var second = String(date.getSeconds()).padStart(2, '0');
+                        var thoigianht = date.getFullYear() + "-" + formatMonth(date.getMonth() + 1) + "-" + date.getDate() + "T00:00:00";
+                        var timenow = hour + ":" + minute + ":" + second;
+                        console.log(thoigianht);
+
+                        document.getElementById('checkout').textContent = timenow;
+                        openEditModal(cong.congId);
+
+
+                        // capNhatTime();
+
+                        openModal("modalCheckout");
+                    }
+
+                } else {
+                    alert("QR không hợp lệ hoặc không tìm thấy nhân viên.");
+                    return;
+                }
+            },
+            error: function () {
+                alert("Đã xảy ra lỗi khi kiểm tra QR code.");
+                return;
+            }
+        });
+    }
     function checkEmployeeByQR(qrData) {
         $.ajax({
             url: `https://localhost:44302/api/Employees/${qrData}`,
@@ -242,23 +327,23 @@ requestAnimationFrame(tick);
                         track.stop();
                     });
 
-                    var em = employees.find(emp => emp.employeeId === response.employeeId);
+                    var em = employees.find(emp => emp.id === response.id);
                     var date = new Date();
-var thoigianht = date.getFullYear() + "-" + formatMonth(date.getMonth() + 1) + "-" + date.getDate() + "T00:00:00";
+                    var thoigianht = date.getFullYear() + "-" + formatMonth(date.getMonth() + 1) + "-" + date.getDate() + "T00:00:00";
                     var cong = congs.find(c => c.employeeId == em.id && c.ngayCham == thoigianht)
-                    if(cong){
+                    if (cong) {
                         alert("Nhân viên " + em.name + " đã chấm công hôm nay rồi");
                         closeModal("addChamCongModal");
                         return;
                     }
-                    else{
+                    else {
                         DisplayInforCheckin(em);
-                    
+
                         // capNhatTime();
-                        
+
                         openModal("modalConfirm");
                     }
-                    
+
                 } else {
                     alert("QR không hợp lệ hoặc không tìm thấy nhân viên.");
                     return;
@@ -319,7 +404,7 @@ function addCong() {
         headers: {
             'Content-Type': 'application/json'
         },
-body: JSON.stringify(cong)
+        body: JSON.stringify(cong)
 
     })
         .then(response => {

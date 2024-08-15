@@ -45,7 +45,7 @@ $(document).ready(() => {
     var htmls = positions.map(function (position) {
       return `
                   <tr class="item-${position.positionId}">
-                    <th scope="row">${position.positionId++}</th>
+                    <th scope="row">${position.positionId}</th>
                       <td>${position.positionName}</td>
                       <td>${position.description}</td>
                       <td>${position.number}</td>
@@ -156,8 +156,9 @@ $(document).ready(() => {
   let positionToDelete;
   function openDeleteModal(id) {
     positionToDelete = id;
+    console.log(positionToDelete);
   }
-  function deleteNhomQuyen(id) {
+  function deleteNhomQuyen() {
     fetch(`https://localhost:44302/api/Positions/${positionToDelete}`, {
       method: "DELETE",
     })
