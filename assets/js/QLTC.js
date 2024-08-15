@@ -28,7 +28,7 @@ $(document).ready(() => {
   var positions = [];
 
   function fetchPosition() {
-    fetch("https://localhost:7146/api/Positions")
+    fetch("https://localhost:44302/api/Positions")
       .then((response) => response.json())
       .then((data) => {
         positions = data;
@@ -126,7 +126,7 @@ $(document).ready(() => {
     };
 
     // Gửi dữ liệu đến API
-    fetch("https://localhost:7146/api/Positions", {
+    fetch("https://localhost:44302/api/Positions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -158,7 +158,7 @@ $(document).ready(() => {
     positionToDelete = id;
   }
   function deleteNhomQuyen(id) {
-    fetch(`https://localhost:7146/api/Positions/${positionToDelete}`, {
+    fetch(`https://localhost:44302/api/Positions/${positionToDelete}`, {
       method: "DELETE",
     })
       .then((response) => {
@@ -193,7 +193,7 @@ $(document).ready(() => {
     const number = document.getElementById("thanhVienNhomQuyen1").value;
     const heSo = document.getElementById("heSoNhomQuyen1").value;
 
-    fetch(`https://localhost:7146/api/Positions/${positionToEdit}`, {
+    fetch(`https://localhost:44302/api/Positions/${positionToEdit}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
