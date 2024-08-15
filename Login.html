@@ -92,34 +92,50 @@
         //         alert("Tài khoản hoặc mật khẩu không chính xác!");
         //     }
         // }
-        var accounts = [];
-        function fetchEmployee() {
-            fetch('https://localhost:7146/api/Account')
+
+        function getRoleFromToken(token) {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            return payload['role'];
+        }
+
+        async function Submit(event) { 
+           
             
-                .then(response => response.json())
-                .then(data => {
-                accounts = data;
-                })
-                .catch(error => console.error('Error fetching employee:', error));
-            }
-        fetchEmployee();
-        async function login(event) {
-            event.preventDefault();
-            const username = document.getElementById('yourUsername').value;
+            const email = document.getElementById('yourUsername').value;
             const password = document.getElementById('yourPassword').value;
-            console.log(username, password);
-            // window.location.href = 'MainUser.html';
-            var account = accounts.find(account => account.username === username && account.password === password);
-            console.log(accounts); 
-            if (account){
-                if (account.role === 'user') {
-                    window.location.href = 'MainUser.html'; // Redirect to user page
-                } else if (account.role === 'admin') {
-                    window.location.href = 'main.html'; // Redirect to admin page
-                }else {
-                    alert('Role không xác định');
+            
+
+            try {
+                const response = await fetch('https://localhost:44302/api/Users/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    alert('Đăng nhập thất bại: ' + (errorData.message));
+                    return;
                 }
-            }
+                
+                const data = await response.json(); // Chuyển đổi phản hồi thành JSON
+                
+                localStorage.setItem('token', data.token); // Lưu token vào localStorage
+               
+                const token = localStorage.getItem('token');
+                const roles = getRoleFromToken(data.token);
+                
+                if (roles.includes('ADMIN')) {
+                    window.location.href = '/TrangChuAdmin.html'; // Chuyển hướng đến trang admin
+                } else {
+                    window.location.href = '/MainUser.html'; // Chuyển hướng đến trang người dùng
+                }
+            } catch (error) {
+                console.error('Có lỗi xảy ra:', error);
+                alert('Đã xảy ra lỗi khi thực hiện yêu cầu.');
+            }    
         }
     </script>
 </head>
@@ -142,17 +158,17 @@
 
                                     <div class="pt-4 pb-2">
                                         <h5 class="card-title text-center pb-0 fs-4">Login to Your Account</h5>
-                                        <p class="text-center small">Enter your username & password to login</p>
+                                        <p class="text-center small">Enter your email & password to login</p>
                                     </div>
 
-                                    <form class="row g-3 needs-validation" onsubmit="login(event); return false;">
+                                    <form class="row g-3 needs-validation" onsubmit=" return false;">
 
                                         <div class="col-12">
-                                            <label for="yourUsername" class="form-label">Username</label>
+                                            <label for="yourUsername" class="form-label">Email</label>
                                             <div class="input-group has-validation">
                                                 <input type="text" name="username" class="form-control"
                                                     id="yourUsername" required>
-                                                <div class="invalid-feedback">Please enter your username.</div>
+                                                <div class="invalid-feedback">Please enter your email.</div>
                                             </div>
                                         </div>
 
@@ -163,15 +179,15 @@
                                             <div class="invalid-feedback">Please enter your password!</div>
                                         </div>
 
-                                        <div class="col-12">
+                                        <!-- <div class="col-12">
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" name="remember"
                                                     value="true" id="rememberMe">
                                                 <label class="form-check-label" for="rememberMe">Remember me</label>
                                             </div>
-                                        </div>
+                                        </div> -->
                                         <div class="col-12">
-                                            <button class="btn btn-primary w-100" type="submit">Login</button>
+                                            <button class="btn btn-primary w-100" type="submit" id="loginForm" onclick="Submit()">Login</button>
                                         </div>
                                         <div class="col-12">
                                             <p class="small mb-0">Don't have account? <a href="Admin/main.html">Create
