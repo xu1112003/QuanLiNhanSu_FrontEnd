@@ -271,7 +271,9 @@ function renderHSL() {
                 <td>${position.heSo}</td>
                 <td>
                     <span onclick="getHSLID(${position.id})" class="btn btn-success btn1" data-bs-toggle="modal"
-                                    data-bs-target="#suaHSL">Sửa</span> 
+                                    data-bs-target="#suaHSL">Sửa</span>
+                    <span onclick="getHSLID(${position.id})" class="btn btn-danger btn1" data-bs-toggle="modal"
+                                    data-bs-target="#xoaHSL">Xóa</span> 
                 </td>
             </tr>
         `;
