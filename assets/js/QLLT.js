@@ -123,8 +123,13 @@ function getLuongID(id) {
         .then(item => {
             if (item) {
                 luongId = item.salaryId;
-                document.getElementById('loai1').value = item.salaryType;
-                document.getElementById('sotien1').value = item.money;
+                //document.getElementById('loai1').value = item.salaryType;
+                //document.getElementById('sotien1').value = item.money;
+                console.log(hslID);
+                document.getElementById('chucvu1').value = item.positionName;
+                document.getElementById('moTa1').value = item.description;
+                document.getElementById('heso1').value = item.heSo;
+                document.getElementById('thanhVienNhom1').value= item.number;
             } else {
                 console.error('Salary not found with ID:', id);
             }
@@ -342,8 +347,10 @@ function deleteHSL(id) {
 }
 function editHSL(id) {
     var item = {
-        name: document.getElementById('chucvu1').value,
-        heSo: document.getElementById('heso1').value
+        positionName : document.getElementById("chucvu1").value,
+		description : document.getElementById("moTa1").value,
+		number : document.getElementById("thanhVienNhom1").value,
+		heSo : document.getElementById("heso1").value
     };
 
     fetch(`https://localhost:44302/api/HeSos/${id}`, {
